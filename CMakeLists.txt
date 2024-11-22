@@ -26,6 +26,10 @@ option(
 include(FetchContent)
 include(GNUInstallDirs)
 
+if(DEFINED BEMAN_BUILDSYS_SANITIZER)
+    include(cmake/apply_santizers.cmake)
+endif()
+
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
     enable_testing()
 
