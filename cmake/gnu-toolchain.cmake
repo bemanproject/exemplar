@@ -1,5 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+# This toolchain file is not meant to be used directly,
+# but to be invoked by CMake preset and GitHub CI.
+#
+# This toolchain file configures for GNU family of compiler.
+#
+# BEMAN_BUILDSYS_SANITIZER:
+# This optional CMake parameter is not meant for public use and is subject to
+# change.
+# Possible values:
+# - MaxSan: configures gcc and g++ to use all available non-conflicting
+#           sanitizers.
+# - TSan:   configures gcc and g++ to enable the use of thread sanitizer
+
 include_guard(GLOBAL)
 
 set(CMAKE_C_COMPILER gcc)
