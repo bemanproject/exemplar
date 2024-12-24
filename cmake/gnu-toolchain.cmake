@@ -13,8 +13,6 @@
 #           sanitizers.
 # - TSan:   configures gcc and g++ to enable the use of thread sanitizer
 
-include_guard(GLOBAL)
-
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
