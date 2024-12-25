@@ -4,13 +4,37 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 # beman.exemplar: A Beman Library Exemplar
 
-![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg)
+<div style="display: flex; align-items: center;">
+  <img
+    src="https://github.com/bemanproject/beman/blob/main/images/logos/beman_logo-beman_library_under_development.png"
+    style="width: 10%; height: auto;"
+    alt="Beman Logo"
+  >
+  <table>
+    <tr>
+      <td>
+        <img
+          src="https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg"
+          alt="Continuous Integration Tests"
+        >
+      </td>
+      <td>
+        <img
+          src="https://github.com/bemanproject/exemplar/actions/workflows/pre-commit.yml/badge.svg"
+          alt="Lint Check (pre-commit)"
+        >
+      </td>
+    </tr>
+  </table>
+</div>
 
 `beman.exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md).
 This can be used as a template for those intending to write Beman libraries.
 It may also find use as a minimal and modern  C++ project structure.
 
-Implements: `std::identity` proposed in [Standard Library Concepts (P0898R3)](https://wg21.link/P0898R3).
+**Implements**: `std::identity` proposed in [Standard Library Concepts (P0898R3)](https://wg21.link/P0898R3).
+
+**Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#under-development-and-not-yet-ready-for-production-use)
 
 ## Usage
 
