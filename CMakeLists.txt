@@ -9,6 +9,8 @@ project(
     LANGUAGES CXX
 )
 
+enable_testing()
+
 # [CMAKE.SKIP_TESTS]
 option(
     BEMAN_EXEMPLAR_BUILD_TESTS
@@ -27,8 +29,6 @@ include(FetchContent)
 include(GNUInstallDirs)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    enable_testing()
-
     # Fetch GoogleTest
     FetchContent_Declare(
         googletest
