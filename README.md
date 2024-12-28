@@ -10,6 +10,17 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 This can be used as a template for those intending to write Beman libraries.
 It may also find use as a minimal and modern  C++ project structure.
 
+To use `beman.exemplar` as a template, click the "Use this template" button
+above (instead of cloning).  Once you have it cloned locally, run
+`new_project_from_exemplar.py`, and pass it the indicated parameters (run with
+`--help` to get a description of all the options).  This will replace all
+references to "exemplar" with your project's name, as well as doing a few
+other useful tweaks.  This makes it much easier to get started with your new
+project.  The script will make changes, `git rm` itself, and then commit the
+result.  If you don't quite like the result, don't worry -- everything from
+before you ran the script, and all the script's changes, are still there in
+your git history.
+
 Implements: `std::identity` proposed in [Standard Library Concepts (P0898R3)](https://wg21.link/P0898R3).
 
 ## Usage
