@@ -2,7 +2,7 @@
 SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 -->
 
-# beman.exemplar: A Beman Library Exemplar
+# beman.{{project-name}}: A Beman Library
 
 ![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg)
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-#ifndef BEMAN_EXEMPLAR_IDENTITY_HPP
-#define BEMAN_EXEMPLAR_IDENTITY_HPP
+#ifndef BEMAN_{{project-name | shouty_snake_case}}_IDENTITY_HPP
+#define BEMAN_{{project-name | shouty_snake_case}}_IDENTITY_HPP
 
 // C++ Standard Library: std::identity equivalent.
 // See https://eel.is/c++draft/func.identity:
@@ -22,7 +22,7 @@
 
 #include <utility> // std::forward
 
-namespace beman::exemplar {
+namespace beman::{{project-name}} {
 
 struct __is_transparent; // not defined
 
@@ -37,6 +37,6 @@ struct identity {
     using is_transparent = __is_transparent;
 };
 
-} // namespace beman::exemplar
+} // namespace beman::{{project-name}}
 
-#endif // BEMAN_EXEMPLAR_IDENTITY_HPP
+#endif // BEMAN_{{project-name | shouty_snake_case}}_IDENTITY_HPP
