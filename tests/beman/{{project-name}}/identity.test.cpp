@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-#include <beman/exemplar/identity.hpp>
+#include <beman/{{project-name}}/identity.hpp>
 
 #include <gtest/gtest.h>
 
 #include <algorithm>
 #include <functional>
 
-namespace exe = beman::exemplar;
+namespace exe = beman::{{project-name}};
 
 TEST(IdentityTest, call_identity_with_int) {
     for (int i = -100; i < 100; ++i) {

@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-    beman.exemplar # CMake Project Name, which is also the name of the top-level
+    beman.{{project-name}} # CMake Project Name, which is also the name of the top-level
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "A Beman library exemplar"
     LANGUAGES CXX
@@ -11,14 +11,14 @@ project(
 
 # [CMAKE.SKIP_TESTS]
 option(
-    BEMAN_EXEMPLAR_BUILD_TESTS
+    BEMAN_{{project-name | shouty_snake_case}}_BUILD_TESTS
     "Enable building tests and test infrastructure. Default: ON. Values: { ON, OFF }."
     ${PROJECT_IS_TOP_LEVEL}
 )
 
 # [CMAKE.SKIP_EXAMPLES]
 option(
-    BEMAN_EXEMPLAR_BUILD_EXAMPLES
+    BEMAN_{{project-name | shouty_snake_case}}_BUILD_EXAMPLES
     "Enable building examples. Default: ON. Values: { ON, OFF }."
     ${PROJECT_IS_TOP_LEVEL}
 )
@@ -26,7 +26,7 @@ option(
 include(FetchContent)
 include(GNUInstallDirs)
 
-if(BEMAN_EXEMPLAR_BUILD_TESTS)
+if(BEMAN_{{project-name | shouty_snake_case}}_BUILD_TESTS)
     enable_testing()
 
     # Fetch GoogleTest
@@ -43,12 +43,12 @@ if(BEMAN_EXEMPLAR_BUILD_TESTS)
     endblock()
 endif()
 
-add_subdirectory(src/beman/exemplar)
+add_subdirectory(src/beman/{{project-name}})
 
-if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    add_subdirectory(tests/beman/exemplar)
+if(BEMAN_{{project-name | shouty_snake_case}}_BUILD_TESTS)
+    add_subdirectory(tests/beman/{{project-name}})
 endif()
 
-if(BEMAN_EXEMPLAR_BUILD_EXAMPLES)
+if(BEMAN_{{project-name | shouty_snake_case}}_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
