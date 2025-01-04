@@ -7,10 +7,16 @@ project(example
   DESCRIPTION "An example Beman library"
   LANGUAGES CXX
 )
-include(CTest)
+
+option(
+    BEMAN_EXAMPLE_BUILD_TESTING
+    "Enable building tests and test infrastructure. Default: ON. Values: { ON, OFF }."
+    ${PROJECT_IS_TOP_LEVEL}
+)
 
 add_subdirectory(src/example)
 
-if (BUILD_TESTING)
+if (BEMAN_EXAMPLE_BUILD_TESTING)
+  enable_testing()
   add_subdirectory(test/example)
 endif ()
