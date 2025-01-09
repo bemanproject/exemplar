@@ -19,6 +19,8 @@ set(CMAKE_C_COMPILER cl)
 set(CMAKE_CXX_COMPILER cl)
 
 if(BEMAN_BUILDSYS_SANITIZER STREQUAL "MaxSan")
+    # /Zi flag (add debug symbol) is needed when using address sanitizer
+    # See C5072: https://learn.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-c5072
     set(SANITIZER_FLAGS "/fsanitize=address /Zi")
 endif()
 
