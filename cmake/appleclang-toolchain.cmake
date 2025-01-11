@@ -14,6 +14,8 @@
 #           sanitizers. Note that apple clang does not support leak sanitizer.
 # - TSan:   configures clang and clang++ to enable the use of thread sanitizer.
 
+include_guard(GLOBAL)
+
 set(CMAKE_C_COMPILER clang)
 set(CMAKE_CXX_COMPILER clang++)
 
