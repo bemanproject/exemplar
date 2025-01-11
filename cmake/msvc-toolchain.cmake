@@ -15,6 +15,8 @@
 # BEMAN_BUILDSYS_SANITIZER, however, MSVC does not support thread sanitizer,
 # thus this value is omitted.
 
+include_guard(GLOBAL)
+
 set(CMAKE_C_COMPILER cl)
 set(CMAKE_CXX_COMPILER cl)
 
