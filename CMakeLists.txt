@@ -11,17 +11,21 @@ project(
 
 enable_testing()
 
-# [CMAKE.SKIP_TESTS]
 option(
     BEMAN_EXEMPLAR_BUILD_TESTS
-    "Enable building tests and test infrastructure. Default: ON. Values: { ON, OFF }."
+    "Enable building tests and test infrastructure."
     ${PROJECT_IS_TOP_LEVEL}
 )
 
-# [CMAKE.SKIP_EXAMPLES]
 option(
     BEMAN_EXEMPLAR_BUILD_EXAMPLES
-    "Enable building examples. Default: ON. Values: { ON, OFF }."
+    "Enable building examples."
+    ${PROJECT_IS_TOP_LEVEL}
+)
+
+option(
+    BEMAN_EXEMPLAR_FETCH_GOOGLETEST
+    "Enable downloading and building googletest from source."
     ${PROJECT_IS_TOP_LEVEL}
 )
 
@@ -29,18 +33,22 @@ include(FetchContent)
 include(GNUInstallDirs)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    # Fetch GoogleTest
-    FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG
-            f8d7d77c06936315286eb55f8de22cd23c188571 # release-1.14.0
-        EXCLUDE_FROM_ALL
-    )
-    block()
-        set(INSTALL_GTEST OFF) # Disable GoogleTest installation
-        FetchContent_MakeAvailable(googletest)
-    endblock()
+    if(BEMAN_EXEMPLAR_FETCH_GOOGLETEST)
+        # Fetch GoogleTest
+        FetchContent_Declare(
+            googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG
+                f8d7d77c06936315286eb55f8de22cd23c188571 # release-1.14.0
+            EXCLUDE_FROM_ALL
+        )
+        block()
+            set(INSTALL_GTEST OFF) # Disable GoogleTest installation
+            FetchContent_MakeAvailable(googletest)
+        endblock()
+    else()
+        find_package(GTest REQUIRED)
+    endif()
 endif()
 
 add_subdirectory(src/beman/exemplar)
