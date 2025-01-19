@@ -117,7 +117,7 @@ jobs:
       - name: Build Release
         run: |
           # Portable commands only
-          cmake --build build --config Release --verbose
+          cmake --build build --config Release --parallel --verbose
           cmake --build build --config Release --target all_verify_interface_header_sets
           cmake --install build --config Release --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
@@ -126,7 +126,7 @@ jobs:
       - name: Build Debug
         run: |
           # Portable commands only
-          cmake --build build --config Debug --verbose
+          cmake --build build --config Debug --parallel --verbose
           cmake --build build --config Debug --target all_verify_interface_header_sets
           cmake --install build --config Debug --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
@@ -162,14 +162,14 @@ jobs:
       - name: Build Release
         run: |
           # Portable commands only
-          cmake --build build --config Release --verbose
+          cmake --build build --config Release --parallel --verbose
           cmake --build build --config Release --target all_verify_interface_header_sets
           cmake --install build --config Release --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
       - name: Build Debug
         run: |
           # Portable commands only
-          cmake --build build --config Debug --verbose
+          cmake --build build --config Debug --parallel --verbose
           cmake --build build --config Debug --target all_verify_interface_header_sets
           cmake --install build --config Debug --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
