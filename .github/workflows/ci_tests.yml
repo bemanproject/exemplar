@@ -58,6 +58,9 @@ jobs:
           - description: "Windows MSVC"
             os: windows-latest
             toolchain: "cmake/msvc-toolchain.cmake"
+          - description: "Macos Appleclang"
+            os: macos-latest
+            toolchain: "cmake/appleclang-toolchain.cmake"
         cpp_version: [17, 20, 23, 26]
         cmake_args:
           - description: "Default"
@@ -103,6 +106,9 @@ jobs:
         uses: TheMrMilchmann/setup-msvc-dev@v3
         with:
           arch: x64
+      - name: Setup Macos
+        if: startsWith(matrix.platform.os, 'macos')
+        run: sudo chmod -R 777 /opt/
       - name: Print installed softwares
         shell: bash
         run: |
