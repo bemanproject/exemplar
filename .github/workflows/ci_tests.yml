@@ -143,6 +143,7 @@ jobs:
   configuration-test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         args:
           - name: "Disable build testing"
@@ -184,6 +185,7 @@ jobs:
   compiler-test:
     runs-on: ubuntu-24.04
     strategy:
+      fail-fast: false
       matrix:
         compilers:
           - class: GNU
