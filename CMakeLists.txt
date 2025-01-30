@@ -23,6 +23,7 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
+include(CTestUseLaunchers)
 include(FetchContent)
 include(GNUInstallDirs)
 
