@@ -7,26 +7,15 @@ project(
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "A Beman library exemplar"
     LANGUAGES CXX
+    VERSION 0.1.0
 )
 
 enable_testing()
 
-# [CMAKE.SKIP_TESTS]
-option(
-    BEMAN_EXEMPLAR_BUILD_TESTS
-    "Enable building tests and test infrastructure. Default: ON. Values: { ON, OFF }."
-    ${PROJECT_IS_TOP_LEVEL}
-)
-
-# [CMAKE.SKIP_EXAMPLES]
-option(
-    BEMAN_EXEMPLAR_BUILD_EXAMPLES
-    "Enable building examples. Default: ON. Values: { ON, OFF }."
-    ${PROJECT_IS_TOP_LEVEL}
-)
-
 include(FetchContent)
 include(GNUInstallDirs)
+
+include(cmake/beman-configure.cmake)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
     # Fetch GoogleTest
@@ -50,3 +39,9 @@ endif()
 if(BEMAN_EXEMPLAR_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
+
+if(BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)
+    include(cmake/config-file-package.cmake)
+endif()
+
+find_package(beman.exemplar REQUIRED)

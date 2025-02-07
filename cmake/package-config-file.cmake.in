@@ -1,0 +1,13 @@
+set(BEMAN_EXEMPLAR_VERSION @PROJECT_VERSION@)
+
+block()
+  cmake_path(IS_PREFIX CMAKE_BINARY_DIR "${CMAKE_CURRENT_LIST_DIR}" BUILDING_AS_SUBPROJECT)
+
+  if(BUILDING_AS_SUBPROJECT)
+    return()
+  endif()
+endblock()
+
+@PACKAGE_INIT@
+
+check_required_components(beman.exemplar)
