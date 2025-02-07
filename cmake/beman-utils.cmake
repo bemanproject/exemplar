@@ -11,8 +11,8 @@ macro(beman_configure_project_option)
   block()
     cmake_parse_arguments(_arg "" "PROJECT;OPTION;TYPE;DEFAULT;DEFAULT_FN;DESCRIPTION" "ENUM" ${ARGN})
 
-    # Remove optional arguments from the list of missing keyword values.
-    list(REMOVE_ITEM _arg_KEYWORDS_MISSING_VALUES _arg_ENUM _arg_DEFAULT_FN)
+        # Remove optional arguments from the list of missing keyword values.
+        list(REMOVE_ITEM _arg_KEYWORDS_MISSING_VALUES _arg_ENUM _arg_DEFAULT_FN)
 
     if(DEFINED _arg_DEFAULT_FN AND NOT DEFINED _arg_DEFAULT)
       cmake_language(CALL ${_arg_DEFAULT_FN} _arg_DEFAULT)
