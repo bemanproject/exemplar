@@ -15,9 +15,10 @@ configure_package_config_file(
     PROJECT_VERSION
 )
 
-write_basic_package_version_file("${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}-version.cmake"
-  VERSION       ${PROJECT_VERSION}
-  COMPATIBILITY ${BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE_COMPATIBILITY}
+write_basic_package_version_file(
+    "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}-version.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY ${BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE_COMPATIBILITY}
 )
 
 install(
