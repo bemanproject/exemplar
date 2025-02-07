@@ -9,10 +9,8 @@ set(${PROJECT_NAME}_DIR "${PROJECT_BINARY_DIR}/cmake" CACHE PATH "Build location
 configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/package-config-file.cmake.in"
     "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}-config.cmake"
-  INSTALL_DESTINATION
-    "${BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE_INSTALLDIR}"
-  PATH_VARS
-    PROJECT_VERSION
+    INSTALL_DESTINATION "${BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE_INSTALLDIR}"
+    PATH_VARS PROJECT_VERSION
 )
 
 write_basic_package_version_file(
