@@ -13,9 +13,9 @@ target_sources(
         FILES ${PROJECT_SOURCE_DIR}/include/beman/exemplar/identity.hpp
 )
 
-set_target_properties(beman.exemplar PROPERTIES
-    VERIFY_INTERFACE_HEADER_SETS ON
-    EXPORT_NAME exemplar
+set_target_properties(
+    beman.exemplar
+    PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON EXPORT_NAME exemplar
 )
 
 install(
