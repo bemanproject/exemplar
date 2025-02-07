@@ -22,7 +22,6 @@ beman_configure_project_option(
   DESCRIPTION "Enable position independent code for project ${PROJECT_NAME}?"
   ENUM ON OFF
 )
-  
 beman_configure_project_option(
   PROJECT     EXEMPLAR
   OPTION      CONFIG_FILE_PACKAGE
