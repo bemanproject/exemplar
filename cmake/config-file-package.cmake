@@ -1,7 +1,7 @@
 include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
 
 if(NOT BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)
-  return()
+    return()
 endif()
 
 set(${PROJECT_NAME}_DIR "${PROJECT_BINARY_DIR}/cmake" CACHE PATH "Build location of config file package for ${PROJECT_NAME}")
