@@ -102,9 +102,9 @@ endmacro()
 macro(beman_default_target_export_variant outvar)
     include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
 
-    if(BEMAN_EXEMPLAR_SHARED_LIBS)
+    if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS)
         set(${outvar} shared)
-    elseif(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
+    elseif(BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE)
         set(${outvar} static-pic)
     else()
         set(${outvar} static)
@@ -117,13 +117,19 @@ macro(beman_default_library_suffix outvar)
     block(PROPAGATE ${outvar})
         beman_default_target_export_variant(_variant)
 
-        if(NOT BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT STREQUAL _variant)
-            set(${outvar} .${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT})
+        if(
+            NOT BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT
+                STREQUAL
+                _variant
+        )
+            set(${outvar}
+                .${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
+            )
         endif()
 
         if(
-            NOT BEMAN_EXEMPLAR_SHARED_LIBS
-            AND BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE
+            NOT BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS
+            AND BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE
         )
             set(${outvar} ${${outvar}}-pic)
         endif()
@@ -139,7 +145,7 @@ macro(beman_add_library target)
             set(target beman.${target})
         endif()
 
-        if(BEMAN_EXEMPLAR_SHARED_LIBS)
+        if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS)
             add_library(${target} SHARED)
         else()
             add_library(${target} STATIC)
@@ -149,18 +155,19 @@ macro(beman_add_library target)
             ${target}
             PUBLIC
                 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-                $<INSTALL_INTERFACE:${BEMAN_EXEMPLAR_INSTALL_INCLUDEDIR}>
+                $<INSTALL_INTERFACE:${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_INCLUDEDIR}>
         )
 
         set_target_properties(
             ${target}
             PROPERTIES
-                OUTPUT_NAME ${target}${BEMAN_EXEMPLAR_LIBRARY_SUFFIX}
+                OUTPUT_NAME
+                    ${target}${BEMAN_${BEMAN_SHORT_NAME_UPPER}_LIBRARY_SUFFIX}
                 EXPORT_NAME ${_short_name}
                 VERIFY_INTERFACE_HEADER_SETS ON
         )
 
-        if(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
+        if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE)
             set_target_properties(
                 ${target}
                 PROPERTIES POSITION_INDEPENDENT_CODE ON
@@ -177,7 +184,7 @@ macro(beman_install_targets)
 
         if(NOT DEFINED _arg_EXPORT)
             set(_arg_EXPORT
-                beman.exemplar-${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT}
+                beman.${BEMAN_SHORT_NAME}-${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
             )
         endif()
 
@@ -186,20 +193,25 @@ macro(beman_install_targets)
             EXPORT ${_arg_EXPORT}
             ARCHIVE
                 DESTINATION
-                    $<$<CONFIG:Debug>:debug/>${BEMAN_EXEMPLAR_INSTALL_LIBDIR}
-                COMPONENT ${BEMAN_EXEMPLAR_ARCHIVE_INSTALL_COMPONENT}
+                    $<$<CONFIG:Debug>:debug/>${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}
+                COMPONENT
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_ARCHIVE_INSTALL_COMPONENT}
             LIBRARY
                 DESTINATION
-                    $<$<CONFIG:Debug>:debug/>${BEMAN_EXEMPLAR_INSTALL_LIBDIR}
-                COMPONENT ${BEMAN_EXEMPLAR_LIBRARY_INSTALL_COMPONENT}
-                NAMELINK_COMPONENT ${BEMAN_EXEMPLAR_NAMELINK_INSTALL_COMPONENT}
+                    $<$<CONFIG:Debug>:debug/>${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}
+                COMPONENT
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_LIBRARY_INSTALL_COMPONENT}
+                NAMELINK_COMPONENT
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_NAMELINK_INSTALL_COMPONENT}
             RUNTIME
                 DESTINATION
-                    $<$<CONFIG:Debug>:debug/>${BEMAN_EXEMPLAR_INSTALL_BINDIR}
-                COMPONENT ${BEMAN_EXEMPLAR_RUNTIME_INSTALL_COMPONENT}
+                    $<$<CONFIG:Debug>:debug/>${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_BINDIR}
+                COMPONENT
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_RUNTIME_INSTALL_COMPONENT}
             FILE_SET HEADERS
                 DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-                COMPONENT ${BEMAN_EXEMPLAR_HEADERS_INSTALL_COMPONENT}
+                COMPONENT
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_HEADERS_INSTALL_COMPONENT}
         )
     endblock()
 endmacro()

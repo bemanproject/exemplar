@@ -1,17 +1,29 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-include_guard(GLOBAL)
+include_guard(DIRECTORY)
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 include(${CMAKE_CURRENT_LIST_DIR}/beman-utils.cmake)
 
+block(PROPAGATE BEMAN_SHORT_NAME BEMAN_SHORT_NAME_UPPER)
+    if(NOT ${PROJECT_NAME} MATCHES "^beman[.](.*)$")
+        message(
+            FATAL_ERROR
+            "Beman project name ${PROJECT_NAME} does not match the regular expression '^beman[.](.*)$'"
+        )
+    endif()
+
+    set(BEMAN_SHORT_NAME ${CMAKE_MATCH_1})
+    string(TOUPPER ${BEMAN_SHORT_NAME} BEMAN_SHORT_NAME_UPPER)
+endblock()
+
 # As required by the beman standard
 
 # [CMAKE.SKIP_TESTS]
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      BUILD_TESTS
   TYPE        BOOL
   DEFAULT     ${PROJECT_IS_TOP_LEVEL}
@@ -21,7 +33,7 @@ beman_configure_project_option(
 
 # [CMAKE.SKIP_EXAMPLES]
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      BUILD_EXAMPLES
   TYPE        BOOL
   DEFAULT     ${PROJECT_IS_TOP_LEVEL}
@@ -31,7 +43,7 @@ beman_configure_project_option(
 
 # [CMAKE.SKIP_DOCS]
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      BUILD_DOCS
   TYPE        BOOL
   DEFAULT     ${PROJECT_IS_TOP_LEVEL}
@@ -42,7 +54,7 @@ beman_configure_project_option(
 # Project specific options
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      SHARED_LIBS
   TYPE        BOOL
   DEFAULT_FN  beman_shared_libs
@@ -51,7 +63,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      POSITION_INDEPENDENT_CODE
   TYPE        BOOL
   DEFAULT_FN  beman_position_independent_code
@@ -60,7 +72,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      CONFIG_FILE_PACKAGE
   TYPE        BOOL
   DEFAULT     ${PROJECT_IS_TOP_LEVEL}
@@ -69,7 +81,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      CONFIG_FILE_PACKAGE_COMPATIBILITY
   TYPE        STRING
   DEFAULT     SameMajorVersion
@@ -83,7 +95,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      TARGET_EXPORT_VARIANT
   TYPE        STRING
   DEFAULT_FN  beman_default_target_export_variant
@@ -91,7 +103,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      DEVELOPMENT_INSTALL_COMPONENT
   TYPE        STRING
   DEFAULT     beman.development
@@ -99,7 +111,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      RUNTIME_INSTALL_COMPONENT
   TYPE        STRING
   DEFAULT     beman.runtime
@@ -107,55 +119,55 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      ARCHIVE_INSTALL_COMPONENT
   TYPE        STRING
-  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DEFAULT     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_DEVELOPMENT_INSTALL_COMPONENT}
   DESCRIPTION "The name of the install component used to selectively install ARCHIVE targets"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      RUNTIME_INSTALL_COMPONENT
   TYPE        STRING
-  DEFAULT     ${BEMAN_EXEMPLAR_RUNTIME_INSTALL_COMPONENT}
+  DEFAULT     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_RUNTIME_INSTALL_COMPONENT}
   DESCRIPTION "The name of the install component used to selectively install RUNTIME targets"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      LIBRARY_INSTALL_COMPONENT
   TYPE        STRING
-  DEFAULT     ${BEMAN_EXEMPLAR_RUNTIME_INSTALL_COMPONENT}
+  DEFAULT     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_RUNTIME_INSTALL_COMPONENT}
   DESCRIPTION "The name of the install component used to selectively install LIBRARY targets"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      HEADERS_INSTALL_COMPONENT
   TYPE        STRING
-  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DEFAULT     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_DEVELOPMENT_INSTALL_COMPONENT}
   DESCRIPTION "The name of the install component used to selectively install header files targets"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      NAMELINK_INSTALL_COMPONENT
   TYPE        STRING
-  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DEFAULT     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_DEVELOPMENT_INSTALL_COMPONENT}
   DESCRIPTION "The name of the install component used to selectively install namelinks for versioned binaries"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      CONFIG_FILE_PACKAGE_INSTALL_COMPONENT
   TYPE        STRING
-  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DEFAULT     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_DEVELOPMENT_INSTALL_COMPONENT}
   DESCRIPTION "The installation component in which the config-file package for ${PROJECT_NAME} is included"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_LIBDIR
   TYPE        PATH
   DEFAULT     ${CMAKE_INSTALL_LIBDIR}
@@ -163,7 +175,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_BINDIR
   TYPE        PATH
   DEFAULT     ${CMAKE_INSTALL_BINDIR}
@@ -171,7 +183,7 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_INCLUDEDIR
   TYPE        PATH
   DEFAULT     ${CMAKE_INSTALL_BINDIR}
@@ -179,17 +191,17 @@ beman_configure_project_option(
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_CMAKEDIR
   TYPE        PATH
-  DEFAULT     "${BEMAN_EXEMPLAR_INSTALL_LIBDIR}/cmake/beman"
+  DEFAULT     "${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}/cmake/beman"
   DESCRIPTION "Location where the config-file package and any other CMake utilities for ${PROJECT_NAME} will be installed"
 )
 
 beman_configure_project_option(
-  PROJECT     EXEMPLAR
+  PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      LIBRARY_SUFFIX
   TYPE        STRING
   DEFAULT_FN  beman_default_library_suffix
-  DESCRIPTION "The suffix to apply to output names of ${PROJECT_NAME} library targets (e.g. 'exemplar' becomes 'exemplar<suffix>')"
+  DESCRIPTION "The suffix to apply to output names of ${PROJECT_NAME} library targets (e.g. '${BEMAN_SHORT_NAME}' becomes '${BEMAN_SHORT_NAME}<suffix>')"
 )
