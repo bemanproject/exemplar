@@ -132,7 +132,7 @@ macro(beman_default_library_suffix outvar)
     endblock()
 endmacro()
 
-macro(beman_add_library target)
+macro(_beman_add_library target type)
     block()
         if(${target} MATCHES "^beman[.](.*)$")
             set(_short_name "${CMAKE_MATCH_1}")
@@ -141,11 +141,7 @@ macro(beman_add_library target)
             set(target beman.${target})
         endif()
 
-        if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS)
-            add_library(${target} SHARED)
-        else()
-            add_library(${target} STATIC)
-        endif()
+        add_library(${target} ${type})
 
         target_include_directories(
             ${target}
@@ -174,6 +170,18 @@ macro(beman_add_library target)
         # [CMAKE.LIBRARY_ALIAS]
         add_library(beman::${_short_name} ALIAS ${target})
     endblock()
+endmacro()
+
+macro(beman_add_library target)
+    if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS)
+        _beman_add_library(${target} SHARED)
+    else()
+        _beman_add_library(${target} STATIC)
+    endif()
+endmacro()
+
+macro(beman_add_header_only_library target)
+    _beman_add_library(${target} INTERFACE)
 endmacro()
 
 macro(beman_install_targets)
