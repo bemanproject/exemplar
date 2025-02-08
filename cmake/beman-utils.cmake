@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
 # Configure a project-specific option as a cache variable according to
 # the following precedence.
 #
