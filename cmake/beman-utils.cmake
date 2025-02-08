@@ -145,6 +145,13 @@ macro(beman_add_library target)
             add_library(${target} STATIC)
         endif()
 
+        target_include_directories(
+            ${target}
+            PUBLIC
+                $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                $<INSTALL_INTERFACE:${BEMAN_EXEMPLAR_INSTALL_INCLUDEDIR}>
+        )
+
         set_target_properties(
             ${target}
             PROPERTIES
