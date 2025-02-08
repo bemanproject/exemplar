@@ -43,5 +43,3 @@ endif()
 if(BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)
     include(cmake/config-file-package.cmake)
 endif()
-
-find_package(beman.exemplar REQUIRED)
