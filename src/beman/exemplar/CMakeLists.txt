@@ -13,6 +13,13 @@ target_sources(
         FILES ${PROJECT_SOURCE_DIR}/include/beman/exemplar/identity.hpp
 )
 
+target_include_directories(
+    beman.exemplar
+    PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:${BEMAN_EXEMPLAR_INSTALL_INCLUDEDIR}>
+)
+
 set_target_properties(
     beman.exemplar
     PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON EXPORT_NAME exemplar
