@@ -113,18 +113,18 @@ macro(beman_default_library_suffix outvar)
     include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
 
     block(PROPAGATE ${outvar})
-      beman_default_target_export_variant(_variant)
+        beman_default_target_export_variant(_variant)
 
-      if(NOT BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT STREQUAL _variant)
-        set(${outvar} .${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT})
-      endif()
-      
-      if(
-          NOT BEMAN_EXEMPLAR_SHARED_LIBS
-          AND BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE
-	)
-        set(${outvar} ${${outvar}}-pic)
-      endif()
+        if(NOT BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT STREQUAL _variant)
+            set(${outvar} .${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT})
+        endif()
+
+        if(
+            NOT BEMAN_EXEMPLAR_SHARED_LIBS
+            AND BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE
+        )
+            set(${outvar} ${${outvar}}-pic)
+        endif()
     endblock()
 endmacro()
 
