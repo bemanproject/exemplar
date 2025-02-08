@@ -199,7 +199,7 @@ macro(beman_install_targets)
             EXPORT ${_arg_EXPORT}
             ARCHIVE
                 DESTINATION
-                    $<$<CONFIG:Debug>:debug/>${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}/$<$<CONFIG:Debug>:debug>
                 COMPONENT
                     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_ARCHIVE_INSTALL_COMPONENT}
             LIBRARY
