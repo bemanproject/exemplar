@@ -15,6 +15,8 @@ block(PROPAGATE BEMAN_SHORT_NAME BEMAN_SHORT_NAME_UPPER)
         )
     endif()
 
+    # These variables *cannot* be cache variables because we need them
+    # to vary based the project that's including this file.
     set(BEMAN_SHORT_NAME ${CMAKE_MATCH_1})
     string(TOUPPER ${BEMAN_SHORT_NAME} BEMAN_SHORT_NAME_UPPER)
 endblock()
@@ -171,7 +173,7 @@ beman_configure_project_option(
   OPTION      INSTALL_LIBDIR
   TYPE        PATH
   DEFAULT     ${CMAKE_INSTALL_LIBDIR}
-  DESCRIPTION "Locations where ${PROJECT_NAME} libraries and archives will be installed."
+  DESCRIPTION "Location where ${PROJECT_NAME} libraries and archives will be installed."
 )
 
 beman_configure_project_option(
@@ -179,7 +181,7 @@ beman_configure_project_option(
   OPTION      INSTALL_BINDIR
   TYPE        PATH
   DEFAULT     ${CMAKE_INSTALL_BINDIR}
-  DESCRIPTION "Locations where ${PROJECT_NAME} executables will be installed."
+  DESCRIPTION "Location where ${PROJECT_NAME} executables will be installed."
 )
 
 beman_configure_project_option(
@@ -187,7 +189,7 @@ beman_configure_project_option(
   OPTION      INSTALL_INCLUDEDIR
   TYPE        PATH
   DEFAULT     ${CMAKE_INSTALL_BINDIR}
-  DESCRIPTION "Locations where ${PROJECT_NAME} header files will be installed."
+  DESCRIPTION "Location where ${PROJECT_NAME} header files will be installed."
 )
 
 beman_configure_project_option(
