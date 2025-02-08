@@ -118,7 +118,6 @@ macro(beman_install_targets)
                 DESTINATION
                     $<$<CONFIG:Debug>:debug/>${BEMAN_EXEMPLAR_INSTALL_LIBDIR}
                 COMPONENT ${BEMAN_EXEMPLAR_ARCHIVE_INSTALL_COMPONENT}
-                NAMELINK_COMPONENT ${BEMAN_EXEMPLAR_NAMELINK_INSTALL_COMPONENT}
             LIBRARY
                 DESTINATION
                     $<$<CONFIG:Debug>:debug/>${BEMAN_EXEMPLAR_INSTALL_LIBDIR}
