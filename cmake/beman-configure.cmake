@@ -5,6 +5,40 @@ include(CMakePackageConfigHelpers)
 
 include(${CMAKE_CURRENT_LIST_DIR}/beman-utils.cmake)
 
+# As required by the beman standard
+
+# [CMAKE.SKIP_TESTS]
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      BUILD_TESTS
+  TYPE        BOOL
+  DEFAULT     ${PROJECT_IS_TOP_LEVEL}
+  DESCRIPTION "Enable building tests and test infrastructure"
+  ENUM ON OFF
+)
+
+# [CMAKE.SKIP_EXAMPLES]
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      BUILD_EXAMPLES
+  TYPE        BOOL
+  DEFAULT     ${PROJECT_IS_TOP_LEVEL}
+  DESCRIPTION "Enable building examples"
+  ENUM ON OFF
+)
+
+# [CMAKE.SKIP_DOCS]
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      BUILD_DOCS
+  TYPE        BOOL
+  DEFAULT     ${PROJECT_IS_TOP_LEVEL}
+  DESCRIPTION "Enable building documentation"
+  ENUM ON OFF
+)
+
+# Project specific options
+
 beman_configure_project_option(
   PROJECT     EXEMPLAR
   OPTION      SHARED_LIBS
@@ -52,36 +86,6 @@ beman_configure_project_option(
   TYPE        STRING
   DEFAULT_FN  beman_default_target_export_variant
   DESCRIPTION "The name of the target export variant to create for ${PROJECT_NAME}"
-)
-
-# [CMAKE.SKIP_TESTS]
-beman_configure_project_option(
-  PROJECT     EXEMPLAR
-  OPTION      BUILD_TESTS
-  TYPE        BOOL
-  DEFAULT     ${PROJECT_IS_TOP_LEVEL}
-  DESCRIPTION "Enable building tests and test infrastructure"
-  ENUM ON OFF
-)
-
-# [CMAKE.SKIP_EXAMPLES]
-beman_configure_project_option(
-  PROJECT     EXEMPLAR
-  OPTION      BUILD_EXAMPLES
-  TYPE        BOOL
-  DEFAULT     ${PROJECT_IS_TOP_LEVEL}
-  DESCRIPTION "Enable building examples"
-  ENUM ON OFF
-)
-
-# [CMAKE.SKIP_DOCS]
-beman_configure_project_option(
-  PROJECT     EXEMPLAR
-  OPTION      BUILD_DOCS
-  TYPE        BOOL
-  DEFAULT     ${PROJECT_IS_TOP_LEVEL}
-  DESCRIPTION "Enable building documentation"
-  ENUM ON OFF
 )
 
 beman_configure_project_option(
