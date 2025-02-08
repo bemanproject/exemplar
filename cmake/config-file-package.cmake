@@ -25,6 +25,7 @@ write_basic_package_version_file(
     COMPATIBILITY ${BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE_COMPATIBILITY}
 )
 
+# [CMAKE.CONFIG]
 install(
     FILES
         "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}-config.cmake"

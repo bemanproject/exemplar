@@ -163,6 +163,7 @@ macro(beman_add_library target)
             PROPERTIES
                 OUTPUT_NAME
                     ${target}${BEMAN_${BEMAN_SHORT_NAME_UPPER}_LIBRARY_SUFFIX}
+                # [CMAKE.CONFIG]
                 EXPORT_NAME ${_short_name}
                 VERIFY_INTERFACE_HEADER_SETS ON
         )
@@ -174,6 +175,7 @@ macro(beman_add_library target)
             )
         endif()
 
+        # [CMAKE.LIBRARY_ALIAS]
         add_library(beman::${_short_name} ALIAS ${target})
     endblock()
 endmacro()
