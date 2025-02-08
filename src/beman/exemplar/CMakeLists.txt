@@ -21,7 +21,6 @@ target_include_directories(
 
 beman_install_targets(
     TARGETS beman.exemplar
-    EXPORT beman.exemplar-${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT}
 )
 
 if(BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)

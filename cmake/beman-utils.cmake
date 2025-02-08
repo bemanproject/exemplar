@@ -131,36 +131,48 @@ macro(beman_default_library_suffix outvar)
 endmacro()
 
 macro(beman_add_library target)
-  block()
-    if(${target} MATCHES "^beman[.](.*)$")
-      set(_short_name "${CMAKE_MATCH_1}")
-    else()
-      set(_short_name ${target})
-      set(target beman.${target})
-    endif()
-    
-    if(BEMAN_EXEMPLAR_SHARED_LIBS)
-      add_library(${target} SHARED)
-    else()
-      add_library(${target} STATIC)
-    endif()
-    
-    set_target_properties(
-      ${target}
-      PROPERTIES OUTPUT_NAME ${target}${BEMAN_EXEMPLAR_LIBRARY_SUFFIX} EXPORT_NAME ${_short_name} VERIFY_INTERFACE_HEADER_SETS ON
-    )
-    
-    if(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
-      set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
-    endif()
+    block()
+        if(${target} MATCHES "^beman[.](.*)$")
+            set(_short_name "${CMAKE_MATCH_1}")
+        else()
+            set(_short_name ${target})
+            set(target beman.${target})
+        endif()
 
-    add_library(beman::${_short_name} ALIAS ${target})
-  endblock()
+        if(BEMAN_EXEMPLAR_SHARED_LIBS)
+            add_library(${target} SHARED)
+        else()
+            add_library(${target} STATIC)
+        endif()
+
+        set_target_properties(
+            ${target}
+            PROPERTIES
+                OUTPUT_NAME ${target}${BEMAN_EXEMPLAR_LIBRARY_SUFFIX}
+                EXPORT_NAME ${_short_name}
+                VERIFY_INTERFACE_HEADER_SETS ON
+        )
+
+        if(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
+            set_target_properties(
+                ${target}
+                PROPERTIES POSITION_INDEPENDENT_CODE ON
+            )
+        endif()
+
+        add_library(beman::${_short_name} ALIAS ${target})
+    endblock()
 endmacro()
 
 macro(beman_install_targets)
     block()
         cmake_parse_arguments(_arg "" "EXPORT" "TARGETS" ${ARGN})
+
+        if(NOT DEFINED _arg_EXPORT)
+            set(_arg_EXPORT
+                beman.exemplar-${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT}
+            )
+        endif()
 
         install(
             TARGETS ${_arg_TARGETS}
