@@ -22,6 +22,7 @@ beman_configure_project_option(
   DESCRIPTION "Enable position independent code for project ${PROJECT_NAME}?"
   ENUM ON OFF
 )
+
 beman_configure_project_option(
   PROJECT     EXEMPLAR
   OPTION      CONFIG_FILE_PACKAGE
@@ -37,14 +38,6 @@ beman_configure_project_option(
   TYPE        PATH
   DEFAULT     "${CMAKE_INSTALL_LIBDIR}/cmake/beman"
   DESCRIPTION "Location where the config-file package for ${PROJECT_NAME} will be installed"
-)
-
-beman_configure_project_option(
-  PROJECT     EXEMPLAR
-  OPTION      CONFIG_FILE_PACKAGE_INSTALL_COMPONENT
-  TYPE        STRING
-  DEFAULT     "beman.development"
-  DESCRIPTION "The installation component in which the config-file package for ${PROJECT_NAME} is included"
 )
 
 beman_configure_project_option(
@@ -97,4 +90,68 @@ beman_configure_project_option(
   DEFAULT     ${PROJECT_IS_TOP_LEVEL}
   DESCRIPTION "Enable building documentation"
   ENUM ON OFF
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      DEVELOPMENT_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     beman.development
+  DESCRIPTION "The name of the install component used to selectively install headers, static libraries, etc"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      RUNTIME_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     beman.runtime
+  DESCRIPTION "The name of the install component used to selectively install binaries"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      ARCHIVE_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DESCRIPTION "The name of the install component used to selectively install ARCHIVE targets"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      RUNTIME_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     ${BEMAN_EXEMPLAR_RUNTIME_INSTALL_COMPONENT}
+  DESCRIPTION "The name of the install component used to selectively install RUNTIME targets"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      LIBRARY_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     ${BEMAN_EXEMPLAR_RUNTIME_INSTALL_COMPONENT}
+  DESCRIPTION "The name of the install component used to selectively install LIBRARY targets"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      HEADERS_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DESCRIPTION "The name of the install component used to selectively install header files targets"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      NAMELINK_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DESCRIPTION "The name of the install component used to selectively install namelinks for versioned binaries"
+)
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      CONFIG_FILE_PACKAGE_INSTALL_COMPONENT
+  TYPE        STRING
+  DEFAULT     ${BEMAN_EXEMPLAR_DEVELOPMENT_INSTALL_COMPONENT}
+  DESCRIPTION "The installation component in which the config-file package for ${PROJECT_NAME} is included"
 )

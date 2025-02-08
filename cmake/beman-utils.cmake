@@ -106,3 +106,31 @@ macro(beman_default_target_export_variant outvar)
         endif()
     endblock()
 endmacro()
+
+macro(beman_install_targets)
+    block()
+        cmake_parse_arguments(_arg "" "EXPORT" "TARGETS" ${ARGN})
+
+        install(
+            TARGETS ${_arg_TARGETS}
+            EXPORT ${_arg_EXPORT}
+            ARCHIVE
+                DESTINATION
+                    $<$<CONFIG:Debug>:debug/>${CMAKE_INSTALL_LIBDIR} # TODO
+                COMPONENT ${BEMAN_EXEMPLAR_ARCHIVE_INSTALL_COMPONENT}
+                NAMELINK_COMPONENT ${BEMAN_EXEMPLAR_NAMELINK_INSTALL_COMPONENT}
+            LIBRARY
+                DESTINATION
+                    $<$<CONFIG:Debug>:debug/>${CMAKE_INSTALL_LIBDIR} # TODO
+                COMPONENT ${BEMAN_EXEMPLAR_LIBRARY_INSTALL_COMPONENT}
+                NAMELINK_COMPONENT ${BEMAN_EXEMPLAR_NAMELINK_INSTALL_COMPONENT}
+            RUNTIME
+                DESTINATION
+                    $<$<CONFIG:Debug>:debug/>${CMAKE_INSTALL_BINDIR} # TODO
+                COMPONENT ${BEMAN_EXEMPLAR_RUNTIME_INSTALL_COMPONENT}
+            FILE_SET HEADERS
+                DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+                COMPONENT ${BEMAN_EXEMPLAR_HEADERS_INSTALL_COMPONENT}
+        )
+    endblock()
+endmacro()
