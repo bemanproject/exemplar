@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 beman_add_library(beman.exemplar)
-add_library(beman::exemplar ALIAS beman.exemplar)
 
 target_sources(beman.exemplar PRIVATE identity.cpp)
 
@@ -18,11 +17,6 @@ target_include_directories(
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:${BEMAN_EXEMPLAR_INSTALL_INCLUDEDIR}>
-)
-
-set_target_properties(
-    beman.exemplar
-    PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON EXPORT_NAME exemplar
 )
 
 beman_install_targets(

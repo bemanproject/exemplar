@@ -131,20 +131,31 @@ macro(beman_default_library_suffix outvar)
 endmacro()
 
 macro(beman_add_library target)
-    if(BEMAN_EXEMPLAR_SHARED_LIBS)
-        add_library(${target} SHARED)
+  block()
+    if(${target} MATCHES "^beman[.](.*)$")
+      set(_short_name "${CMAKE_MATCH_1}")
     else()
-        add_library(${target} STATIC)
+      set(_short_name ${target})
+      set(target beman.${target})
     endif()
-
+    
+    if(BEMAN_EXEMPLAR_SHARED_LIBS)
+      add_library(${target} SHARED)
+    else()
+      add_library(${target} STATIC)
+    endif()
+    
     set_target_properties(
-        ${target}
-        PROPERTIES OUTPUT_NAME ${target}${BEMAN_EXEMPLAR_LIBRARY_SUFFIX}
+      ${target}
+      PROPERTIES OUTPUT_NAME ${target}${BEMAN_EXEMPLAR_LIBRARY_SUFFIX} EXPORT_NAME ${_short_name} VERIFY_INTERFACE_HEADER_SETS ON
     )
-
+    
     if(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
-        set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
+      set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
     endif()
+
+    add_library(beman::${_short_name} ALIAS ${target})
+  endblock()
 endmacro()
 
 macro(beman_install_targets)
