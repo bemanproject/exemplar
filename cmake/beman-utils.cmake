@@ -100,8 +100,6 @@ macro(beman_position_independent_code outvar)
 endmacro()
 
 macro(beman_default_target_export_variant outvar)
-    include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
-
     if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS)
         set(${outvar} shared)
     elseif(BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE)
@@ -112,8 +110,6 @@ macro(beman_default_target_export_variant outvar)
 endmacro()
 
 macro(beman_default_library_suffix outvar)
-    include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
-
     block(PROPAGATE ${outvar})
         beman_default_target_export_variant(_variant)
 
@@ -217,3 +213,29 @@ macro(beman_install_targets)
         )
     endblock()
 endmacro()
+
+macro(beman_install_export)
+    if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_CONFIG_FILE_PACKAGE)
+        block()
+            cmake_parse_arguments(_arg "" "EXPORT" "" ${ARGN})
+
+            if(NOT DEFINED _arg_EXPORT)
+                set(_arg_EXPORT
+                    beman.${BEMAN_SHORT_NAME}-${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
+                )
+            endif()
+
+            # [CMAKE.CONFIG]
+            install(
+                EXPORT ${_arg_EXPORT}
+                DESTINATION
+                    "${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_CMAKEDIR}"
+                NAMESPACE beman::
+                COMPONENT
+                    "${BEMAN_${BEMAN_SHORT_NAME_UPPER}_CONFIG_FILE_PACKAGE_INSTALL_COMPONENT}"
+            )
+        endblock()
+    endif()
+endmacro()
+
+include(${PROJECT_SOURCE_DIR}/cmake/beman-configure.cmake)

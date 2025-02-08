@@ -16,12 +16,4 @@ beman_install_targets(
     TARGETS beman.exemplar
 )
 
-if(BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)
-    # [CMAKE.CONFIG]
-    install(
-        EXPORT beman.exemplar-${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT}
-        DESTINATION "${BEMAN_EXEMPLAR_INSTALL_CMAKEDIR}"
-        NAMESPACE beman::
-        COMPONENT "${BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE_INSTALL_COMPONENT}"
-    )
-endif()
+beman_install_export()
