@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
 include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
 
 if(NOT BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)
