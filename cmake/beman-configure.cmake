@@ -179,3 +179,11 @@ beman_configure_project_option(
   DEFAULT     "${BEMAN_EXEMPLAR_INSTALL_LIBDIR}/cmake/beman"
   DESCRIPTION "Location where the config-file package and any other CMake utilities for ${PROJECT_NAME} will be installed"
 )
+
+beman_configure_project_option(
+  PROJECT     EXEMPLAR
+  OPTION      LIBRARY_SUFFIX
+  TYPE        STRING
+  DEFAULT_FN  beman_default_library_suffix
+  DESCRIPTION "The suffix to apply to output names of ${PROJECT_NAME} library targets (e.g. 'exemplar' becomes 'exemplar<suffix>')"
+)

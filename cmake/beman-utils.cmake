@@ -102,10 +102,27 @@ macro(beman_default_target_export_variant outvar)
 
     if(BEMAN_EXEMPLAR_SHARED_LIBS)
         set(${outvar} shared)
-    elseif(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
-        set(${outvar} static-pic)
     else()
         set(${outvar} static)
+    endif()
+endmacro()
+
+macro(beman_default_library_suffix outvar)
+    include(${CMAKE_CURRENT_LIST_DIR}/beman-configure.cmake)
+
+    if(BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT STREQUAL shared)
+        set(${outvar})
+    elseif(BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT STREQUAL static)
+        set(${outvar})
+    else()
+        set(${outvar} .${BEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT})
+    endif()
+
+    if(
+        NOT BEMAN_EXEMPLAR_SHARED_LIBS
+        AND BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE
+    )
+        set(${outvar} ${${outvar}}-pic)
     endif()
 endmacro()
 
@@ -114,15 +131,15 @@ macro(beman_add_library target)
         add_library(${target} SHARED)
     else()
         add_library(${target} STATIC)
+    endif()
 
-        if(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
-            set_target_properties(
-                ${target}
-                PROPERTIES
-                    POSITION_INDEPENDENT_CODE ON
-                    OUTPUT_NAME ${target}-pic
-            )
-        endif()
+    set_target_properties(
+        ${target}
+        PROPERTIES OUTPUT_NAME ${target}${BEMAN_EXEMPLAR_LIBRARY_SUFFIX}
+    )
+
+    if(BEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE)
+        set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
     endif()
 endmacro()
 
