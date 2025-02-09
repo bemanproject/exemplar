@@ -216,10 +216,10 @@ jobs:
         cases:
           - description: Default target export variant is static
             config: ~
-          - decription: Project-specific shared libs option has first priority
+          - description: Project-specific shared libs option has first priority
             config: -DBEMAN_EXEMPLAR_BUILD_SHARED_LIBS=ON -DBEMAN_SHARED_LIBS=OFF -DSHARED_LIBS=OFF
             expected-variant: shared
-          - decription: Project-specific shared libs option has first priority
+          - description: Project-specific shared libs option has first priority
             config: -DBEMAN_EXEMPLAR_BUILD_SHARED_LIBS=OFF -DBEMAN_SHARED_LIBS=ON -DSHARED_LIBS=ON
             expected-variant: static
           - description: Beman-specific shared libs option has second priority
