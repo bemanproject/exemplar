@@ -273,7 +273,7 @@ jobs:
           ninja --version
       - name: Configure CMake
         run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=17 ${{ matrix.cases.config }}
+          cmake -B build -S . -DCMAKE_CXX_STANDARD=17 -DBUILD_TESTS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_DOCS=OFF ${{ matrix.cases.config }}
         env:
           CMAKE_GENERATOR: "Ninja Multi-Config"
       - name: Build Release
