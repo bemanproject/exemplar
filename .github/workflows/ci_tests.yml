@@ -208,6 +208,94 @@ jobs:
           cmake --install build --config Debug --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
 
+  target-export-variant-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        cases:
+          - description: Default target export variant is static
+            config: ~
+          - decription: Project-specific shared libs option has first priority
+            config: -DBEMAN_EXEMPLAR_BUILD_SHARED_LIBS=ON -DBEMAN_SHARED_LIBS=OFF -DSHARED_LIBS=OFF
+            expected-variant: shared
+          - decription: Project-specific shared libs option has first priority
+            config: -DBEMAN_EXEMPLAR_BUILD_SHARED_LIBS=OFF -DBEMAN_SHARED_LIBS=ON -DSHARED_LIBS=ON
+            expected-variant: static
+          - description: Beman-specific shared libs option has second priority
+            config: -DBEMAN_BUILD_SHARED_LIBS=ON -DBUILD_SHARED_LIBS=OFF
+            expected-variant: shared
+          - description: Beman-specific shared libs option has second priority
+            config: -DBEMAN_BUILD_SHARED_LIBS=OFF -DBUILD_SHARED_LIBS=ON
+            expected-variant: static
+          - description: CMake shared libs option has third priority
+            config: -DBUILD_SHARED_LIBS=ON
+            expected-variant: shared
+          - description: CMake shared libs option has third priority
+            config: -DBUILD_SHARED_LIBS=OFF
+            expected-variant: static
+          - description: When building a static library, project-specific PIC option has first priority.
+            config: -DBEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE=ON -DBEMAN_POSITION_INDEPENDENT_CODE=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=OFF
+            expected-variant: static-pic
+          - description: When building a static library, project-specific PIC option has first priority.
+            config: -DBEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE=OFF -DBEMAN_POSITION_INDEPENDENT_CODE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+            expected-variant: static
+          - description: When building a static library, Beman-specific PIC option has second priority.
+            config: -DBEMAN_POSITION_INDEPENDENT_CODE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=OFF
+            expected-variant: static-pic
+          - description: When building a static library, Beman-specific PIC option has second priority.
+            config: -DBEMAN_POSITION_INDEPENDENT_CODE=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+            expected-variant: static
+          - description: When building a static library, CMake PIC option has third priority.
+            config: -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+            expected-variant: static-pic
+          - description: When building a static library, CMake PIC option has third priority.
+            config: -DCMAKE_POSITION_INDEPENDENT_CODE=OFF
+            expected-variant: static
+          - description: Explicit project-specific target export variant has the highest priority.
+            config: -DBEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT=custom -DBEMAN_TARGET_EXPORT_VARIANT=unused
+            expected-variant: custom
+          - description: Explicit Beman-specific target export variant has the second-highest priority.
+            config: -DBEMAN_TARGET_EXPORT_VARIANT=custom
+            expected-variant: custom
+    name: "Target Export Variant: ${{ matrix.cases.description }}"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup build environment
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "~3.25.0"
+          ninjaVersion: "^1.11.1"
+      - name: Print installed softwares
+        run: |
+          cmake --version
+          ninja --version
+      - name: Configure CMake
+        run: |
+          cmake -B build -S . -DCMAKE_CXX_STANDARD=17 ${{ matrix.cases.config }}
+        env:
+          CMAKE_GENERATOR: "Ninja Multi-Config"
+      - name: Build Release
+        run: |
+          # Portable commands only
+          cmake --build build --config Release --parallel --verbose
+          cmake --build build --config Release --target all_verify_interface_header_sets
+          cmake --install build --config Release --prefix /opt/beman.exemplar
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-config.cmake
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-version.cmake
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export.cmake
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export-release.cmake
+      - name: Build Debug
+        run: |
+          # Portable commands only
+          cmake --build build --config Debug --parallel --verbose
+          cmake --build build --config Debug --target all_verify_interface_header_sets
+          cmake --install build --config Debug --prefix /opt/beman.exemplar
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-config.cmake
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-version.cmake
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export.cmake
+          test -f /opt/beman.exemplar/local/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export-debug.cmake
+
   compiler-test:
     runs-on: ubuntu-24.04
     strategy:
