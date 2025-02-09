@@ -171,7 +171,7 @@ beman_configure_project_option(
 beman_configure_project_option(
   PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_LIBDIR
-  TYPE        PATH
+  TYPE        STRING
   DEFAULT     ${CMAKE_INSTALL_LIBDIR}
   DESCRIPTION "Location where ${PROJECT_NAME} libraries and archives will be installed."
 )
@@ -179,7 +179,7 @@ beman_configure_project_option(
 beman_configure_project_option(
   PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_BINDIR
-  TYPE        PATH
+  TYPE        STRING
   DEFAULT     ${CMAKE_INSTALL_BINDIR}
   DESCRIPTION "Location where ${PROJECT_NAME} executables will be installed."
 )
@@ -187,15 +187,15 @@ beman_configure_project_option(
 beman_configure_project_option(
   PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_INCLUDEDIR
-  TYPE        PATH
-  DEFAULT     ${CMAKE_INSTALL_BINDIR}
+  TYPE        STRING
+  DEFAULT     ${CMAKE_INSTALL_INCLUDEDIR}
   DESCRIPTION "Location where ${PROJECT_NAME} header files will be installed."
 )
 
 beman_configure_project_option(
   PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_CMAKEDIR
-  TYPE        PATH
+  TYPE        STRING
   DEFAULT     "${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   DESCRIPTION "Location where the config-file package and any other CMake utilities for ${PROJECT_NAME} will be installed"
 )
