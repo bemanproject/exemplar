@@ -207,19 +207,19 @@ macro(beman_install_targets)
             EXPORT ${_arg_EXPORT}
             ARCHIVE
                 DESTINATION
-                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}/$<$<CONFIG:Debug>:debug>
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>
                 COMPONENT
                     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_ARCHIVE_INSTALL_COMPONENT}
             LIBRARY
                 DESTINATION
-                    $<$<CONFIG:Debug>:debug/>${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>
                 COMPONENT
                     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_LIBRARY_INSTALL_COMPONENT}
                 NAMELINK_COMPONENT
                     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_NAMELINK_INSTALL_COMPONENT}
             RUNTIME
                 DESTINATION
-                    $<$<CONFIG:Debug>:debug/>${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_BINDIR}
+                    ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_BINDIR}$<$<CONFIG:Debug>:/debug>
                 COMPONENT
                     ${BEMAN_${BEMAN_SHORT_NAME_UPPER}_RUNTIME_INSTALL_COMPONENT}
             FILE_SET HEADERS
