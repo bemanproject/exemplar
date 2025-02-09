@@ -282,6 +282,8 @@ jobs:
           cmake --build build --config Release --target all_verify_interface_header_sets
           cmake --install build --config Release --prefix /opt/beman.exemplar
           find /opt/beman.exemplar/
+          echo "Expected file: /opt/beman.exemplar/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export.cmake"
+          echo "Expected file: /opt/beman.exemplar/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export-release.cmake"
           test -f /opt/beman.exemplar/lib/cmake/beman.exemplar/beman.exemplar-config.cmake
           test -f /opt/beman.exemplar/lib/cmake/beman.exemplar/beman.exemplar-version.cmake
           test -f /opt/beman.exemplar/lib/cmake/beman.exemplar/beman.exemplar-${{ matrix.cases.expected-variant }}-target-export.cmake
