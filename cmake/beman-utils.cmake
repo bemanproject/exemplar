@@ -143,11 +143,17 @@ macro(_beman_add_library target type)
 
         add_library(${target} ${type})
 
+        if(${type} STREQUAL INTERFACE)
+            set(_propagation INTERFACE)
+        else()
+            set(_propagation PUBLIC)
+        endif()
+
         target_include_directories(
             ${target}
-            PUBLIC
-                $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
-                $<INSTALL_INTERFACE:${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_INCLUDEDIR}>
+            ${_propagation}
+            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+            $<INSTALL_INTERFACE:${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_INCLUDEDIR}>
         )
 
         set_target_properties(

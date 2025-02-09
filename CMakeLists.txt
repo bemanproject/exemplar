@@ -41,5 +41,5 @@ if(BEMAN_EXEMPLAR_BUILD_EXAMPLES)
 endif()
 
 if(BEMAN_EXEMPLAR_CONFIG_FILE_PACKAGE)
-    include(cmake/config-file-package.cmake)
+    include(cmake/beman-config-file-package.cmake)
 endif()
