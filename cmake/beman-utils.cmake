@@ -164,8 +164,8 @@ macro(_beman_add_library target type)
                 # [CMAKE.CONFIG]
                 EXPORT_NAME ${_short_name}
                 VERIFY_INTERFACE_HEADER_SETS ON
-		VERSION ${PROJECT_VERSION}
-		SOVERSION ${PROJECT_VERSION_MAJOR}
+                VERSION ${PROJECT_VERSION}
+                SOVERSION ${PROJECT_VERSION_MAJOR}
         )
 
         if(BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE)
