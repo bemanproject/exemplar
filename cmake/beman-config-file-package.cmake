@@ -16,7 +16,7 @@ configure_package_config_file(
     "${CMAKE_CURRENT_LIST_DIR}/package-config-file.cmake.in"
     "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}-config.cmake"
     INSTALL_DESTINATION "${BEMAN_EXEMPLAR_INSTALL_CMAKEDIR}"
-    PATH_VARS PROJECT_VERSION
+    PATH_VARS PROJECT_NAME PROJECT_VERSION BEMAN_SHORT_NAME_UPPER
 )
 
 write_basic_package_version_file(

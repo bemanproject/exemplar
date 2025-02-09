@@ -2,6 +2,11 @@
 
 set(BEMAN_EXEMPLAR_VERSION @PROJECT_VERSION@)
 
+# We still want `find_package(@PROJECT_NAME@)` to work when building
+# @PROJECT_NAME@ as a sub-project of a super-build. But if this
+# project is building as a sub-project, then the targets this
+# config-file package are already defined and we don't want to define
+# them again.
 block()
   cmake_path(IS_PREFIX CMAKE_BINARY_DIR "${CMAKE_CURRENT_LIST_DIR}" BUILDING_AS_SUBPROJECT)
 
@@ -12,4 +17,93 @@ endblock()
 
 @PACKAGE_INIT@
 
-check_required_components(beman.exemplar)
+block(PROPAGATE ${CMAKE_FIND_PACKAGE_NAME}_FOUND ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE)
+  file(GLOB target_export_variants_files LIST_DIRECTORIES false "${CMAKE_CURRENT_LIST_DIR}/*-target-export.cmake")
+
+  # Extract the list of available export variants from the list of
+  # export variants files.
+  set(target_export_variants ${target_export_variants_files})
+  list(TRANSFORM target_export_variants REPLACE ".*/@PROJECT_NAME@-(.*)-target-export[.]cmake$" "\\1")
+
+  # Calculate the name of the target export variant we need to locate
+  # using the same logic as when building the @PROJECT_NAME@ project,
+  # with one difference if only a single target export variant is
+  # available (see next comment).
+  if(DEFINED BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT)
+    # pass
+  elseif(DEFINED BEMAN_TARGET_EXPORT_VARIANT)
+    set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT ${BEMAN_TARGET_EXPORT_VARIANT})
+  else()
+    # If only a single target export variant is available, and a
+    # specific variant has not been requested, then assume the one
+    # available variant can satisfy the request. This respects the
+    # fact that if the user only has a single variant built and
+    # installed, then that's likely the variant they want.
+    list(LENGTH target_export_variants target_export_variants_len)
+
+    if(target_export_variants_len EQUAL 1)
+      set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT ${target_export_variants})
+    else()
+      # Determine if we need shared libraries for @PROJECT_NAME@. If
+      # so, then we want the shared target export variant.
+      if(DEFINED BEMAN_@BEMAN_SHORT_NAME_UPPER@_SHARED_LIBS)
+	# pass
+      elseif(DEFINED BEMAN_SHARED_LIBS)
+	set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_SHARED_LIBS ${BEMAN_SHARED_LIBS})
+      elseif(DEFINED BUILD_SHARED_LIBS)
+	set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_SHARED_LIBS ${BUILD_SHARED_LIBS})
+      else()
+	set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_SHARED_LIBS OFF)
+      endif()
+
+      if(BEMAN_@BEMAN_SHORT_NAME_UPPER@_SHARED_LIBS)
+	set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT shared)
+      else()
+	# We don't want the shared target export variant, so now
+	# determine if we need position-independent code for
+	# @PROJECT_NAME@. If so, then we want the static-pic target
+	# export variant. Otherwise, we want the static target export
+	# variant.
+	if(DEFINED BEMAN_@BEMAN_SHORT_NAME_UPPER@_POSITION_INDEPENDENT_CODE)
+	  # pass
+	elseif(DEFINED BEMAN_POSITION_INDEPENDENT_CODE)
+	  set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_POSITION_INDEPENDENT_CODE ${BEMAN_POSITION_INDEPENDENT_CODE})
+	elseif(DEFINED CAKE_POSITION_INDEPENDENT_CODE)
+	  set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
+	else()
+	  set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_POSITION_INDEPENDENT_CODE OFF)
+	endif()
+
+	if(BEMAN_@BEMAN_SHORT_NAME_UPPER@_POSITION_INDEPENDENT_CODE)
+	  set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT static-pic)
+	else()
+	  set(BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT static)
+	endif()
+      endif()
+    endif()
+  endif()
+
+  # At this point we have calculated the target export variant we
+  # want. Now we just need to search our list of available target
+  # export variants.
+  list(FIND target_export_variants ${BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT} pos)
+
+  # Hard error if we were unable to locate a matching target export
+  # variant.
+  if(pos EQUAL -1)
+    set(${CMAKE_FIND_PACKAGE_NAME}_FOUND FALSE)
+
+    set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE
+"No target export variant matching '${BEMAN_@BEMAN_SHORT_NAME_UPPER@_TARGET_EXPORT_VARIANT}' \
+is available for package '${CMAKE_FIND_PACKAGE_NAME}'; available export variants are \
+'${target_export_variants}'"
+    )
+
+    return()
+  endif()
+
+  list(GET target_export_variants_files ${pos} target_export_variant_file)
+  include("${target_export_variant_file}")
+endblock()
+
+check_required_components(@PROJECT_NAME@)

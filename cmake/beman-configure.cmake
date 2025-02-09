@@ -196,7 +196,7 @@ beman_configure_project_option(
   PROJECT     ${BEMAN_SHORT_NAME_UPPER}
   OPTION      INSTALL_CMAKEDIR
   TYPE        PATH
-  DEFAULT     "${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}/cmake/beman"
+  DEFAULT     "${BEMAN_${BEMAN_SHORT_NAME_UPPER}_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}"
   DESCRIPTION "Location where the config-file package and any other CMake utilities for ${PROJECT_NAME} will be installed"
 )
 
