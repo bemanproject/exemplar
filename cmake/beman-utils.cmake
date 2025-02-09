@@ -113,12 +113,12 @@ endmacro()
 
 macro(beman_default_library_suffix outvar)
     block(PROPAGATE ${outvar})
-        beman_default_target_export_variant(_variant)
+        set(_reserved_variants shared static static-pic)
 
         if(
             NOT BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT
-                STREQUAL
-                _variant
+                IN_LIST
+                _reserved_variants
         )
             set(${outvar}
                 .${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
@@ -127,7 +127,7 @@ macro(beman_default_library_suffix outvar)
             NOT BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS
             AND BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE
         )
-            set(${outvar} ${${outvar}}-pic)
+            set(${outvar} ${${outvar}}.pic)
         endif()
     endblock()
 endmacro()

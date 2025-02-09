@@ -245,7 +245,7 @@ jobs:
           - description: When building a static library, project-specific PIC option has first priority.
             config: -DBEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE=ON -DBEMAN_POSITION_INDEPENDENT_CODE=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=OFF
             expected-variant: static-pic
-            expected-library: -pic.a
+            expected-library: .pic.a
           - description: When building a static library, project-specific PIC option has first priority.
             config: -DBEMAN_EXEMPLAR_POSITION_INDEPENDENT_CODE=OFF -DBEMAN_POSITION_INDEPENDENT_CODE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
             expected-variant: static
@@ -253,7 +253,7 @@ jobs:
           - description: When building a static library, Beman-specific PIC option has second priority.
             config: -DBEMAN_POSITION_INDEPENDENT_CODE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=OFF
             expected-variant: static-pic
-            expected-library: -pic.a
+            expected-library: .pic.a
           - description: When building a static library, Beman-specific PIC option has second priority.
             config: -DBEMAN_POSITION_INDEPENDENT_CODE=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON
             expected-variant: static
@@ -261,7 +261,7 @@ jobs:
           - description: When building a static library, CMake PIC option has third priority.
             config: -DCMAKE_POSITION_INDEPENDENT_CODE=ON
             expected-variant: static-pic
-            expected-library: -pic.a
+            expected-library: .pic.a
           - description: When building a static library, CMake PIC option has third priority.
             config: -DCMAKE_POSITION_INDEPENDENT_CODE=OFF
             expected-variant: static
@@ -271,9 +271,9 @@ jobs:
             expected-variant: custom
             expected-library: .a
           - description: Explicit Beman-specific target export variant has the second-highest priority.
-            config: -DBEMAN_TARGET_EXPORT_VARIANT=custom -DBEMAN_POSITION_INDEPENDENT_CODE=ON
+            config: -DBEMAN_TARGET_EXPORT_VARIANT=custom -DBEMAN_POSITION_INDEPENDENT_CODE=ON -DBEMAN_LIBRARY_SUFFIX=.custom.pic
             expected-variant: custom
-            expected-library: -pic.a
+            expected-library: custom.pic.a
     name: "Target Export Variant: ${{ matrix.cases.description }}"
     steps:
       - uses: actions/checkout@v4
@@ -397,7 +397,6 @@ jobs:
           find /opt/beman.exemplar -type f
       - name: Test Debug
         run: ctest --test-dir build --build-config Debug
-
 
   create-issue-when-fault:
     runs-on: ubuntu-latest
