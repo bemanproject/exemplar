@@ -269,11 +269,11 @@ jobs:
           - description: Explicit project-specific target export variant has the highest priority.
             config: -DBEMAN_EXEMPLAR_TARGET_EXPORT_VARIANT=custom -DBEMAN_TARGET_EXPORT_VARIANT=unused
             expected-variant: custom
-            expected-library: .a
+            expected-library: .custom.a
           - description: Explicit Beman-specific target export variant has the second-highest priority.
             config: -DBEMAN_TARGET_EXPORT_VARIANT=custom -DBEMAN_POSITION_INDEPENDENT_CODE=ON -DBEMAN_LIBRARY_SUFFIX=.custom.pic
             expected-variant: custom
-            expected-library: custom.pic.a
+            expected-library: .custom.pic.a
     name: "Target Export Variant: ${{ matrix.cases.description }}"
     steps:
       - uses: actions/checkout@v4
