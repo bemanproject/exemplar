@@ -196,7 +196,7 @@ macro(beman_install_targets)
 
         if(NOT DEFINED _arg_EXPORT)
             set(_arg_EXPORT
-                beman.${BEMAN_SHORT_NAME}-${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
+                beman.${BEMAN_SHORT_NAME}-${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}-target-export
             )
         endif()
 
@@ -235,7 +235,7 @@ macro(beman_install_export)
 
             if(NOT DEFINED _arg_EXPORT)
                 set(_arg_EXPORT
-                    beman.${BEMAN_SHORT_NAME}-${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
+                    beman.${BEMAN_SHORT_NAME}-${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}-target-export
                 )
             endif()
 
