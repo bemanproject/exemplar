@@ -115,7 +115,11 @@ macro(beman_default_library_suffix outvar)
     block(PROPAGATE ${outvar})
         set(_reserved_variants shared static static-pic)
 
-        if(
+        if(DEFINED BEMAN_LIBRARY_SUFFIX)
+            set(BEMAN_${BEMAN_SHORT_NAME_UPPER}_LIBRARY_SUFFIX
+                ${BEMAN_LIBRARY_SUFFIX}
+            )
+        elseif(
             NOT BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT
                 IN_LIST
                 _reserved_variants
