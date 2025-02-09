@@ -121,9 +121,7 @@ macro(beman_default_library_suffix outvar)
             set(${outvar}
                 .${BEMAN_${BEMAN_SHORT_NAME_UPPER}_TARGET_EXPORT_VARIANT}
             )
-        endif()
-
-        if(
+        elseif(
             NOT BEMAN_${BEMAN_SHORT_NAME_UPPER}_SHARED_LIBS
             AND BEMAN_${BEMAN_SHORT_NAME_UPPER}_POSITION_INDEPENDENT_CODE
         )
