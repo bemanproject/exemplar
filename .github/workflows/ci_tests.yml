@@ -150,8 +150,6 @@ jobs:
             arg: "-DBEMAN_EXEMPLAR_BUILD_TESTS=OFF"
           - name: "Disable example building"
             arg: "-DBEMAN_EXEMPLAR_BUILD_EXAMPLES=OFF"
-          - name: "Enable docs building"
-            arg: "-DBEMAN_EXEMPLAR_BUILD_DOCS=OFF"
           - name: "Enable shared libs?"
             arg: "-DBEMAN_EXEMPLAR_SHARED_LIBS=ON"
           - name: "Enable position-independent code?"
