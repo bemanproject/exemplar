@@ -19,6 +19,6 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
             "${PROJECT_SOURCE_DIR}/cmake/test" # source dir
             "${CMAKE_CURRENT_BINARY_DIR}/cmake/test" # build dir
             "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}" # prefix path
-	    "$<CONFIG>"
+            "$<CONFIG>"
     )
 endif()
