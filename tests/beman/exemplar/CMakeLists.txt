@@ -13,21 +13,19 @@ gtest_add_tests(beman.exemplar.tests.identity "" AUTO)
 
 if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
     block()
-        set(_args
-            "${CMAKE_COMMAND}"
-            "${PROJECT_SOURCE_DIR}/cmake/test" # source dir
-            "${CMAKE_CURRENT_BINARY_DIR}/cmake/test" # build dir
-            "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}" # prefix path
-            "$<CONFIG>"
-            "-DCMAKE_CXX_STANDARD=17"
-        )
-
         if(UNIX)
             add_test(
                 NAME beman.exemplar.test.config-file-package
-                COMMAND "${PROJECT_SOURCE_DIR}/cmake/test/test.sh" ${_args}
+                COMMAND
+                    "${PROJECT_SOURCE_DIR}/cmake/test/test.sh"
+                    "${CMAKE_COMMAND}"
+                    "${PROJECT_SOURCE_DIR}/cmake/test" # source dir
+                    "${CMAKE_CURRENT_BINARY_DIR}/cmake/test" # build dir
+                    "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}" # prefix path
+                    "$<CONFIG>" "-DCMAKE_CXX_STANDARD=17"
             )
         else()
+            # How can we add an equivalent Windows test?
         endif()
     endblock()
 endif()
