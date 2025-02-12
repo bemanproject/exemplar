@@ -20,5 +20,6 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
             "${CMAKE_CURRENT_BINARY_DIR}/cmake/test" # build dir
             "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}" # prefix path
             "$<CONFIG>"
+	    "-DCMAKE_CXX_STANDARD=17"
     )
 endif()
