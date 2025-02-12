@@ -129,7 +129,7 @@ jobs:
           cmake --install build --config Release --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
       - name: Test Release
-        run: ctest --test-dir build --build-config Release
+        run: ctest --test-dir build --build-config Release --output-on-failure
       - name: Build Debug
         run: |
           # Portable commands only
@@ -138,7 +138,7 @@ jobs:
           cmake --install build --config Debug --prefix /opt/beman.exemplar
           ls -R /opt/beman.exemplar
       - name: Test Debug
-        run: ctest --test-dir build --build-config Debug
+        run: ctest --test-dir build --build-config Debug --output-on-failure
 
   configuration-test:
     runs-on: ubuntu-latest
