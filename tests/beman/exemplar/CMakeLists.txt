@@ -12,13 +12,22 @@ target_link_libraries(
 gtest_add_tests(beman.exemplar.tests.identity "" AUTO)
 
 if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
-    add_test(
-        NAME beman.exemplar.test.config-file-package
-        COMMAND
-            "${PROJECT_SOURCE_DIR}/cmake/test/test.sh" "${CMAKE_COMMAND}"
+    block()
+        set(_args
+            "${CMAKE_COMMAND}"
             "${PROJECT_SOURCE_DIR}/cmake/test" # source dir
             "${CMAKE_CURRENT_BINARY_DIR}/cmake/test" # build dir
             "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}" # prefix path
-            "$<CONFIG>" "-DCMAKE_CXX_STANDARD=17"
-    )
+            "$<CONFIG>"
+            "-DCMAKE_CXX_STANDARD=17"
+        )
+
+        if(UNIX)
+            add_test(
+                NAME beman.exemplar.test.config-file-package
+                COMMAND "${PROJECT_SOURCE_DIR}/cmake/test/test.sh" ${_args}
+            )
+        else()
+        endif()
+    endblock()
 endif()
