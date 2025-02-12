@@ -254,7 +254,7 @@ jobs:
           cmake --install build --config Debug --prefix /opt/beman.exemplar
           find /opt/beman.exemplar -type f
       - name: Test Debug
-        run: ctest --test-dir build --build-config Debug
+        run: ctest --test-dir build --build-config Debug --output-on-failure
 
 
   create-issue-when-fault:
