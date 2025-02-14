@@ -325,6 +325,30 @@ cmake -B build -S . -DBEMAN_EXEMPLAR_BUILD_TESTING=OFF
 
 </details>
 
+<details>
+<summary> Disable `git clone` operations </summary>
+
+By default, while tests are enabled, this project will clone GoogleTest
+and build it from source. In many environments, it is better to use an
+already available GoogleTest instead.
+
+### Existing Source Code
+
+For instance, in Ubuntu, source code for GoogleTest is provided via a
+debian-style package under the directory `/usr/src/googletest`. To
+use those sources instead of cloning other sources from the internet,
+provide `-DFETCHCONTENT_SOURCE_DIR_GTEST=/usr/src/googletest` as a
+configuration argument when calling `cmake`.
+
+### Existing Binaries
+
+In another case, again in Ubuntu, GoogleTest can be installed prebuilt
+with CMake discovery support deployed in normal search paths.
+Setting `-DFETCHCONTENT_TRY_FIND_PACKAGE_MODE=ALWAYS` when calling `cmake`
+will force the build of this project to locate that installed library.
+
+</details>
+
 ## Integrate beman.exemplar into your project
 
 <details>
@@ -378,6 +402,7 @@ Build systems that support `pkg-config` by providing a `beman.exemplar.pc` file.
 Build systems that support interoperation via `pkg-config` should be able to detect `beman.exemplar` for you automatically.
 
 </details>
+
 
 ## Contributing
 
