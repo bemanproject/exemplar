@@ -25,7 +25,14 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
                     "$<CONFIG>" "-DCMAKE_CXX_STANDARD=17"
             )
         else()
-            # How can we add an equivalent Windows test?
+                NAME beman.exemplar.test.config-file-package
+                COMMAND
+                    "${PROJECT_SOURCE_DIR}/cmake/test/test.bat"
+                    "${CMAKE_COMMAND}"
+                    "${PROJECT_SOURCE_DIR}/cmake/test" # source dir
+                    "${CMAKE_CURRENT_BINARY_DIR}/cmake/test" # build dir
+                    "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}" # prefix path
+                    "$<CONFIG>"
         endif()
     endblock()
 endif()
