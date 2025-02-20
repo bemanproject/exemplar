@@ -114,7 +114,7 @@ jobs:
       - name: Setup Macos
         if: startsWith(matrix.platform.os, 'macos')
         run: sudo chmod -R 777 /opt/
-      - name: Print installed softwares
+      - name: Print installed software
         shell: bash
         run: |
           echo "Build system:"
@@ -162,7 +162,7 @@ jobs:
         with:
           cmakeVersion: "~3.25.0"
           ninjaVersion: "^1.11.1"
-      - name: Print installed softwares
+      - name: Print installed software
         run: |
           cmake --version
           ninja --version
