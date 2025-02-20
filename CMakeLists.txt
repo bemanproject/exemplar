@@ -11,6 +11,9 @@ project(
 
 enable_testing()
 
+include(cmake/feature_test.cmake)
+beman_min_cxx_version("17")
+
 # [CMAKE.SKIP_TESTS]
 option(
     BEMAN_EXEMPLAR_BUILD_TESTS
