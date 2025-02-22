@@ -28,19 +28,6 @@ option(
 include(FetchContent)
 include(GNUInstallDirs)
 
-if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    # Fetch GoogleTest
-    FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG
-            f8d7d77c06936315286eb55f8de22cd23c188571 # release-1.14.0
-        EXCLUDE_FROM_ALL
-    )
-    set(INSTALL_GTEST OFF) # Disable GoogleTest installation
-    FetchContent_MakeAvailable(googletest)
-endif()
-
 add_subdirectory(src/beman/exemplar)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)

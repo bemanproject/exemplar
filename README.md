@@ -85,8 +85,6 @@ Full runnable examples can be found in `examples/` (e.g., [./examples/identity_a
 ### Dependencies
 <!-- TODO Darius: rewrite section!-->
 
-This project has no C or C++ dependencies.
-
 Build-time dependencies:
 
 - `cmake`
@@ -105,6 +103,9 @@ Build-time dependencies:
 ```shell
 # Install tools:
 apt-get install -y cmake make ninja-build
+
+# Install test dependencies:
+apt-get install libgtest-dev
 
 # Toolchains:
 apt-get install                           \
@@ -321,6 +322,22 @@ simply use `BEMAN_EXEMPLAR_BUILD_TESTING=OFF` as documented in upstream [CMake d
 ```shell
 cmake -B build -S . -DBEMAN_EXEMPLAR_BUILD_TESTING=OFF
 ```
+
+</details>
+
+<details>
+<summary> Build GoogleTest dependency from github.com </summary>
+
+If you do not have GoogleTest installed on your development system, you may
+optionally configure this project to download a known-compatible release of
+GoogleTest from source and build it as well.
+
+```shell
+cmake -B build -S . -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./cmake/use-fetch-content.cmake
+```
+
+The precise version of GoogleTest that will be used is maintained in
+`./lockfile.json`.
 
 </details>
 
