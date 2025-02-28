@@ -48,8 +48,30 @@
       }
     },
     {
+      "name": "llvm-debug",
+      "displayName": "Clang Debug Build",
+      "inherits": [
+        "_root-config",
+        "_debug-base"
+      ],
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "cmake/llvm-toolchain.cmake"
+      }
+    },
+    {
+      "name": "llvm-release",
+      "displayName": "Clang Release Build",
+      "inherits": [
+        "_root-config",
+        "_release-base"
+      ],
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "cmake/llvm-toolchain.cmake"
+      }
+    },
+    {
       "name": "appleclang-debug",
-      "displayName": "xcode Debug Build",
+      "displayName": "Appleclang Debug Build",
       "inherits": [
         "_root-config",
         "_debug-base"
@@ -60,7 +82,7 @@
     },
     {
       "name": "appleclang-release",
-      "displayName": "xcode Release Build",
+      "displayName": "Appleclang Release Build",
       "inherits": [
         "_root-config",
         "_release-base"
@@ -102,6 +124,14 @@
       "configurePreset": "gcc-release"
     },
     {
+      "name": "llvm-debug",
+      "configurePreset": "llvm-debug"
+    },
+    {
+      "name": "llvm-release",
+      "configurePreset": "llvm-release"
+    },
+    {
       "name": "appleclang-debug",
       "configurePreset": "appleclang-debug"
     },
@@ -139,6 +169,16 @@
       "name": "gcc-release",
       "inherits": "_test_base",
       "configurePreset": "gcc-release"
+    },
+    {
+      "name": "llvm-debug",
+      "inherits": "_test_base",
+      "configurePreset": "llvm-debug"
+    },
+    {
+      "name": "llvm-release",
+      "inherits": "_test_base",
+      "configurePreset": "llvm-release"
     },
     {
       "name": "appleclang-debug",
@@ -193,6 +233,40 @@
         {
           "type": "test",
           "name": "gcc-release"
+        }
+      ]
+    },
+    {
+      "name": "llvm-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "llvm-debug"
+        },
+        {
+          "type": "build",
+          "name": "llvm-debug"
+        },
+        {
+          "type": "test",
+          "name": "llvm-debug"
+        }
+      ]
+    },
+    {
+      "name": "llvm-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "llvm-release"
+        },
+        {
+          "type": "build",
+          "name": "llvm-release"
+        },
+        {
+          "type": "test",
+          "name": "llvm-release"
         }
       ]
     },
