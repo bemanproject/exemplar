@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.25...4.0)
 
 project(
     beman.exemplar # CMake Project Name, which is also the name of the top-level
@@ -31,14 +31,20 @@ include(GNUInstallDirs)
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
     # Fetch GoogleTest
     FetchContent_Declare(
-        GTest
+        googletest
+        FETCHCONTENT_TRY_FIND_PACKAGE_MODE ALWAYS
         GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG
-            6910c9d9165801d8827d628cb72eb7ea9dd538c5 # release-1.16.0
+        GIT_TAG v1.16.0
+        FIND_PACKAGE_ARGS 1.16.0 NAMES GTest COMPONENTS gmain_main
         EXCLUDE_FROM_ALL
+        SYSTEM
     )
-    set(INSTALL_GTEST OFF) # Disable GoogleTest installation
-    FetchContent_MakeAvailable(GTest)
+    block()
+        set(CMAKE_UNITY_BUILD ON)
+        set(BUILD_GMOCK OFF)
+        set(INSTALL_GTEST OFF) # Disable GoogleTest installation
+        FetchContent_MakeAvailable(googletest)
+    endblock()
 endif()
 
 add_subdirectory(src/beman/exemplar)
