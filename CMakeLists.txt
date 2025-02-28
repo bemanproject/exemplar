@@ -32,7 +32,8 @@ if(BEMAN_EXEMPLAR_BUILD_TESTS)
     # Fetch GoogleTest
     FetchContent_Declare(
         googletest
-        FETCHCONTENT_TRY_FIND_PACKAGE_MODE ALWAYS
+        FETCHCONTENT_TRY_FIND_PACKAGE_MODE
+        ALWAYS
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG v1.16.0
         FIND_PACKAGE_ARGS 1.16.0 NAMES GTest COMPONENTS gmain_main
