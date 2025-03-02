@@ -26,10 +26,14 @@ if(BEMAN_BUILDSYS_SANITIZER STREQUAL "MaxSan")
     set(SANITIZER_FLAGS "/fsanitize=address /Zi")
 endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG_INIT "/EHsc /permissive- ${SANITIZER_FLAGS}")
-set(CMAKE_C_FLAGS_DEBUG_INIT "/EHsc /permissive- ${SANITIZER_FLAGS}")
+# /Zc:__cplusplus is needed for us to detect C++ version support portably
+# See: https://stackoverflow.com/questions/60052108/how-to-check-c-version-in-microsoft-visual-studio-2017
+set(BASE_FLAGS "/Zc:__cplusplus /EHsc /permissive-")
 
-set(RELEASE_FLAGS "/EHsc /permissive- /O2 ${SANITIZER_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG_INIT "${BASE_FLAGS} ${SANITIZER_FLAGS}")
+set(CMAKE_C_FLAGS_DEBUG_INIT "${BASE_FLAGS} ${SANITIZER_FLAGS}")
+
+set(RELEASE_FLAGS "/O2 ${BASE_FLAGS} ${SANITIZER_FLAGS}")
 
 set(CMAKE_C_FLAGS_RELWITHDEBINFO_INIT "${RELEASE_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_INIT "${RELEASE_FLAGS}")
