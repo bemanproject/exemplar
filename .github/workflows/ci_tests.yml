@@ -47,7 +47,11 @@ jobs:
         with:
           arch: x64
       - name: Run preset
-        run: cmake --workflow --preset ${{ matrix.presets.preset }}
+        run: |
+          cmake -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES="./cmake/use-fetch-content.cmake" --preset ${{ matrix.presets.preset }}
+          cmake --build --preset ${{ matrix.presets.preset }} --parallel --verbose
+          cmake --build --preset ${{ matrix.presets.preset }} --parallel --verbose --target all_verify_interface_header_sets
+          ctest --preset ${{ matrix.presets.preset }}
 
   gtest-test:
     strategy:
@@ -97,7 +101,10 @@ jobs:
             cmake_args:
               description: "TSan"
 
-    name: "Unit: ${{ matrix.platform.description }} ${{ matrix.cpp_version }} ${{ matrix.cmake_args.description }}"
+    name: "Unit:
+              ${{ matrix.platform.description }}
+              ${{ matrix.cpp_version }}
+              ${{ matrix.cmake_args.description }}"
     runs-on: ${{ matrix.platform.os }}
     steps:
       - uses: actions/checkout@v4
@@ -121,8 +128,13 @@ jobs:
           cmake --version
           ninja --version
       - name: Configure CMake
-        run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=${{ matrix.cpp_version }} -DCMAKE_TOOLCHAIN_FILE="${{ matrix.platform.toolchain }}" ${{ matrix.cmake_args.args }}
+        run: 'cmake
+                 -B build
+                 -S .
+                 -DCMAKE_CXX_STANDARD=${{ matrix.cpp_version }}
+                 -DCMAKE_TOOLCHAIN_FILE="${{ matrix.platform.toolchain }}"
+                 -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES="./cmake/use-fetch-content.cmake"
+                 ${{ matrix.cmake_args.args }}'
         env:
           CMAKE_GENERATOR: "Ninja Multi-Config"
       - name: Build Release
@@ -170,7 +182,12 @@ jobs:
           ninja --version
       - name: Configure CMake
         run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=17 ${{ matrix.args.arg }}
+          cmake \
+              -B build \
+              -S . \
+              -DCMAKE_CXX_STANDARD=17 \
+              -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./cmake/use-fetch-content.cmake \
+              ${{ matrix.args.arg }}
         env:
           CMAKE_GENERATOR: "Ninja Multi-Config"
       - name: Build Release
@@ -219,12 +236,14 @@ jobs:
       - name: Install Compiler
         id: install-compiler
         run: |
+          sudo add-apt-repository universe
+          sudo apt-get update
+          sudo apt-get install -y libgtest-dev
+
           if [ "${{ matrix.compilers.class }}" = "GNU" ]; then
             CC=gcc-${{ matrix.compilers.version }}
             CXX=g++-${{ matrix.compilers.version }}
 
-            sudo add-apt-repository universe
-            sudo apt-get update
             sudo apt-get install -y $CC
             sudo apt-get install -y $CXX
 
@@ -246,7 +265,10 @@ jobs:
           echo "CXX=$CXX" >> "$GITHUB_OUTPUT"
       - name: Configure CMake
         run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=20
+          cmake \
+              -B build \
+              -S . \
+              -DCMAKE_CXX_STANDARD=20
         env:
           CC: ${{ steps.install-compiler.outputs.CC }}
           CXX: ${{ steps.install-compiler.outputs.CXX }}

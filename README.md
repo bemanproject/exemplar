@@ -88,16 +88,13 @@ This project requires at least the following to build:
 
 * C++17
 * CMake 3.25
+* (Test Only) GoogleTest
 
-This project pulls [Google Test](https://github.com/google/googletest)
-from GitHub as a development dependency for its testing framework,
-thus requiring an active internet connection to configure.
-You can disable this behavior by setting cmake option
+You can disable building tests by setting cmake option
 [`BEMAN_EXEMPLAR_BUILD_TESTS`](#beman_exemplar_build_tests) to `OFF`
 when configuring the project.
 
-However,
-some examples and tests will not be compiled
+Even when tests are being built and run, some will not be compiled
 unless provided compiler support **C++20** or ranges capabilities enabled.
 
 > [!TIP]
@@ -174,6 +171,18 @@ as per [the official LLVM install guide](https://apt.llvm.org/).
 ```bash
 bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 ```
+
+If the included test suite is being built and run, a GoogleTest library will be
+required. Here is an example of installing GoogleTest on a Debian-based Linux
+environment:
+
+```bash
+apt install libgtest-dev
+```
+
+The precise command and package name will vary depending on the Linux OS you are
+using. Be sure to consult documentation and the package repository for the system
+you are using.
 
 </details>
 
@@ -283,6 +292,22 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_EXEMPLAR_BUILD_TESTS=OFF
 #### `BEMAN_EXEMPLAR_BUILD_EXAMPLES`
 
 Enable building examples. Default: ON. Values: { ON, OFF }.
+
+</details>
+
+<details>
+<summary> Build GoogleTest dependency from github.com </summary>
+
+If you do not have GoogleTest installed on your development system, you may
+optionally configure this project to download a known-compatible release of
+GoogleTest from source and build it as well.
+
+```shell
+cmake -B build -S . -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./cmake/use-fetch-content.cmake
+```
+
+The precise version of GoogleTest that will be used is maintained in
+`./lockfile.json`.
 
 </details>
 
