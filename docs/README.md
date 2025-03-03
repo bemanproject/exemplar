@@ -71,7 +71,7 @@ This is a design for defining dependency providers
 JSON to get the details of projects to provide from `lockfile.json`. This:
 
 * Ensures that calls to FetchContent APIs within this project are consistent
-  and meet Beman Standards
+  and meet Beman Standards.
 
 * Provides a proof-of-concept for a utility that could potentially be used
   across all Beman libraries, reducing the complexity of each project.
