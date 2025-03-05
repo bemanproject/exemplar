@@ -58,4 +58,11 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
         FILE ${PROJECT_NAME}-targets.cmake
         COMPONENT development
     )
+
+    export(
+        EXPORT beman.exemplar
+        NAMESPACE beman::
+        FILE
+            "${PROJECT_BINARY_DIR}/cmake/${PROJECT_NAME}/${PROJECT_NAME}-targets.cmake"
+    )
 endif()
