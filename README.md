@@ -13,13 +13,10 @@ It may also find use as a minimal and modern  C++ project structure.
 
 **Implements**: `std::identity` proposed in [Standard Library Concepts (P0898R3)](https://wg21.link/P0898R3).
 
-**Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#under-development-and-not-yet-ready-for-production-use)
-
-<details>
-<summary> Library status history </summary>
-|||
-|||
-</details>
+|Date|**Library status**|Commit|Notes|
+|----|--------------|------|-----|
+| January 2025 |[Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#under-development-and-not-yet-ready-for-production-use)|[a5baebc](https://github.com/bemanproject/exemplar/commit/a5baebc)|This repo is a template and it will always have this status.|
+    
 
 ## Usage
 
