@@ -165,8 +165,6 @@ function(BemanExemplar_provideDependency method package_name)
             endif()
         endif()
     endforeach()
-
-    set(GTest_FOUND TRUE PARENT_SCOPE)
 endfunction()
 
 cmake_language(
