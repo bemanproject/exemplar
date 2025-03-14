@@ -15,6 +15,12 @@ It may also find use as a minimal and modern  C++ project structure.
 
 **Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#under-development-and-not-yet-ready-for-production-use)
 
+<details>
+<summary> Library status history </summary>
+|||
+|||
+</details>
+
 ## Usage
 
 `std::identity` is a function object type whose `operator()` returns its argument unchanged.
