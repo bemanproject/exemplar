@@ -16,7 +16,6 @@ It may also find use as a minimal and modern  C++ project structure.
 |Date|**Library status**|Commit|Notes|
 |----|--------------|------|-----|
 | January 2025 |[Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#under-development-and-not-yet-ready-for-production-use)|[a5baebc](https://github.com/bemanproject/exemplar/commit/a5baebc)|This repo is a template and it will always have this status.|
-    
 
 ## Usage
 
