@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.25)
 
 project(
-    beman.exemplar # CMake Project Name, which is also the name of the top-level
+    beman-exemplar # CMake Project Name, which is also the name of the top-level
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "A Beman library exemplar"
     LANGUAGES CXX
