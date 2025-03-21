@@ -88,7 +88,7 @@ fi
 echo "Moving selected ${VENDOR_NAME} files/folders to repo root..."
 for item in "${ITEMS_TO_KEEP[@]}"; do
     if [ -f "$VENDOR_PREFIX/$item" ] || [ -d "$VENDOR_PREFIX/$item" ]; then
-        rsync -a "$VENDOR_PREFIX/$item" "./"
+        rsync -a --no-perms --no-owner --no-group --no-times "$VENDOR_PREFIX/$item" "./"
         git add "./$(basename "$item")"
     else
         echo "⚠️ Warning: File/Folder $item not found in ${VENDOR_NAME} repo"
