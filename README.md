@@ -1,4 +1,4 @@
-# beman.exemplar: A Beman Library Exemplar
+# beman-exemplar: A Beman Library Exemplar
 
 <!--
 SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 <!-- markdownlint-disable-next-line line-length -->
 ![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg) ![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg) ![Lint Check (pre-commit)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit.yml/badge.svg)
 
-`beman.exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md).
+`beman-exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md).
 This can be used as a template for those intending to write Beman libraries.
 It may also find use as a minimal and modern  C++ project structure.
 
@@ -331,10 +331,10 @@ The precise version of GoogleTest that will be used is maintained in
 
 </details>
 
-## Integrate beman.exemplar into your project
+## Integrate beman-exemplar into your project
 
-To use `beman.exemplar` in your C++ project,
-include an appropriate `beman.exemplar` header from your source code.
+To use `beman-exemplar` in your C++ project,
+include an appropriate `beman-exemplar` header from your source code.
 
 ```c++
 #include <beman/exemplar/identity.hpp>
@@ -342,50 +342,50 @@ include an appropriate `beman.exemplar` header from your source code.
 
 > [!NOTE]
 >
-> `beman.exemplar` headers are to be included with the `beman/exemplar/` directories prefixed.
+> `beman-exemplar` headers are to be included with the `beman/exemplar/` directories prefixed.
 > It is not supported to alter include search paths to spell the include target another way. For instance,
 > `#include <identity.hpp>` is not a supported interface.
 
-How you will link your project against `beman.exemplar` will depend on your build system.
+How you will link your project against `beman-exemplar` will depend on your build system.
 CMake instructions are provided in following sections.
 
-### Linking your project to beman.exemplar with CMake
+### Linking your project to beman-exemplar with CMake
 
 For CMake based projects,
-you will need to use the `beman.exemplar` CMake module
+you will need to use the `beman-exemplar` CMake module
 to define the `beman::exemplar` CMake target:
 
 ```cmake
-find_package(beman.exemplar REQUIRED)
+find_package(beman-exemplar REQUIRED)
 ```
 
 You will also need to add `beman::exemplar` to the link libraries of
-any libraries or executables that include beman.exemplar's header file.
+any libraries or executables that include beman-exemplar's header file.
 
 ```cmake
 target_link_libraries(yourlib PUBLIC beman::exemplar)
 ```
 
-### Produce beman.exemplar static library locally
+### Produce beman-exemplar static library locally
 
 You can include exemplar's headers locally
-by producing a static `libbeman.exemplar.a` library.
+by producing a static `libbeman-exemplar.a` library.
 
 ```bash
 cmake --workflow --preset gcc-release
-cmake --install build/gcc-release --prefix /opt/beman.exemplar
+cmake --install build/gcc-release --prefix /opt/beman-exemplar
 ```
 
-This will generate such directory structure at `/opt/beman.exemplar`.
+This will generate such directory structure at `/opt/beman-exemplar`.
 
 ```txt
-/opt/beman.exemplar
+/opt/beman-exemplar
 ├── include
 │   └── beman
 │       └── exemplar
 │           └── identity.hpp
 └── lib
-    └── libbeman.exemplar.a
+    └── libbeman-exemplar.a
 ```
 
 ## Contributing
