@@ -5,7 +5,7 @@ VENDOR_NAME="infra"
 VENDOR_REPO="https://github.com/Jason5480/${VENDOR_NAME}.git"
 VENDOR_REMOTE_BRANCH="main"  # Branch in the vendor repo you're pulling from
 VENDOR_PREFIX="${VENDOR_NAME}-temp"  # Vendor directory before moving selected files/folders
-ITEMS_TO_KEEP=(".gitignore" "devcontainer" ".devcontainer/docker_dev_container" ".github")  # Files/Folders to move to root
+ITEMS_TO_KEEP=(".gitattributes" ".devcontainer" ".github")  # Files/Folders to move to root
 
 # Local variables
 CURRENT_LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)  # The current branch we are working on
