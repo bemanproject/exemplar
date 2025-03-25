@@ -1,15 +1,25 @@
 #!/bin/bash
 
+# Prerequisites
+# - git subtree
+# - rsync
+
 # Configuration
 VENDOR_NAME="infra"
-VENDOR_REPO="https://github.com/Jason5480/${VENDOR_NAME}.git"
+VENDOR_REPO="https://github.com/bemanproject/${VENDOR_NAME}.git"
 VENDOR_REMOTE_BRANCH="main"  # Branch in the vendor repo you're pulling from
 VENDOR_PREFIX="${VENDOR_NAME}-temp"  # Vendor directory before moving selected files/folders
-ITEMS_TO_KEEP=(".gitattributes" ".devcontainer" ".github")  # Files/Folders to move to root
+ITEMS_TO_KEEP=($1)  # Files/Folders to pull to the root of the repository from vendor
 
 # Local variables
 CURRENT_LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)  # The current branch we are working on
 VENDOR_LOCAL_BRANCH="${VENDOR_NAME}-${VENDOR_REMOTE_BRANCH}"
+
+# Step 0: Check if lists is empty
+if [ ${#ITEMS_TO_KEEP[@]} -eq 0 ]; then
+    echo "⚠️  No files or folders specified to pull from ${VENDOR_NAME}. Exiting..."
+    exit 1
+fi
 
 # Step 8: Clean up temp folder branch and remote
 cleanup() {
@@ -31,7 +41,7 @@ cleanup() {
     fi
 
     # Remove vendor remote
-    if git remote get-url $VENDOR_NAME &>/dev/null; then
+    if git remote get-url ${VENDOR_NAME} &>/dev/null; then
         echo "Removing vendor remote ${VENDOR_NAME}..."
         git remote remove ${VENDOR_NAME}
     else
@@ -76,7 +86,7 @@ echo "Importing ${VENDOR_NAME} code into ${VENDOR_PREFIX}..."
 git checkout "${CURRENT_LOCAL_BRANCH}"
 
 # Check if the vendor subtree exists
-if [ ! -d "$VENDOR_PREFIX" ]; then
+if [ ! -d "${VENDOR_PREFIX}" ]; then
     echo "${VENDOR_NAME} subtree does not exist. Adding it for the first time..."
     git subtree add --prefix=${VENDOR_PREFIX} ${VENDOR_LOCAL_BRANCH} --squash
 else
@@ -87,8 +97,8 @@ fi
 # Step 6: Move selected files/folders to root
 echo "Moving selected ${VENDOR_NAME} files/folders to repo root..."
 for item in "${ITEMS_TO_KEEP[@]}"; do
-    if [ -f "$VENDOR_PREFIX/$item" ] || [ -d "$VENDOR_PREFIX/$item" ]; then
-        rsync -a --no-perms --no-owner --no-group --no-times "$VENDOR_PREFIX/$item" "./"
+    if [ -f "${VENDOR_PREFIX}/$item" ] || [ -d "${VENDOR_PREFIX}/$item" ]; then  # don't allow symlinks with -e option
+        rsync -a --no-perms --no-owner --no-group --no-times "${VENDOR_PREFIX}/$item" "./"
         git add "./$(basename "$item")"
     else
         echo "⚠️ Warning: File/Folder $item not found in ${VENDOR_NAME} repo"
