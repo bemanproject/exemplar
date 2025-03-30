@@ -206,6 +206,26 @@ brew install llvm
 
 </details>
 
+<details>
+<summary> For Windows </summary>
+
+To build Beman libraries, you will need the MSVC compiler. MSVC can be obtained
+by installing Visual Studio; the free Visual Studio 2022 Community Edition can
+be downloaded from
+[Microsoft](https://visualstudio.microsoft.com/vs/community/).
+
+After Visual Studio has been installed, you can launch "Developer PowerShell for
+VS 2022" by typing it into Windows search bar. This shell environment will
+provide CMake, Ninja, and MSVC, allowing you to build the library and run the
+tests.
+
+Note that you will need to use FetchContent to build GoogleTest. To do so,
+please see the instructions in the "Build GoogleTest dependency from github.com"
+dropdown in the [Project specific configure
+arguments](#project-specific-configure-arguments) section.
+
+</details>
+
 ### Configure and Build the Project Using CMake Presets
 
 This project recommends using [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
@@ -256,6 +276,25 @@ ctest --test-dir build
 > you will need to specify the C++ version via `CMAKE_CXX_STANDARD`
 > when manually configuring the project.
 
+### Finding and Fetching GTest from GitHub
+
+If you do not have GoogleTest installed on your development system, you may
+optionally configure this project to download a known-compatible release of
+GoogleTest from source and build it as well.
+
+Example commands:
+
+```shell
+cmake -B build -S . \
+    -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./cmake/use-fetch-content.cmake \
+    -DCMAKE_CXX_STANDARD=20
+cmake --build build --target all
+cmake --build build --target test
+```
+
+The precise version of GoogleTest that will be used is maintained in
+`./lockfile.json`.
+
 ### Project specific configure arguments
 
 When configuring the project manually,
@@ -292,22 +331,6 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_EXEMPLAR_BUILD_TESTS=OFF
 #### `BEMAN_EXEMPLAR_BUILD_EXAMPLES`
 
 Enable building examples. Default: ON. Values: { ON, OFF }.
-
-</details>
-
-<details>
-<summary> Build GoogleTest dependency from github.com </summary>
-
-If you do not have GoogleTest installed on your development system, you may
-optionally configure this project to download a known-compatible release of
-GoogleTest from source and build it as well.
-
-```shell
-cmake -B build -S . -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./cmake/use-fetch-content.cmake
-```
-
-The precise version of GoogleTest that will be used is maintained in
-`./lockfile.json`.
 
 </details>
 
