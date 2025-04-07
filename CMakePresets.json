@@ -7,7 +7,8 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_CXX_STANDARD": "20"
+        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
     {
@@ -116,36 +117,65 @@
   ],
   "buildPresets": [
     {
+      "name": "_root-build",
+      "hidden": true,
+      "jobs": 0
+    },
+    {
       "name": "gcc-debug",
-      "configurePreset": "gcc-debug"
+      "configurePreset": "gcc-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "gcc-release",
-      "configurePreset": "gcc-release"
+      "configurePreset": "gcc-release",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "llvm-debug",
-      "configurePreset": "llvm-debug"
+      "configurePreset": "llvm-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "llvm-release",
-      "configurePreset": "llvm-release"
+      "configurePreset": "llvm-release",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "appleclang-debug",
-      "configurePreset": "appleclang-debug"
+      "configurePreset": "appleclang-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "appleclang-release",
-      "configurePreset": "appleclang-release"
+      "configurePreset": "appleclang-release",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "msvc-debug",
-      "configurePreset": "msvc-debug"
+      "configurePreset": "msvc-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "msvc-release",
-      "configurePreset": "msvc-release"
+      "configurePreset": "msvc-release",
+      "inherits": [
+        "_root-build"
+      ]
     }
   ],
   "testPresets": [

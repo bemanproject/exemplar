@@ -10,8 +10,6 @@ project(
     VERSION 0.1.0
 )
 
-enable_testing()
-
 # [CMAKE.SKIP_TESTS]
 option(
     BEMAN_EXEMPLAR_BUILD_TESTS
@@ -32,12 +30,14 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
+include(CTestUseLaunchers)
 include(FetchContent)
 include(GNUInstallDirs)
 
 add_subdirectory(src/beman/exemplar)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
+    enable_testing()
     add_subdirectory(tests/beman/exemplar)
 endif()
 
