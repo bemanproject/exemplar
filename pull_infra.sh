@@ -1,6 +1,8 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+set -e  # Exit on error
+
 # Prerequisites
 # - git subtree
 # - rsync
@@ -10,19 +12,59 @@ VENDOR_NAME="infra"
 VENDOR_REPO="https://github.com/bemanproject/${VENDOR_NAME}.git"
 VENDOR_REMOTE_BRANCH="main"  # Branch in the vendor repo you're pulling from
 VENDOR_PREFIX="${VENDOR_NAME}-temp"  # Vendor directory before moving selected files/folders
-ITEMS_TO_KEEP=($1)  # Files/Folders to pull to the root of the repository from vendor
+FILES_TO_KEEP=()  # Files to pull to the root of the repository from vendor
+FOLDERS_TO_KEEP=()  # Folders to pull to the root of the repository from vendor
 
 # Local variables
 CURRENT_LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)  # The current branch we are working on
 VENDOR_LOCAL_BRANCH="${VENDOR_NAME}-${VENDOR_REMOTE_BRANCH}"
 
-# Step 0: Check if lists is empty
-if [ ${#ITEMS_TO_KEEP[@]} -eq 0 ]; then
-    echo "⚠️  No files or folders specified to pull from ${VENDOR_NAME}. Exiting..."
+# Print instructions
+print_help() {
+    echo "Usage: $0 -f \"file1 file2\" -d \"dir1 dir2\""
+    echo
+    echo "Options:"
+    echo "  -f   Space-separated list of files to keep"
+    echo "  -d   Space-separated list of folders to keep"
+    echo "  -h   Show this help message"
+    exit 0
+}
+
+# Print help if no arguments were passed
+if [ $# -eq 0 ]; then
+    print_help
+fi
+
+# Step 0: Parse options
+while getopts "f:d:h" opt; do
+    case ${opt} in
+        f)
+            FILES_TO_KEEP=("${OPTARG}")
+            ;;
+        d)
+            FOLDERS_TO_KEEP=("${OPTARG}")
+            ;;
+        h)
+            print_help
+            ;;
+        \?)
+            echo "❌ Invalid option: -${OPTARG}"
+            print_help
+            ;;
+        :)
+            echo "❌ Option -${OPTARG} requires an argument."
+            print_help
+            ;;
+    esac
+done
+
+# Check if lists are empty
+if [ ${#FILES_TO_KEEP[@]} -eq 0 ] && [ ${#FOLDERS_TO_KEEP[@]} -eq 0 ]; then
+    echo "⚠️  No files or folders specified to pull from ${VENDOR_NAME}. Use -f and/or -d options. Exiting..."
     exit 1
 fi
 
-# Step 8: Clean up temp folder branch and remote
+# Clean up temp folder branch and remote
 cleanup() {
     # Remove the ${VENDOR_PREFIX} directory after files/folders have been moved
     if [ -d "${VENDOR_PREFIX}" ]; then
@@ -97,7 +139,7 @@ fi
 
 # Step 6: Move selected files/folders to root
 echo "Moving selected ${VENDOR_NAME} files/folders to repo root..."
-for item in "${ITEMS_TO_KEEP[@]}"; do
+for item in "${FILES_TO_KEEP[@]}" "${FOLDERS_TO_KEEP[@]}"; do
     if [ -f "${VENDOR_PREFIX}/$item" ] || [ -d "${VENDOR_PREFIX}/$item" ]; then  # don't allow symlinks with -e option
         rsync -a --no-perms --no-owner --no-group --no-times "${VENDOR_PREFIX}/$item" "./"
         git add "./$(basename "$item")"
