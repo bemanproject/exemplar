@@ -30,14 +30,13 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
-include(CTestUseLaunchers)
+include(CTest)
 include(FetchContent)
 include(GNUInstallDirs)
 
 add_subdirectory(src/beman/exemplar)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    enable_testing()
     add_subdirectory(tests/beman/exemplar)
 endif()
 
