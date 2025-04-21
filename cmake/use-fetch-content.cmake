@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
+include(FetchContent)
+
 if(NOT BEMAN_EXEMPLAR_LOCKFILE)
     set(BEMAN_EXEMPLAR_LOCKFILE
         "lockfile.json"

@@ -31,8 +31,6 @@ option(
 )
 
 include(CTest)
-include(FetchContent)
-include(GNUInstallDirs)
 
 add_subdirectory(src/beman/exemplar)
 
