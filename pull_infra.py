@@ -10,10 +10,11 @@ from pathlib import Path
 
 def run(cmd, cwd=None, check=True):
     print(f"🔧 Running: {' '.join(cmd)}")
-    result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
-    if check and result.returncode != 0:
-        print(f"❌ Error: {result.stderr.strip()}")
-        sys.exit(result.returncode)
+    try:
+        result = subprocess.run(cmd, cwd=cwd, capture_output=True, check=check, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Command: {e.cmd} failed with error code {e.returncode}")
+        sys.exit(e.returncode)
     return result.stdout.strip()
 
 
