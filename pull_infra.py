@@ -94,13 +94,13 @@ def main():
 
         # Checkout or create vendor tracking branch
         if branch_exists_locally(vendor_local_branch):
-            run(["git", "checkout", vendor_local_branch])
+            run(["git", "switch", vendor_local_branch])
             run(["git", "pull", vendor_name, vendor_remote_branch])
         else:
             run(["git", "checkout", "-b", vendor_local_branch, f"{vendor_name}/{vendor_remote_branch}"])
 
         # Return to working branch
-        run(["git", "checkout", current_branch])
+        run(["git", "switch", current_branch])
 
         # Add or pull subtree
         if not Path(vendor_prefix).exists():
