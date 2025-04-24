@@ -17,15 +17,15 @@ def run(cmd, cwd=None, check=True):
     return result.stdout.strip()
 
 
-def vendor_branch_exists(branch_name):
-    return branch_name in run(["git", "branch"], check=False)
+def branch_exists_locally(branch_name):
+    return branch_name in run(["git", "branch", "--list"], check=False)
 
 
-def vendor_remote_exists(remote_name):
+def remote_exists_locally(remote_name):
     return remote_name in run(["git", "remote"], check=False)
 
 
-def vendor_cleanup(prefix, local_branch, remote_name):
+def cleanup(prefix, local_branch, remote_name):
     if Path(prefix).exists():
         print(f"🧹 Cleaning up {prefix} directory...")
         shutil.rmtree(prefix)
@@ -33,13 +33,13 @@ def vendor_cleanup(prefix, local_branch, remote_name):
     else:
         print(f"✅ Vendor directory {prefix} does not exist. Skipping.")
 
-    if vendor_branch_exists(local_branch):
+    if branch_exists_locally(local_branch):
         print(f"🧹 Deleting vendor tracking branch {local_branch}...")
         run(["git", "branch", "-D", local_branch])
     else:
         print(f"Vendor branch {local_branch} does not exist. Skipping.")
 
-    if vendor_remote_exists(remote_name):
+    if remote_exists_locally(remote_name):
         print(f"🧹 Removing vendor remote {remote_name}...")
         run(["git", "remote", "remove", remote_name])
     else:
@@ -69,7 +69,7 @@ def main():
 
     try:
         # Add remote if missing
-        if not vendor_remote_exists(vendor_name):
+        if not remote_exists_locally(vendor_name):
             print(f"🌐 Adding remote {vendor_name}...")
             run(["git", "remote", "add", vendor_name, vendor_repo])
 
@@ -82,11 +82,11 @@ def main():
 
         if local_hash == remote_hash:
             print("✅ Vendor repository is already up to date. No new changes found.")
-            vendor_cleanup(vendor_prefix, vendor_local_branch, vendor_name)
+            cleanup(vendor_prefix, vendor_local_branch, vendor_name)
             return
 
         # Checkout or create vendor tracking branch
-        if vendor_branch_exists(vendor_local_branch):
+        if branch_exists_locally(vendor_local_branch):
             run(["git", "checkout", vendor_local_branch])
             run(["git", "pull", vendor_name, vendor_remote_branch])
         else:
@@ -130,7 +130,7 @@ def main():
             print("✅ Vendor update committed.")
 
     finally:
-        vendor_cleanup(vendor_prefix, vendor_local_branch, vendor_name)
+        cleanup(vendor_prefix, vendor_local_branch, vendor_name)
 
 
 if __name__ == "__main__":
