@@ -25,7 +25,7 @@ def remote_exists_locally(remote_name):
     return remote_name in run(["git", "remote"], check=False)
 
 
-def cleanup(prefix, local_branch, remote_name):
+def cleanup_directory(prefix, remote_name):
     if Path(prefix).exists():
         print(f"🧹 Cleaning up {prefix} directory...")
         shutil.rmtree(prefix)
@@ -33,18 +33,24 @@ def cleanup(prefix, local_branch, remote_name):
     else:
         print(f"✅ Vendor directory {prefix} does not exist. Skipping.")
 
+def cleanup_branch(local_branch):
     if branch_exists_locally(local_branch):
         print(f"🧹 Deleting vendor tracking branch {local_branch}...")
         run(["git", "branch", "-D", local_branch])
     else:
         print(f"Vendor branch {local_branch} does not exist. Skipping.")
 
+def cleanup_remote(remote_name):
     if remote_exists_locally(remote_name):
         print(f"🧹 Removing vendor remote {remote_name}...")
         run(["git", "remote", "remove", remote_name])
     else:
         print(f"Vendor remote {remote_name} does not exist. Skipping.")
 
+def cleanup(prefix, local_branch, remote_name):
+    cleanup_directory(prefix, remote_name)
+    cleanup_branch(local_branch)
+    cleanup_remote(remote_name)
     print("✅ Cleanup complete!")
 
 
