@@ -130,7 +130,7 @@ def main():
             run(["git", "add", str(dest)])
 
         # Commit changes
-        if run(["git", "diff", "--cached", "--quiet"], check=False) == "":
+        if run(["git", "diff", "--cached", "--name-only"], check=False) == "":
             print("✅ No changes to commit.")
         else:
             run(["git", "commit", "-m", f"Updated vendor files from {vendor_name}"])
