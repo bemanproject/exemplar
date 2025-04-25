@@ -34,6 +34,7 @@ def cleanup_directory(prefix, remote_name):
     else:
         print(f"✅ Vendor directory {prefix} does not exist. Skipping.")
 
+
 def cleanup_branch(local_branch):
     if branch_exists_locally(local_branch):
         print(f"🧹 Deleting vendor tracking branch {local_branch}...")
@@ -41,12 +42,14 @@ def cleanup_branch(local_branch):
     else:
         print(f"Vendor branch {local_branch} does not exist. Skipping.")
 
+
 def cleanup_remote(remote_name):
     if remote_exists_locally(remote_name):
         print(f"🧹 Removing vendor remote {remote_name}...")
         run(["git", "remote", "remove", remote_name])
     else:
         print(f"Vendor remote {remote_name} does not exist. Skipping.")
+
 
 def cleanup(prefix, local_branch, remote_name):
     cleanup_directory(prefix, remote_name)
@@ -84,17 +87,21 @@ def main():
         print(f"⬇️  Fetching from {vendor_name}...")
         run(["git", "fetch", vendor_name])
 
-        local_hash = run(["git", "rev-parse", vendor_local_branch], check=False) or "none"
-        remote_hash = run(["git", "rev-parse", f"{vendor_name}/{vendor_remote_branch}"])
-
-        if local_hash == remote_hash:
-            print("✅ Vendor repository is already up to date. No new changes found.")
-            cleanup(vendor_prefix, vendor_local_branch, vendor_name)
-            return
-
         # Checkout or create vendor tracking branch
         if branch_exists_locally(vendor_local_branch):
             run(["git", "switch", vendor_local_branch])
+
+            # Check for changes
+            print("🔍 Checking for changes...")
+            local_hash = run(["git", "rev-parse", vendor_local_branch], check=False) or "none"
+            remote_hash = run(["git", "rev-parse", f"{vendor_name}/{vendor_remote_branch}"])
+
+            if local_hash == remote_hash:
+                print("✅ Vendor repository is already up to date. No new changes found.")
+                run(["git", "switch", current_branch])
+                cleanup(vendor_prefix, vendor_local_branch, vendor_name)
+                return
+
             run(["git", "pull", vendor_name, vendor_remote_branch])
         else:
             run(["git", "checkout", "-b", vendor_local_branch, f"{vendor_name}/{vendor_remote_branch}"])
