@@ -36,6 +36,8 @@ jobs:
     runs-on: ${{ matrix.presets.platform }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Setup build environment
         uses: lukka/get-cmake@latest
         with:
@@ -60,16 +62,16 @@ jobs:
         platform:
           - description: "Ubuntu GNU"
             os: ubuntu-latest
-            toolchain: "cmake/gnu-toolchain.cmake"
+            toolchain: "infra/cmake/gnu-toolchain.cmake"
           - description: "Ubuntu LLVM"
             os: ubuntu-latest
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
           - description: "Windows MSVC"
             os: windows-latest
-            toolchain: "cmake/msvc-toolchain.cmake"
+            toolchain: "infra/cmake/msvc-toolchain.cmake"
           - description: "Macos Appleclang"
             os: macos-latest
-            toolchain: "cmake/appleclang-toolchain.cmake"
+            toolchain: "infra/cmake/appleclang-toolchain.cmake"
         cpp_version: [17, 20, 23, 26]
         cmake_args:
           - description: "Default"
@@ -81,7 +83,7 @@ jobs:
           - platform:
               description: "Ubuntu GCC"
               os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
+              toolchain: "infra/cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Werror"
@@ -89,7 +91,7 @@ jobs:
           - platform:
               description: "Ubuntu GCC"
               os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
+              toolchain: "infra/cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Dynamic"
@@ -108,6 +110,8 @@ jobs:
     runs-on: ${{ matrix.platform.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Install Ninja
         uses: lukka/get-cmake@latest
         with:
@@ -171,6 +175,8 @@ jobs:
     name: "CMake: ${{ matrix.args.name }}"
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Setup build environment
         uses: lukka/get-cmake@latest
         with:
@@ -228,6 +234,8 @@ jobs:
     name: "Compiler: ${{ matrix.compilers.class }} ${{ matrix.compilers.version }}"
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Setup build environment
         uses: lukka/get-cmake@latest
         with:
@@ -290,6 +298,8 @@ jobs:
     steps:
       # See https://github.com/cli/cli/issues/5075
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - name: Create issue
         run: |
           issue_num=$(gh issue list -s open -S "[SCHEDULED-BUILD] Build & Test failure" -L 1 --json number | jq 'if length == 0 then -1 else .[0].number end')
