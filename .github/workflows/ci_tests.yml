@@ -60,16 +60,16 @@ jobs:
         platform:
           - description: "Ubuntu GNU"
             os: ubuntu-latest
-            toolchain: "cmake/gnu-toolchain.cmake"
+            toolchain: "infra/cmake/gnu-toolchain.cmake"
           - description: "Ubuntu LLVM"
             os: ubuntu-latest
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
           - description: "Windows MSVC"
             os: windows-latest
-            toolchain: "cmake/msvc-toolchain.cmake"
+            toolchain: "infra/cmake/msvc-toolchain.cmake"
           - description: "Macos Appleclang"
             os: macos-latest
-            toolchain: "cmake/appleclang-toolchain.cmake"
+            toolchain: "infra/cmake/appleclang-toolchain.cmake"
         cpp_version: [17, 20, 23, 26]
         cmake_args:
           - description: "Default"
@@ -81,7 +81,7 @@ jobs:
           - platform:
               description: "Ubuntu GCC"
               os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
+              toolchain: "infra/cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Werror"
@@ -89,7 +89,7 @@ jobs:
           - platform:
               description: "Ubuntu GCC"
               os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
+              toolchain: "infra/cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Dynamic"
