@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: 2.0 license with LLVM exceptions
+
+name: Publish Beman devcontainers
+
+on:
+  push:
+    paths:
+      - ".github/workflows/build_devcontainer.yml"
+      - "devcontainer/**"
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  DEBUG_IMAGE_NAME: ${{ github.repository }}
+  DEPLOY_IMAGE_NAME: beman/devcontainers
+
+permissions:
+  packages: write
+
+jobs:
+  build-and-push-devcontainer-image:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - kind: gnu
+            version: 14
+          - kind: llvm
+            version: 19
+    name: "devcontainer: ${{ matrix.kind }}-${{ matrix.version }}"
+    steps:
+      - name: Compute Image Name
+        id: image_name
+        run: |
+          image_name=${{ env.DEPLOY_IMAGE_NAME }}
+          if [ "${{ github.repository }}/${{ github.ref }}" != "bemanproject/infra/refs/heads/main" ]; then
+              image_name=${{ env.DEBUG_IMAGE_NAME }}
+          fi
+          echo "computed image name: $image_name"
+          echo "image_name=$image_name" >> "$GITHUB_OUTPUT"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: devcontainer
+          build-args: |
+            compiler_kind=${{ matrix.kind }}
+            compiler_version=${{ matrix.version }}
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ steps.image_name.outputs.image_name }}:${{ matrix.kind }}-${{ matrix.version }}
+          # https://github.com/docker/build-push-action/issues/894
+          provenance: false
