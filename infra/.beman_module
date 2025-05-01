@@ -1,0 +1,3 @@
+[beman_module]
+remote=https://github.com/bemanproject/infra.git
+commit_hash=8410ea21b337e7547697dc4a786220c9d7deb36c
