@@ -3,10 +3,8 @@
 
 {
 	"name": "Beman Project Generic Devcontainer",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	"postCreateCommand": "bash .devcontainer/postcreate.sh",
+	"image": "ghcr.io/bemanproject/devcontainers-gcc:14",
+	"postCreateCommand": "pre-commit",
 	"customizations": {
 		"vscode": {
 			"extensions": [
