@@ -17,7 +17,7 @@ repos:
     hooks:
     - id: clang-format
       types_or: [c++, c]
-      args: [-style=file:.config/clang-format.yaml]
+      args: ["-style=file:.config/clang-format.yaml"]
 
     # CMake linting and formatting
   - repo: https://github.com/BlankSpruce/gersemi
