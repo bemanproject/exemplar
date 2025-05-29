@@ -10,9 +10,6 @@ project(
     VERSION 2.1.1
 )
 
-include(cmake/feature_test.cmake)
-beman_min_cxx_version("17")
-
 # [CMAKE.SKIP_TESTS]
 option(
     BEMAN_EXEMPLAR_BUILD_TESTS
@@ -32,6 +29,25 @@ option(
     "Enable creating and installing a CMake config-file package. Default: ${PROJECT_IS_TOP_LEVEL}. Values: { ON, OFF }."
     ${PROJECT_IS_TOP_LEVEL}
 )
+
+include(cmake/feature_test.cmake)
+beman_exemplar_check_cpp_17_support(COMPILER_SUPPORTS_CPP_17)
+
+option(
+    BEMAN_EXEMPLAR_OVERRIDE_CPP_17_REQUIREMENT
+    "Attempt building even though the compiler doesn't advertise the requisite C++17 support"
+    OFF
+)
+
+if(
+    NOT BEMAN_EXEMPLAR_OVERRIDE_CPP_17_REQUIREMENT
+    AND NOT COMPILER_SUPPORTS_CPP_17
+)
+    message(
+        FATAL_ERROR
+        "Your compiler isn't advertising support for C++17 with the current configuration. Try adding -DCMAKE_CXX_STANDARD=17 to your CMake invocation. To override this check, set BEMAN_EXEMPLAR_OVERRIDE_CPP_17_REQUIREMENT to ON."
+    )
+endif()
 
 include(CTest)
 
