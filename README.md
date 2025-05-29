@@ -1,12 +1,11 @@
+# beman.exemplar: A Beman Library Exemplar
+
 <!--
 SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 -->
 
-# beman.exemplar: A Beman Library Exemplar
-
-![Library Status](https://github.com/bemanproject/beman/blob/c6997986557ec6dda98acbdf502082cdf7335526/images/badges/beman_badge-beman_library_under_development.svg)
-![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg)
-![Lint Check (pre-commit)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit.yml/badge.svg)
+<!-- markdownlint-disable-next-line line-length -->
+![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg) ![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg) ![Lint Check (pre-commit)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit.yml/badge.svg)
 
 `beman.exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md).
 This can be used as a template for those intending to write Beman libraries.
@@ -24,7 +23,7 @@ Its direct usage is usually not needed.
 
 ### Usage: default projection in constrained algorithms
 
- The following code snippet illustrates how we can achieve a default projection using `beman::exemplar::identity`:
+The following code snippet illustrates how we can achieve a default projection using `beman::exemplar::identity`:
 
 ```cpp
 #include <beman/exemplar/identity.hpp>
@@ -79,306 +78,321 @@ int main()
 
 ```
 
-Full runnable examples can be found in `examples/` (e.g., [./examples/identity_as_default_projection.cpp](./examples/identity_as_default_projection.cpp)).
+Full runnable examples can be found in [`examples/`](examples/).
 
-## Building beman.exemplar
+## Dependencies
 
-### Dependencies
-<!-- TODO Darius: rewrite section!-->
+### Build Environment
 
-This project has no C or C++ dependencies.
+This project requires at least the following to build:
 
-Build-time dependencies:
+* C++17
+* CMake 3.25
+* (Test Only) GoogleTest
 
-- `cmake`
-- `ninja`, `make`, or another CMake-supported build system
-  - CMake defaults to "Unix Makefiles" on POSIX systems
+You can disable building tests by setting cmake option
+[`BEMAN_EXEMPLAR_BUILD_TESTS`](#beman_exemplar_build_tests) to `OFF`
+when configuring the project.
 
-#### How to install dependencies
+Even when tests are being built and run, some will not be compiled
+unless provided compiler support **C++20** or ranges capabilities enabled.
 
-<!-- TODO Darius: rewrite section!-->
+> [!TIP]
+>
+> In the logs you will be able to see if there are any examples that aren't enabled
+> due to compiler capabilities or the configured C++ version.
+>
+> Below is an example:
+>
+> ```txt
+> -- Looking for __cpp_lib_ranges
+> -- Looking for __cpp_lib_ranges - not found
+> CMake Warning at examples/CMakeLists.txt:12 (message):
+>   Missing range support! Skip: identity_as_default_projection
+>
+>
+> Examples to be built: identity_direct_usage
+> ```
+
+### Supported Platforms
+
+This project officially supports:
+
+* GNU GCC Compiler \[version 12-14\]
+* LLVM Clang++ Compiler \[version 17-20\]
+* AppleClang compiler on Mac OS
+* MSVC compiler on Windows
+
+> [!NOTE]
+>
+> Versions outside of this range would likely work as well,
+> especially if you're using a version above the given range
+> (e.g. HEAD/ nightly).
+> These development environments are verified using our CI configuration.
+
+## Development
+
+### Develop using GitHub Codespace
+
+This project supports [GitHub Codespace](https://github.com/features/codespaces)
+via [Development Containers](https://containers.dev/),
+which allows rapid development and instant hacking in your browser.
+We recommend you using GitHub codespace to explore this project as this
+requires minimal setup.
+
+You can create a codespace for this project by clicking this badge:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/bemanproject/exemplar)
+
+For more detailed documentation regarding creating and developing inside of
+GitHub codespaces, please reference [this doc](https://docs.github.com/en/codespaces/).
+
+> [!NOTE]
+>
+> The codespace container may take up to 5 minutes to build and spin-up,
+> this is normal as we need to build a custom docker container to setup
+> an environment appropriate for beman projects.
+
+### Develop locally on your machines
 
 <details>
-<summary>Dependencies install exemplar on Ubuntu 24.04  </summary>
+<summary> For Linux based systems </summary>
 
-<!-- TODO Darius: rewrite section!-->
+Beman libraries require [recent versions of CMake](#build-environment),
+we advise you to download CMake directly from [CMake's website](https://cmake.org/download/)
+or install it via the [Kitware apt library](https://apt.kitware.com/).
 
-```shell
-# Install tools:
-apt-get install -y cmake make ninja-build
+A [supported compiler](#supported-platforms) should be available from your package manager.
+Alternatively you could use an install script from official compiler vendors.
 
-# Toolchains:
-apt-get install                           \
-  g++-14 gcc-14 gcc-13 g++-14             \
-  clang-18 clang++-18 clang-17 clang++-17
+Here is an example of how to install the latest stable version of clang
+as per [the official LLVM install guide](https://apt.llvm.org/).
+
+```bash
+bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+```
+
+If the included test suite is being built and run, a GoogleTest library will be
+required. Here is an example of installing GoogleTest on a Debian-based Linux
+environment:
+
+```bash
+apt install libgtest-dev
+```
+
+The precise command and package name will vary depending on the Linux OS you are
+using. Be sure to consult documentation and the package repository for the system
+you are using.
+
+</details>
+
+<details>
+<summary> For MacOS based systems </summary>
+
+Beman libraries require [recent versions of CMake](#build-environment).
+You can use [`Homebrew`](https://brew.sh/) to install the latest major version of CMake.
+
+```bash
+brew install cmake
+```
+
+A [supported compiler](#supported-platforms) is also available from brew.
+
+For example, you can install the latest major release of Clang as:
+
+```bash
+brew install llvm
 ```
 
 </details>
 
 <details>
-<summary>Dependencies install exemplar on MAC OS $VERSION </summary>
+<summary> For Windows </summary>
 
-<!-- TODO Darius: rewrite section!-->
-```shell
-# TODO
-```
+To build Beman libraries, you will need the MSVC compiler. MSVC can be obtained
+by installing Visual Studio; the free Visual Studio 2022 Community Edition can
+be downloaded from
+[Microsoft](https://visualstudio.microsoft.com/vs/community/).
+
+After Visual Studio has been installed, you can launch "Developer PowerShell for
+VS 2022" by typing it into Windows search bar. This shell environment will
+provide CMake, Ninja, and MSVC, allowing you to build the library and run the
+tests.
+
+Note that you will need to use FetchContent to build GoogleTest. To do so,
+please see the instructions in the "Build GoogleTest dependency from github.com"
+dropdown in the [Project specific configure
+arguments](#project-specific-configure-arguments) section.
 
 </details>
 
-<details>
-<summary>Dependencies install exemplar on Windows $VERSION  </summary>
-<!-- TODO Darius: rewrite section!-->
+### Configure and Build the Project Using CMake Presets
 
-```shell
-# TODO
-```
+This project recommends using [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
+to configure, build and test the project.
+Appropriate presets for major compilers have been included by default.
+You can use `cmake --list-presets` to see all available presets.
 
-</details>
-
-### How to build beman.exemplar
-
-This project strives to be as normal and simple a CMake project as possible.
-This build workflow in particular will work,
-producing a static `libbeman.exemplar.a` library, ready to package with its headers:
+Here is an example to invoke the `gcc-debug` preset.
 
 ```shell
 cmake --workflow --preset gcc-debug
-cmake --workflow --preset gcc-release
-cmake --install build/gcc-release --prefix /opt/beman.exemplar
+```
+
+Generally, there are two kinds of presets, `debug` and `release`.
+
+The `debug` presets are designed to aid development, so it has debugging
+instrumentation enabled and as many sanitizers turned on as possible.
+
+> [!NOTE]
+>
+> The set of sanitizer supports are different across compilers.
+> You can checkout the exact set of compiler arguments by looking at the toolchain
+> files under the [`cmake`](cmake/) directory.
+
+The `release` presets are designed for use in production environments,
+thus they have the highest optimization turned on (e.g. `O3`).
+
+### Configure and Build Manually
+
+While [CMake Presets](#configure-and-build-the-project-using-cmake-presets) are
+convenient, you might want to set different configuration or compiler arguments
+than any provided preset supports.
+
+To configure, build and test the project with extra arguments,
+you can run this set of commands.
+
+```bash
+cmake -B build -S . -DCMAKE_CXX_STANDARD=20 # Your extra arguments here.
+cmake --build build
+ctest --test-dir build
+```
+
+> [!IMPORTANT]
+>
+> Beman projects are
+> [passive projects](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#cmake),
+> therefore,
+> you will need to specify the C++ version via `CMAKE_CXX_STANDARD`
+> when manually configuring the project.
+
+### Finding and Fetching GTest from GitHub
+
+If you do not have GoogleTest installed on your development system, you may
+optionally configure this project to download a known-compatible release of
+GoogleTest from source and build it as well.
+
+Example commands:
+
+```shell
+cmake -B build -S . \
+    -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./cmake/use-fetch-content.cmake \
+    -DCMAKE_CXX_STANDARD=20
+cmake --build build --target all
+cmake --build build --target test
+```
+
+The precise version of GoogleTest that will be used is maintained in
+`./lockfile.json`.
+
+### Project specific configure arguments
+
+When configuring the project manually,
+you can pass an array of project specific CMake configs to customize your build.
+
+Project specific options are prefixed with `BEMAN_EXEMPLAR`.
+You can see the list of available options with:
+
+```bash
+cmake -LH | grep "BEMAN_EXEMPLAR" -C 2
 ```
 
 <details>
-<summary> Build beman.exemplar (verbose logs) </summary>
 
-```shell
-# Configure beman.exemplar via gcc-debug workflow for development.
-$ cmake --workflow --preset gcc-debug
-Executing workflow step 1 of 3: configure preset "gcc-debug"
+<summary> Details of CMake arguments. </summary>
 
-Preset CMake variables:
+#### `BEMAN_EXEMPLAR_BUILD_TESTS`
 
-  CMAKE_BUILD_TYPE="Debug"
-  CMAKE_CXX_COMPILER="g++"
-  CMAKE_CXX_FLAGS="-fsanitize=address -fsanitize=pointer-compare -fsanitize=pointer-subtract -fsanitize=leak -fsanitize=undefined"
-  CMAKE_CXX_STANDARD="20"
+Enable building tests and test infrastructure. Default: ON.
+Values: { ON, OFF }.
 
--- The CXX compiler identification is GNU 11.4.0
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/g++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- The C compiler identification is GNU 11.4.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Found Python3: /usr/bin/python3.10 (found version "3.10.12") found components: Interpreter
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE
--- Configuring done
--- Generating done
--- Build files have been written to: /home/runner/work/exemplar/exemplar/build/gcc-debug
+You can configure the project to have this option turned off via:
 
-Executing workflow step 2 of 3: build preset "gcc-debug"
-
-[1/14] Building CXX object src/beman/exemplar/CMakeFiles/beman.exemplar.dir/identity.cpp.o
-[2/14] Linking CXX static library src/beman/exemplar/libbeman.exemplar.a
-[3/14] Building CXX object examples/CMakeFiles/beman.exemplar.examples.identity_direct_usage.dir/identity_direct_usage.cpp.o
-[4/14] Linking CXX executable examples/beman.exemplar.examples.identity_direct_usage
-[5/14] Building CXX object _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
-[6/14] Building CXX object src/beman/exemplar/CMakeFiles/beman.exemplar.tests.dir/identity.t.cpp.o
-[7/14] Building CXX object _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
-[8/14] Building CXX object _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
-[9/14] Building CXX object _deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
-[10/14] Linking CXX static library lib/libgtest.a
-[11/14] Linking CXX static library lib/libgtest_main.a
-[12/14] Linking CXX static library lib/libgmock.a
-[13/14] Linking CXX static library lib/libgmock_main.a
-[14/14] Linking CXX executable src/beman/exemplar/beman.exemplar.tests
-
-Executing workflow step 3 of 3: test preset "gcc-debug"
-
-Test project /home/runner/work/exemplar/exemplar/build/gcc-debug
-    Start 1: IdentityTest.call_identity_with_int
-1/4 Test #1: IdentityTest.call_identity_with_int ...........   Passed    0.13 sec
-    Start 2: IdentityTest.call_identity_with_custom_type
-2/4 Test #2: IdentityTest.call_identity_with_custom_type ...   Passed    0.01 sec
-    Start 3: IdentityTest.compare_std_vs_beman
-3/4 Test #3: IdentityTest.compare_std_vs_beman .............   Passed    0.01 sec
-    Start 4: IdentityTest.check_is_transparent
-4/4 Test #4: IdentityTest.check_is_transparent .............   Passed    0.01 sec
-
-100% tests passed, 0 tests failed out of 4
-
-Total Test time (real) =   0.18 sec
-
-# Configure beman.exemplar via gcc-release workflow for direct usage.
-$ cmake --workflow --preset gcc-release
-Executing workflow step 1 of 3: configure preset "gcc-release"
-
-Preset CMake variables:
-
-  CMAKE_BUILD_TYPE="RelWithDebInfo"
-  CMAKE_CXX_COMPILER="g++"
-  CMAKE_CXX_FLAGS="-O3"
-  CMAKE_CXX_STANDARD="20"
-
--- The CXX compiler identification is GNU 11.4.0
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/g++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- The C compiler identification is GNU 11.4.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Found Python3: /usr/bin/python3.10 (found version "3.10.12") found components: Interpreter
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
--- Found Threads: TRUE
--- Configuring done
--- Generating done
--- Build files have been written to: /home/runner/work/exemplar/exemplar/build/gcc-release
-
-Executing workflow step 2 of 3: build preset "gcc-release"
-
-[1/14] Building CXX object src/beman/exemplar/CMakeFiles/beman.exemplar.dir/identity.cpp.o
-[2/14] Linking CXX static library src/beman/exemplar/libbeman.exemplar.a
-[3/14] Building CXX object examples/CMakeFiles/beman.exemplar.examples.identity_direct_usage.dir/identity_direct_usage.cpp.o
-[4/14] Linking CXX executable examples/beman.exemplar.examples.identity_direct_usage
-[5/14] Building CXX object _deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
-[6/14] Building CXX object src/beman/exemplar/CMakeFiles/beman.exemplar.tests.dir/identity.t.cpp.o
-[7/14] Building CXX object _deps/googletest-build/googlemock/CMakeFiles/gmock_main.dir/src/gmock_main.cc.o
-[8/14] Building CXX object _deps/googletest-build/googlemock/CMakeFiles/gmock.dir/src/gmock-all.cc.o
-[9/14] Building CXX object _deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
-[10/14] Linking CXX static library lib/libgtest.a
-[11/14] Linking CXX static library lib/libgtest_main.a
-[12/14] Linking CXX static library lib/libgmock.a
-[13/14] Linking CXX executable src/beman/exemplar/beman.exemplar.tests
-[14/14] Linking CXX static library lib/libgmock_main.a
-
-Executing workflow step 3 of 3: test preset "gcc-release"
-
-Test project /home/runner/work/exemplar/exemplar/build/gcc-release
-    Start 1: IdentityTest.call_identity_with_int
-1/4 Test #1: IdentityTest.call_identity_with_int ...........   Passed    0.00 sec
-    Start 2: IdentityTest.call_identity_with_custom_type
-2/4 Test #2: IdentityTest.call_identity_with_custom_type ...   Passed    0.00 sec
-    Start 3: IdentityTest.compare_std_vs_beman
-3/4 Test #3: IdentityTest.compare_std_vs_beman .............   Passed    0.00 sec
-    Start 4: IdentityTest.check_is_transparent
-4/4 Test #4: IdentityTest.check_is_transparent .............   Passed    0.00 sec
-
-100% tests passed, 0 tests failed out of 4
-
-Total Test time (real) =   0.01 sec
-
-# Run examples.
-$ build/gcc-release/examples/beman.exemplar.examples.identity_direct_usage
-2024
-
+```bash
+cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_EXEMPLAR_BUILD_TESTS=OFF
 ```
 
-</details>
+> [!TIP]
+> Because this project requires Google Tests as part of its development
+> dependency,
+> disable building tests avoids the project from pulling Google Tests from
+> GitHub.
 
-<details>
-<summary> Install beman.exemplar (verbose logs) </summary>
+#### `BEMAN_EXEMPLAR_BUILD_EXAMPLES`
 
-```shell
-# Install build artifacts from `build` directory into `opt/beman.exemplar` path.
-$ cmake --install build/gcc-release --prefix /opt/beman.exemplar
--- Install configuration: "RelWithDebInfo"
--- Up-to-date: /opt/beman.exemplar/lib/libbeman.exemplar.a
--- Up-to-date: /opt/beman.exemplar/include/beman/exemplar/identity.hpp
-
-
-# Check tree.
-$ tree /opt/beman.exemplar
-/opt/beman.exemplar
-├── include
-│   └── beman
-│       └── exemplar
-│           └── identity.hpp
-└── lib
-    └── libbeman.exemplar.a
-
-4 directories, 2 files
-```
-
-</details>
-
-<details>
-<summary> Disable tests build </summary>
-
-To build this project with tests disabled (and their dependencies),
-simply use `BEMAN_EXEMPLAR_BUILD_TESTING=OFF` as documented in upstream [CMake documentation](https://cmake.org/cmake/help/latest/module/CTest.html):
-
-```shell
-cmake -B build -S . -DBEMAN_EXEMPLAR_BUILD_TESTING=OFF
-```
+Enable building examples. Default: ON. Values: { ON, OFF }.
 
 </details>
 
 ## Integrate beman.exemplar into your project
 
-<details>
-<summary> Use beman.exemplar directly from C++ </summary>
-<!-- TODO Darius: rewrite section!-->
+To use `beman.exemplar` in your C++ project,
+include an appropriate `beman.exemplar` header from your source code.
 
-If you want to use `beman.exemplar` from your project,
-you can include `beman/exemplar/*.hpp`  files from your C++ source files
-
-```cpp
+```c++
 #include <beman/exemplar/identity.hpp>
 ```
 
-and directly link with `libbeman.exemplar.a`
+> [!NOTE]
+>
+> `beman.exemplar` headers are to be included with the `beman/exemplar/` directories prefixed.
+> It is not supported to alter include search paths to spell the include target another way. For instance,
+> `#include <identity.hpp>` is not a supported interface.
 
-```shell
-# Assume /opt/beman.exemplar staging directory.
-$ c++ -o identity_usage examples/identity_usage.cpp \
-    -I /opt/beman.exemplar/include/ \
-    -L/opt/beman.exemplar/lib/ -lbeman.exemplar
-```
+How you will link your project against `beman.exemplar` will depend on your build system.
+CMake instructions are provided in following sections.
 
-</details>
+### Linking your project to beman.exemplar with CMake
 
-<details>
-<summary> Use beman.exemplar directly from CMake </summary>
-
-<!-- TODO Darius: rewrite section! Add examples. -->
-
-For CMake based projects, you will need to use the `beman.exemplar` CMake module to define the `beman::exemplar` CMake target:
+For CMake based projects,
+you will need to use the `beman.exemplar` CMake module
+to define the `beman::exemplar` CMake target:
 
 ```cmake
 find_package(beman.exemplar REQUIRED)
 ```
 
-You will also need to add `beman::exemplar`
-to the link libraries of any libraries or executables that include `beman/exemplar/*.hpp` in their source or header file.
+You will also need to add `beman::exemplar` to the link libraries of
+any libraries or executables that include beman.exemplar's header file.
 
 ```cmake
 target_link_libraries(yourlib PUBLIC beman::exemplar)
 ```
 
-</details>
+### Produce beman.exemplar static library locally
 
-<details>
-<summary> Use beman.exemplar from other build systems </summary>
+You can include exemplar's headers locally
+by producing a static `libbeman.exemplar.a` library.
 
-<!-- TODO Darius: rewrite section! Add examples. -->
+```bash
+cmake --workflow --preset gcc-release
+cmake --install build/gcc-release --prefix /opt/beman.exemplar
+```
 
-Build systems that support `pkg-config` by providing a `beman.exemplar.pc` file.
-Build systems that support interoperation via `pkg-config` should be able to detect `beman.exemplar` for you automatically.
+This will generate such directory structure at `/opt/beman.exemplar`.
 
-</details>
+```txt
+/opt/beman.exemplar
+├── include
+│   └── beman
+│       └── exemplar
+│           └── identity.hpp
+└── lib
+    └── libbeman.exemplar.a
+```
 
 ## Contributing
 
-Please do! Issues and pull requests are appreciated.
+Please do!
+You encourage you to checkout our [contributor's guide](docs/README.md).
+Issues and pull requests are appreciated.

@@ -7,9 +7,8 @@ project(
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "A Beman library exemplar"
     LANGUAGES CXX
+    VERSION 2.1.1
 )
-
-enable_testing()
 
 include(cmake/feature_test.cmake)
 beman_min_cxx_version("17")
@@ -17,32 +16,24 @@ beman_min_cxx_version("17")
 # [CMAKE.SKIP_TESTS]
 option(
     BEMAN_EXEMPLAR_BUILD_TESTS
-    "Enable building tests and test infrastructure. Default: ON. Values: { ON, OFF }."
+    "Enable building tests and test infrastructure. Default: ${PROJECT_IS_TOP_LEVEL}. Values: { ON, OFF }."
     ${PROJECT_IS_TOP_LEVEL}
 )
 
 # [CMAKE.SKIP_EXAMPLES]
 option(
     BEMAN_EXEMPLAR_BUILD_EXAMPLES
-    "Enable building examples. Default: ON. Values: { ON, OFF }."
+    "Enable building examples. Default: ${PROJECT_IS_TOP_LEVEL}. Values: { ON, OFF }."
     ${PROJECT_IS_TOP_LEVEL}
 )
 
-include(FetchContent)
-include(GNUInstallDirs)
+option(
+    BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE
+    "Enable creating and installing a CMake config-file package. Default: ${PROJECT_IS_TOP_LEVEL}. Values: { ON, OFF }."
+    ${PROJECT_IS_TOP_LEVEL}
+)
 
-if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    # Fetch GoogleTest
-    FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG
-            f8d7d77c06936315286eb55f8de22cd23c188571 # release-1.14.0
-        EXCLUDE_FROM_ALL
-    )
-    set(INSTALL_GTEST OFF) # Disable GoogleTest installation
-    FetchContent_MakeAvailable(googletest)
-endif()
+include(CTest)
 
 add_subdirectory(src/beman/exemplar)
 

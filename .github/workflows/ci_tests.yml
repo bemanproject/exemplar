@@ -5,7 +5,6 @@ name: Continuous Integration Tests
 on:
   push:
   pull_request:
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   schedule:
     - cron: '30 15 * * *'
@@ -19,6 +18,10 @@ jobs:
           - preset: "gcc-debug"
             platform: "ubuntu-latest"
           - preset: "gcc-release"
+            platform: "ubuntu-latest"
+          - preset: "llvm-debug"
+            platform: "ubuntu-latest"
+          - preset: "llvm-release"
             platform: "ubuntu-latest"
           - preset: "appleclang-debug"
             platform: "macos-latest"
@@ -93,7 +96,10 @@ jobs:
             cmake_args:
               description: "TSan"
 
-    name: "Unit: ${{ matrix.platform.description }} ${{ matrix.cpp_version }} ${{ matrix.cmake_args.description }}"
+    name: "Unit:
+              ${{ matrix.platform.description }}
+              ${{ matrix.cpp_version }}
+              ${{ matrix.cmake_args.description }}"
     runs-on: ${{ matrix.platform.os }}
     steps:
       - uses: actions/checkout@v4
@@ -107,38 +113,12 @@ jobs:
         uses: TheMrMilchmann/setup-msvc-dev@v3
         with:
           arch: x64
-      - name: Setup Macos
-        if: startsWith(matrix.platform.os, 'macos')
-        run: sudo chmod -R 777 /opt/
-      - name: Print installed softwares
-        shell: bash
-        run: |
-          echo "Build system:"
-          cmake --version
-          ninja --version
-      - name: Configure CMake
-        run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=${{ matrix.cpp_version }} -DCMAKE_TOOLCHAIN_FILE="${{ matrix.platform.toolchain }}" ${{ matrix.cmake_args.args }}
-        env:
-          CMAKE_GENERATOR: "Ninja Multi-Config"
-      - name: Build Release
-        run: |
-          # Portable commands only
-          cmake --build build --config Release --parallel --verbose
-          cmake --build build --config Release --target all_verify_interface_header_sets
-          cmake --install build --config Release --prefix /opt/beman.exemplar
-          ls -R /opt/beman.exemplar
-      - name: Test Release
-        run: ctest --test-dir build --build-config Release
-      - name: Build Debug
-        run: |
-          # Portable commands only
-          cmake --build build --config Debug --parallel --verbose
-          cmake --build build --config Debug --target all_verify_interface_header_sets
-          cmake --install build --config Debug --prefix /opt/beman.exemplar
-          ls -R /opt/beman.exemplar
-      - name: Test Debug
-        run: ctest --test-dir build --build-config Debug
+      - name: Build and Test
+        uses: ./.github/actions/cmake-build-test
+        with:
+          cpp_version: ${{ matrix.cpp_version }}
+          toolchain_file: ${{ matrix.platform.toolchain }}
+          cmake_extra_args: ${{ matrix.cmake_args.args }}
 
   configuration-test:
     runs-on: ubuntu-latest
@@ -150,6 +130,8 @@ jobs:
             arg: "-DBEMAN_EXEMPLAR_BUILD_TESTS=OFF"
           - name: "Disable example building"
             arg: "-DBEMAN_EXEMPLAR_BUILD_EXAMPLES=OFF"
+          - name: "Disable config-file package creation"
+            arg: "-DBEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE=OFF"
     name: "CMake: ${{ matrix.args.name }}"
     steps:
       - uses: actions/checkout@v4
@@ -158,29 +140,13 @@ jobs:
         with:
           cmakeVersion: "~3.25.0"
           ninjaVersion: "^1.11.1"
-      - name: Print installed softwares
-        run: |
-          cmake --version
-          ninja --version
-      - name: Configure CMake
-        run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=17 ${{ matrix.args.arg }}
-        env:
-          CMAKE_GENERATOR: "Ninja Multi-Config"
-      - name: Build Release
-        run: |
-          # Portable commands only
-          cmake --build build --config Release --parallel --verbose
-          cmake --build build --config Release --target all_verify_interface_header_sets
-          cmake --install build --config Release --prefix /opt/beman.exemplar
-          ls -R /opt/beman.exemplar
-      - name: Build Debug
-        run: |
-          # Portable commands only
-          cmake --build build --config Debug --parallel --verbose
-          cmake --build build --config Debug --target all_verify_interface_header_sets
-          cmake --install build --config Debug --prefix /opt/beman.exemplar
-          ls -R /opt/beman.exemplar
+      - name: Build and Test
+        uses: ./.github/actions/cmake-build-test
+        with:
+          cpp_version: 17
+          toolchain_file: "cmake/gnu-toolchain.cmake"
+          cmake_extra_args: ${{ matrix.args.arg }}
+          disable_test: true
 
   compiler-test:
     runs-on: ubuntu-24.04
@@ -190,18 +156,25 @@ jobs:
         compilers:
           - class: GNU
             version: 14
+            toolchain: "cmake/gnu-toolchain.cmake"
           - class: GNU
             version: 13
+            toolchain: "cmake/gnu-toolchain.cmake"
           - class: GNU
             version: 12
+            toolchain: "cmake/gnu-toolchain.cmake"
           - class: LLVM
             version: 20
+            toolchain: "cmake/llvm-toolchain.cmake"
           - class: LLVM
             version: 19
+            toolchain: "cmake/llvm-toolchain.cmake"
           - class: LLVM
             version: 18
+            toolchain: "cmake/llvm-toolchain.cmake"
           - class: LLVM
             version: 17
+            toolchain: "cmake/llvm-toolchain.cmake"
     name: "Compiler: ${{ matrix.compilers.class }} ${{ matrix.compilers.version }}"
     steps:
       - uses: actions/checkout@v4
@@ -213,12 +186,13 @@ jobs:
       - name: Install Compiler
         id: install-compiler
         run: |
+          sudo add-apt-repository universe
+          sudo apt-get update
+
           if [ "${{ matrix.compilers.class }}" = "GNU" ]; then
             CC=gcc-${{ matrix.compilers.version }}
             CXX=g++-${{ matrix.compilers.version }}
 
-            sudo add-apt-repository universe
-            sudo apt-get update
             sudo apt-get install -y $CC
             sudo apt-get install -y $CXX
 
@@ -238,22 +212,11 @@ jobs:
 
           echo "CC=$CC" >> "$GITHUB_OUTPUT"
           echo "CXX=$CXX" >> "$GITHUB_OUTPUT"
-      - name: Configure CMake
-        run: |
-          cmake -B build -S . -DCMAKE_CXX_STANDARD=20
-        env:
-          CC: ${{ steps.install-compiler.outputs.CC }}
-          CXX: ${{ steps.install-compiler.outputs.CXX }}
-          CMAKE_GENERATOR: "Ninja Multi-Config"
-      - name: Build Debug
-        run: |
-          cmake --build build --config Debug --verbose
-          cmake --build build --config Debug --target all_verify_interface_header_sets
-          cmake --install build --config Debug --prefix /opt/beman.exemplar
-          find /opt/beman.exemplar -type f
-      - name: Test Debug
-        run: ctest --test-dir build --build-config Debug
-
+      - name: Build and Test
+        uses: ./.github/actions/cmake-build-test
+        with:
+          cpp_version: 20
+          toolchain_file: ${{ matrix.compilers.toolchain }}
 
   create-issue-when-fault:
     runs-on: ubuntu-latest

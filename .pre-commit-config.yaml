@@ -31,3 +31,8 @@ repos:
     rev: v0.42.0
     hooks:
     - id: markdownlint
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell

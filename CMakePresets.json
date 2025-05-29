@@ -7,7 +7,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_CXX_STANDARD": "20"
+        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./cmake/use-fetch-content.cmake"
       }
     },
     {
@@ -48,8 +50,30 @@
       }
     },
     {
+      "name": "llvm-debug",
+      "displayName": "Clang Debug Build",
+      "inherits": [
+        "_root-config",
+        "_debug-base"
+      ],
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "cmake/llvm-toolchain.cmake"
+      }
+    },
+    {
+      "name": "llvm-release",
+      "displayName": "Clang Release Build",
+      "inherits": [
+        "_root-config",
+        "_release-base"
+      ],
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "cmake/llvm-toolchain.cmake"
+      }
+    },
+    {
       "name": "appleclang-debug",
-      "displayName": "xcode Debug Build",
+      "displayName": "Appleclang Debug Build",
       "inherits": [
         "_root-config",
         "_debug-base"
@@ -60,7 +84,7 @@
     },
     {
       "name": "appleclang-release",
-      "displayName": "xcode Release Build",
+      "displayName": "Appleclang Release Build",
       "inherits": [
         "_root-config",
         "_release-base"
@@ -94,28 +118,65 @@
   ],
   "buildPresets": [
     {
+      "name": "_root-build",
+      "hidden": true,
+      "jobs": 0
+    },
+    {
       "name": "gcc-debug",
-      "configurePreset": "gcc-debug"
+      "configurePreset": "gcc-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "gcc-release",
-      "configurePreset": "gcc-release"
+      "configurePreset": "gcc-release",
+      "inherits": [
+        "_root-build"
+      ]
+    },
+    {
+      "name": "llvm-debug",
+      "configurePreset": "llvm-debug",
+      "inherits": [
+        "_root-build"
+      ]
+    },
+    {
+      "name": "llvm-release",
+      "configurePreset": "llvm-release",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "appleclang-debug",
-      "configurePreset": "appleclang-debug"
+      "configurePreset": "appleclang-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "appleclang-release",
-      "configurePreset": "appleclang-release"
+      "configurePreset": "appleclang-release",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "msvc-debug",
-      "configurePreset": "msvc-debug"
+      "configurePreset": "msvc-debug",
+      "inherits": [
+        "_root-build"
+      ]
     },
     {
       "name": "msvc-release",
-      "configurePreset": "msvc-release"
+      "configurePreset": "msvc-release",
+      "inherits": [
+        "_root-build"
+      ]
     }
   ],
   "testPresets": [
@@ -139,6 +200,16 @@
       "name": "gcc-release",
       "inherits": "_test_base",
       "configurePreset": "gcc-release"
+    },
+    {
+      "name": "llvm-debug",
+      "inherits": "_test_base",
+      "configurePreset": "llvm-debug"
+    },
+    {
+      "name": "llvm-release",
+      "inherits": "_test_base",
+      "configurePreset": "llvm-release"
     },
     {
       "name": "appleclang-debug",
@@ -193,6 +264,40 @@
         {
           "type": "test",
           "name": "gcc-release"
+        }
+      ]
+    },
+    {
+      "name": "llvm-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "llvm-debug"
+        },
+        {
+          "type": "build",
+          "name": "llvm-debug"
+        },
+        {
+          "type": "test",
+          "name": "llvm-debug"
+        }
+      ]
+    },
+    {
+      "name": "llvm-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "llvm-release"
+        },
+        {
+          "type": "build",
+          "name": "llvm-release"
+        },
+        {
+          "type": "test",
+          "name": "llvm-release"
         }
       ]
     },
