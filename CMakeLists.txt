@@ -45,7 +45,9 @@ if(
 )
     message(
         FATAL_ERROR
-        "Your compiler isn't advertising support for C++17 with the current configuration. Try adding -DCMAKE_CXX_STANDARD=17 to your CMake invocation. To override this check, set BEMAN_EXEMPLAR_OVERRIDE_CPP_17_REQUIREMENT to ON."
+        "Your compiler isn't advertising support for C++17 with the current configuration."
+        "Try adding -DCMAKE_CXX_STANDARD=17 to your CMake invocation."
+        "To override this check, set BEMAN_EXEMPLAR_OVERRIDE_CPP_17_REQUIREMENT to ON."
     )
 endif()
 
