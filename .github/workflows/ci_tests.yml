@@ -53,9 +53,11 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - description: "Ubuntu GNU"
+          - description: "GNU 14"
+            compiler: "gcc:14"
             toolchain: "cmake/gnu-toolchain.cmake"
-          - description: "Ubuntu LLVM"
+          - description: "LLVM 19"
+            compiler: "clang:19"
             toolchain: "cmake/llvm-toolchain.cmake"
         cpp_version: [17, 20, 23, 26]
         cmake_args:
@@ -66,14 +68,16 @@ jobs:
             args: "-DBEMAN_BUILDSYS_SANITIZER=MaxSan"
         include:
           - platform:
-              description: "Ubuntu GCC"
+              description: "GCC 14"
+              compiler: "gcc:14"
               toolchain: "cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Werror"
               args: "-DCMAKE_CXX_FLAGS='-Werror=all -Werror=extra'"
           - platform:
-              description: "Ubuntu GCC"
+              description: "GCC 14"
+              compiler: "gcc:14"
               toolchain: "cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
@@ -85,6 +89,8 @@ jobs:
               ${{ matrix.cpp_version }}
               ${{ matrix.cmake_args.description }}"
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/bemanproject/testingcontainers-${{ matrix.platform.compiler }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Ninja
