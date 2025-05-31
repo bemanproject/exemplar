@@ -93,11 +93,6 @@ jobs:
       image: ghcr.io/bemanproject/testingcontainers-${{ matrix.platform.compiler }}
     steps:
       - uses: actions/checkout@v4
-      - name: Install Ninja
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
