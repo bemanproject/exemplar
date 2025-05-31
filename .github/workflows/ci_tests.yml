@@ -249,7 +249,7 @@ jobs:
 
   create-issue-when-fault:
     runs-on: ubuntu-latest
-    needs: [preset-test, gtest-test, configuration-test, compiler-test]
+    needs: [preset-test, gtest-test-linux, gtest-test-windows-mac, configuration-test, compiler-test]
     if: failure() && github.event_name == 'schedule'
     steps:
       # See https://github.com/cli/cli/issues/5075
