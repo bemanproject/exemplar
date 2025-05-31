@@ -48,17 +48,62 @@ jobs:
       - name: Run preset
         run: cmake --workflow --preset ${{ matrix.presets.preset }}
 
-  gtest-test:
+  gtest-test-linux:
     strategy:
       fail-fast: false
       matrix:
         platform:
           - description: "Ubuntu GNU"
-            os: ubuntu-latest
             toolchain: "cmake/gnu-toolchain.cmake"
           - description: "Ubuntu LLVM"
-            os: ubuntu-latest
             toolchain: "cmake/llvm-toolchain.cmake"
+        cpp_version: [17, 20, 23, 26]
+        cmake_args:
+          - description: "Default"
+          - description: "TSan"
+            args: "-DBEMAN_BUILDSYS_SANITIZER=TSan"
+          - description: "MaxSan"
+            args: "-DBEMAN_BUILDSYS_SANITIZER=MaxSan"
+        include:
+          - platform:
+              description: "Ubuntu GCC"
+              toolchain: "cmake/gnu-toolchain.cmake"
+            cpp_version: 17
+            cmake_args:
+              description: "Werror"
+              args: "-DCMAKE_CXX_FLAGS='-Werror=all -Werror=extra'"
+          - platform:
+              description: "Ubuntu GCC"
+              toolchain: "cmake/gnu-toolchain.cmake"
+            cpp_version: 17
+            cmake_args:
+              description: "Dynamic"
+              args: "-DBUILD_SHARED_LIBS=on"
+
+    name: "Unit:
+              ${{ matrix.platform.description }}
+              ${{ matrix.cpp_version }}
+              ${{ matrix.cmake_args.description }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ninja
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "~3.25.0"
+          ninjaVersion: "^1.11.1"
+      - name: Build and Test
+        uses: ./.github/actions/cmake-build-test
+        with:
+          cpp_version: ${{ matrix.cpp_version }}
+          toolchain_file: ${{ matrix.platform.toolchain }}
+          cmake_extra_args: ${{ matrix.cmake_args.args }}
+
+  gtest-test-windows-mac:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
           - description: "Windows MSVC"
             os: windows-latest
             toolchain: "cmake/msvc-toolchain.cmake"
@@ -72,23 +117,6 @@ jobs:
             args: "-DBEMAN_BUILDSYS_SANITIZER=TSan"
           - description: "MaxSan"
             args: "-DBEMAN_BUILDSYS_SANITIZER=MaxSan"
-        include:
-          - platform:
-              description: "Ubuntu GCC"
-              os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
-            cpp_version: 17
-            cmake_args:
-              description: "Werror"
-              args: "-DCMAKE_CXX_FLAGS='-Werror=all -Werror=extra'"
-          - platform:
-              description: "Ubuntu GCC"
-              os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
-            cpp_version: 17
-            cmake_args:
-              description: "Dynamic"
-              args: "-DBUILD_SHARED_LIBS=on"
         exclude:
             # MSVC does not support thread sanitizer
           - platform:
@@ -119,6 +147,7 @@ jobs:
           cpp_version: ${{ matrix.cpp_version }}
           toolchain_file: ${{ matrix.platform.toolchain }}
           cmake_extra_args: ${{ matrix.cmake_args.args }}
+
 
   configuration-test:
     runs-on: ubuntu-latest
