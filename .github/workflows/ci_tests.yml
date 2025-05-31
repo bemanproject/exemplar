@@ -10,7 +10,7 @@ on:
     - cron: '30 15 * * *'
 
 jobs:
-  preset-test-linux:
+  preset-test:
     strategy:
       fail-fast: false
       matrix:
@@ -25,39 +25,20 @@ jobs:
             compiler: "clang:19"
           - preset: "appleclang-debug"
             platform: "macos-latest"
-    name: "Preset: ${{ matrix.presets.preset }}"
-    runs-on: ${{ matrix.presets.platform || 'ubuntu-latest' }}
-    container:
-      image: ${{ matrix.presets.compiler && 'ghcr.io/bemanproject/testingcontainers-'}}${{ matrix.presets.compiler }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Environment
-        if: ${{ !matrix.presets.compiler }}
-        uses: ./.github/actions/setup-enviornment
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Run preset
-        run: cmake --workflow --preset ${{ matrix.presets.preset }}
-
-  preset-test-windows-mac:
-    strategy:
-      fail-fast: false
-      matrix:
-        presets:
-          - preset: "appleclang-debug"
-            platform: "macos-latest"
           - preset: "appleclang-release"
             platform: "macos-latest"
           - preset: "msvc-debug"
             platform: "windows-latest"
           - preset: "msvc-release"
             platform: "windows-latest"
-    name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform }}"
-    runs-on: ${{ matrix.presets.platform }}
+    name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform || matrix.presets.compiler }}"
+    runs-on: ${{ matrix.presets.platform || 'ubuntu-latest' }}
+    container:
+      image: ${{ matrix.presets.compiler && 'ghcr.io/bemanproject/testingcontainers-' }}${{ matrix.presets.compiler }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Environment
+        if: ${{ !matrix.presets.compiler }}
         uses: ./.github/actions/setup-enviornment
         with:
           cmakeVersion: "~3.25.0"
@@ -231,7 +212,7 @@ jobs:
 
   create-issue-when-fault:
     runs-on: ubuntu-latest
-    needs: [preset-test-linux, preset-test-windows-mac, gtest-test-linux, gtest-test-windows-mac, configuration-test, compiler-test]
+    needs: [preset-test, gtest-test-linux, gtest-test-windows-mac, configuration-test, compiler-test]
     if: failure() && github.event_name == 'schedule'
     steps:
       # See https://github.com/cli/cli/issues/5075
