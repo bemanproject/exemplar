@@ -20,6 +20,10 @@ message("Examples to be built: ${ALL_EXAMPLES}")
 foreach(example ${ALL_EXAMPLES})
     add_executable(beman.exemplar.examples.${example})
     target_sources(beman.exemplar.examples.${example} PRIVATE ${example}.cpp)
+    target_compile_features(
+        beman.exemplar.examples.${example}
+        PRIVATE cxx_std_20
+    )
     target_link_libraries(
         beman.exemplar.examples.${example}
         PRIVATE beman::exemplar
