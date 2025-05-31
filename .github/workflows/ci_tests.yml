@@ -179,69 +179,37 @@ jobs:
           disable_test: true
 
   compiler-test:
-    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         compilers:
-          - class: GNU
+          - class: gcc
             version: 14
             toolchain: "cmake/gnu-toolchain.cmake"
-          - class: GNU
+          - class: gcc
             version: 13
             toolchain: "cmake/gnu-toolchain.cmake"
-          - class: GNU
+          - class: gcc
             version: 12
             toolchain: "cmake/gnu-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 20
             toolchain: "cmake/llvm-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 19
             toolchain: "cmake/llvm-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 18
             toolchain: "cmake/llvm-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 17
             toolchain: "cmake/llvm-toolchain.cmake"
     name: "Compiler: ${{ matrix.compilers.class }} ${{ matrix.compilers.version }}"
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/bemanproject/testingcontainers-${{ matrix.compilers.class }}:${{ matrix.compilers.version }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Install Compiler
-        id: install-compiler
-        run: |
-          sudo add-apt-repository universe
-          sudo apt-get update
-
-          if [ "${{ matrix.compilers.class }}" = "GNU" ]; then
-            CC=gcc-${{ matrix.compilers.version }}
-            CXX=g++-${{ matrix.compilers.version }}
-
-            sudo apt-get install -y $CC
-            sudo apt-get install -y $CXX
-
-            $CC --version
-            $CXX --version
-          else
-            wget https://apt.llvm.org/llvm.sh
-            chmod +x llvm.sh
-            sudo bash llvm.sh ${{ matrix.compilers.version }}
-
-            CC=clang-${{ matrix.compilers.version }}
-            CXX=clang++-${{ matrix.compilers.version }}
-
-            $CC --version
-            $CXX --version
-          fi
-
-          echo "CC=$CC" >> "$GITHUB_OUTPUT"
-          echo "CXX=$CXX" >> "$GITHUB_OUTPUT"
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
