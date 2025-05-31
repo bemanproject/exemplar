@@ -10,19 +10,33 @@ on:
     - cron: '30 15 * * *'
 
 jobs:
-  preset-test:
+  preset-test-linux:
     strategy:
       fail-fast: false
       matrix:
         presets:
           - preset: "gcc-debug"
-            platform: "ubuntu-latest"
+            compiler: "gcc:14"
           - preset: "gcc-release"
-            platform: "ubuntu-latest"
+            compiler: "gcc:14"
           - preset: "llvm-debug"
-            platform: "ubuntu-latest"
+            compiler: "clang:19"
           - preset: "llvm-release"
-            platform: "ubuntu-latest"
+            compiler: "clang:19"
+    name: "Preset: ${{ matrix.presets.preset }} with ${{ matrix.presets.compiler }}"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/bemanproject/testingcontainers-${{ matrix.presets.compiler }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run preset
+        run: cmake --workflow --preset ${{ matrix.presets.preset }}
+
+  preset-test-windows-mac:
+    strategy:
+      fail-fast: false
+      matrix:
+        presets:
           - preset: "appleclang-debug"
             platform: "macos-latest"
           - preset: "appleclang-release"
@@ -47,6 +61,7 @@ jobs:
           arch: x64
       - name: Run preset
         run: cmake --workflow --preset ${{ matrix.presets.preset }}
+
 
   gtest-test-linux:
     strategy:
@@ -218,7 +233,7 @@ jobs:
 
   create-issue-when-fault:
     runs-on: ubuntu-latest
-    needs: [preset-test, gtest-test-linux, gtest-test-windows-mac, configuration-test, compiler-test]
+    needs: [preset-test-linux, preset-test-windows-mac, gtest-test-linux, gtest-test-windows-mac, configuration-test, compiler-test]
     if: failure() && github.event_name == 'schedule'
     steps:
       # See https://github.com/cli/cli/issues/5075
