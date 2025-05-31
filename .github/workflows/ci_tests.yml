@@ -23,12 +23,20 @@ jobs:
             compiler: "clang:19"
           - preset: "llvm-release"
             compiler: "clang:19"
-    name: "Preset: ${{ matrix.presets.preset }} with ${{ matrix.presets.compiler }}"
-    runs-on: ubuntu-latest
+          - preset: "appleclang-debug"
+            platform: "macos-latest"
+    name: "Preset: ${{ matrix.presets.preset }}"
+    runs-on: ${{ matrix.presets.platform || 'ubuntu-latest' }}
     container:
-      image: ghcr.io/bemanproject/testingcontainers-${{ matrix.presets.compiler }}
+      image: ${{ matrix.presets.compiler && 'ghcr.io/bemanproject/testingcontainers-'}}${{ matrix.presets.compiler }}
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Environment
+        if: ${{ !matrix.presets.compiler }}
+        uses: ./.github/actions/setup-enviornment
+        with:
+          cmakeVersion: "~3.25.0"
+          ninjaVersion: "^1.11.1"
       - name: Run preset
         run: cmake --workflow --preset ${{ matrix.presets.preset }}
 
