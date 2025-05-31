@@ -49,16 +49,11 @@ jobs:
     runs-on: ${{ matrix.presets.platform }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
+      - name: Setup Environment
+        uses: ./.github/actions/setup-enviornment
         with:
           cmakeVersion: "~3.25.0"
           ninjaVersion: "^1.11.1"
-      - name: Setup MSVC
-        if: startsWith(matrix.presets.platform, 'windows')
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
       - name: Run preset
         run: cmake --workflow --preset ${{ matrix.presets.preset }}
 
@@ -147,16 +142,11 @@ jobs:
     runs-on: ${{ matrix.platform.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Install Ninja
-        uses: lukka/get-cmake@latest
+      - name: Setup Environment
+        uses: ./.github/actions/setup-enviornment
         with:
           cmakeVersion: "~3.25.0"
           ninjaVersion: "^1.11.1"
-      - name: Setup MSVC
-        if: startsWith(matrix.platform.os, 'windows')
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
