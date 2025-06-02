@@ -9,10 +9,6 @@ on:
   schedule:
     - cron: '30 15 * * *'
 
-env:
-  CMAKE_VERSION: "~3.25.0"
-  NINJA_VERSION: "^1.11.1"
-
 jobs:
   preset-test:
     strategy:
@@ -44,9 +40,6 @@ jobs:
       - name: Setup Environment
         if: ${{ !matrix.presets.compiler }}
         uses: ./.github/actions/setup-enviornment
-        with:
-          cmakeVersion: ${{ env.CMAKE_VERSION }}
-          ninjaVersion: ${{ env.NINJA_VERSION }}
       - name: Run preset
         run: cmake --workflow --preset ${{ matrix.presets.preset }}
 
@@ -111,9 +104,6 @@ jobs:
       - name: Setup Environment
         if: ${{ !matrix.platform.compiler }}
         uses: ./.github/actions/setup-enviornment
-        with:
-          cmakeVersion: ${{ env.CMAKE_VERSION }}
-          ninjaVersion: ${{ env.NINJA_VERSION }}
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
@@ -138,9 +128,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup build environment
         uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: ${{ env.CMAKE_VERSION }}
-          ninjaVersion: ${{ env.NINJA_VERSION }}
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
