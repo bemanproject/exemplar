@@ -113,6 +113,8 @@ jobs:
 
   configuration-test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/bemanproject/testingcontainers-gcc:14
     strategy:
       fail-fast: false
       matrix:
@@ -126,8 +128,6 @@ jobs:
     name: "CMake: ${{ matrix.args.name }}"
     steps:
       - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
