@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+name: "Setup Environment"
+description: "Setup environment on windows/ macos"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: latest
+        ninjaVersion: latest
+    - name: Setup MSVC
+      if: runner.os == 'windows'
+      uses: TheMrMilchmann/setup-msvc-dev@v3
+      with:
+        arch: x64

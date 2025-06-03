@@ -5,13 +5,14 @@
 // TODO Darius: Do we need to selectively compile this example?
 // Or should we assume that this project is compiled with C++20 support only?
 
-#include <beman/exemplar/identity.hpp>
-
 #include <algorithm>
 #include <functional> // std::identity
 #include <iostream>
 #include <ranges>
 #include <string>
+
+// Alternatively: #include <beman/exemplar/identity.hpp>
+import beman.exemplar;
 
 namespace exe = beman::exemplar;
 

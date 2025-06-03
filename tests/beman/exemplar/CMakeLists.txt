@@ -4,6 +4,7 @@ find_package(GTest REQUIRED)
 
 add_executable(beman.exemplar.tests.identity)
 target_sources(beman.exemplar.tests.identity PRIVATE identity.test.cpp)
+target_compile_features(beman.exemplar.tests.identity PRIVATE cxx_std_20)
 target_link_libraries(
     beman.exemplar.tests.identity
     PRIVATE beman::exemplar GTest::gtest GTest::gtest_main
