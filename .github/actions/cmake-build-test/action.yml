@@ -15,10 +15,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Setup Macos
-      if: startsWith(matrix.platform.os, 'macos')
-      shell: bash
-      run: sudo chmod -R 777 /opt/
     - name: Print installed software
       shell: bash
       run: |
@@ -42,6 +38,13 @@ runs:
       run: |
         cmake --build build --config Release --parallel --verbose
         cmake --build build --config Release --target all_verify_interface_header_sets
+    - name: Prepare Install Directory
+      if: ${{ !startsWith(matrix.platform.os, 'windows') }}
+      shell: bash
+      run: sudo chmod -R 777 /opt/
+    - name: Build Install
+      shell: bash
+      run: |
         cmake --install build --config Release --prefix /opt/beman.package
         ls -R /opt/beman.package
     - name: Test Release

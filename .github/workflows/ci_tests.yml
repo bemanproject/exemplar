@@ -16,13 +16,13 @@ jobs:
       matrix:
         presets:
           - preset: "gcc-debug"
-            platform: "ubuntu-latest"
+            compiler: "gcc:14"
           - preset: "gcc-release"
-            platform: "ubuntu-latest"
+            compiler: "gcc:14"
           - preset: "llvm-debug"
-            platform: "ubuntu-latest"
+            compiler: "clang:19"
           - preset: "llvm-release"
-            platform: "ubuntu-latest"
+            compiler: "clang:19"
           - preset: "appleclang-debug"
             platform: "macos-latest"
           - preset: "appleclang-release"
@@ -31,33 +31,29 @@ jobs:
             platform: "windows-latest"
           - preset: "msvc-release"
             platform: "windows-latest"
-    name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform }}"
-    runs-on: ${{ matrix.presets.platform }}
+    name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform || matrix.presets.compiler }}"
+    runs-on: ${{ matrix.presets.platform || 'ubuntu-latest' }}
+    container:
+      image: ${{ matrix.presets.compiler && 'ghcr.io/bemanproject/testingcontainers-' }}${{ matrix.presets.compiler }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Setup MSVC
-        if: startsWith(matrix.presets.platform, 'windows')
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
+      - name: Setup Environment
+        if: ${{ !matrix.presets.compiler }}
+        uses: ./.github/actions/setup-enviornment
       - name: Run preset
         run: cmake --workflow --preset ${{ matrix.presets.preset }}
+
 
   gtest-test:
     strategy:
       fail-fast: false
       matrix:
         platform:
-          - description: "Ubuntu GNU"
-            os: ubuntu-latest
+          - description: "GNU 14"
+            compiler: "gcc:14"
             toolchain: "cmake/gnu-toolchain.cmake"
-          - description: "Ubuntu LLVM"
-            os: ubuntu-latest
+          - description: "LLVM 19"
+            compiler: "clang:19"
             toolchain: "cmake/llvm-toolchain.cmake"
           - description: "Windows MSVC"
             os: windows-latest
@@ -74,16 +70,16 @@ jobs:
             args: "-DBEMAN_BUILDSYS_SANITIZER=MaxSan"
         include:
           - platform:
-              description: "Ubuntu GCC"
-              os: ubuntu-latest
+              description: "GCC 14"
+              compiler: "gcc:14"
               toolchain: "cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Werror"
               args: "-DCMAKE_CXX_FLAGS='-Werror=all -Werror=extra'"
           - platform:
-              description: "Ubuntu GCC"
-              os: ubuntu-latest
+              description: "GCC 14"
+              compiler: "gcc:14"
               toolchain: "cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
@@ -100,19 +96,14 @@ jobs:
               ${{ matrix.platform.description }}
               ${{ matrix.cpp_version }}
               ${{ matrix.cmake_args.description }}"
-    runs-on: ${{ matrix.platform.os }}
+    runs-on: ${{ matrix.platform.os || 'ubuntu-latest' }}
+    container:
+      image: ${{ matrix.platform.compiler && 'ghcr.io/bemanproject/testingcontainers-' }}${{ matrix.platform.compiler }}
     steps:
       - uses: actions/checkout@v4
-      - name: Install Ninja
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Setup MSVC
-        if: startsWith(matrix.platform.os, 'windows')
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
+      - name: Setup Environment
+        if: ${{ !matrix.platform.compiler }}
+        uses: ./.github/actions/setup-enviornment
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
@@ -122,6 +113,8 @@ jobs:
 
   configuration-test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/bemanproject/testingcontainers-gcc:14
     strategy:
       fail-fast: false
       matrix:
@@ -135,11 +128,6 @@ jobs:
     name: "CMake: ${{ matrix.args.name }}"
     steps:
       - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
@@ -149,69 +137,37 @@ jobs:
           disable_test: true
 
   compiler-test:
-    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
         compilers:
-          - class: GNU
+          - class: gcc
             version: 14
             toolchain: "cmake/gnu-toolchain.cmake"
-          - class: GNU
+          - class: gcc
             version: 13
             toolchain: "cmake/gnu-toolchain.cmake"
-          - class: GNU
+          - class: gcc
             version: 12
             toolchain: "cmake/gnu-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 20
             toolchain: "cmake/llvm-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 19
             toolchain: "cmake/llvm-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 18
             toolchain: "cmake/llvm-toolchain.cmake"
-          - class: LLVM
+          - class: clang
             version: 17
             toolchain: "cmake/llvm-toolchain.cmake"
     name: "Compiler: ${{ matrix.compilers.class }} ${{ matrix.compilers.version }}"
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/bemanproject/testingcontainers-${{ matrix.compilers.class }}:${{ matrix.compilers.version }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Install Compiler
-        id: install-compiler
-        run: |
-          sudo add-apt-repository universe
-          sudo apt-get update
-
-          if [ "${{ matrix.compilers.class }}" = "GNU" ]; then
-            CC=gcc-${{ matrix.compilers.version }}
-            CXX=g++-${{ matrix.compilers.version }}
-
-            sudo apt-get install -y $CC
-            sudo apt-get install -y $CXX
-
-            $CC --version
-            $CXX --version
-          else
-            wget https://apt.llvm.org/llvm.sh
-            chmod +x llvm.sh
-            sudo bash llvm.sh ${{ matrix.compilers.version }}
-
-            CC=clang-${{ matrix.compilers.version }}
-            CXX=clang++-${{ matrix.compilers.version }}
-
-            $CC --version
-            $CXX --version
-          fi
-
-          echo "CC=$CC" >> "$GITHUB_OUTPUT"
-          echo "CXX=$CXX" >> "$GITHUB_OUTPUT"
       - name: Build and Test
         uses: ./.github/actions/cmake-build-test
         with:
