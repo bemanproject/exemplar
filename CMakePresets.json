@@ -6,10 +6,16 @@
       "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
+      "installDir": "${sourceDir}/stagedir",
       "cacheVariables": {
+        "CMAKE_PREFIX_PATH": {
+          "type": "path",
+          "value": "${sourceDir}/stagedir"
+        },
         "CMAKE_CXX_STANDARD": "20",
         "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./infra/cmake/use-fetch-content.cmake"
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./infra/cmake/use-fetch-content.cmake",
+        "CMAKE_SKIP_TEST_ALL_DEPENDENCY": false
       }
     },
     {
@@ -120,6 +126,9 @@
     {
       "name": "_root-build",
       "hidden": true,
+      "targets": [
+        "all_verify_interface_header_sets", "all"
+      ],
       "jobs": 0
     },
     {
