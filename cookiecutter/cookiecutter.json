@@ -1,0 +1,10 @@
+{
+  "project_name": "my_project_name",
+  "cpp_build_version": "26",
+  "paper": "PnnnnRr",
+  "owner": "github-user-name",
+  "description": "Short project description.",
+  "_copy_without_render": [
+    "infra"
+  ]
+}
