@@ -1,3 +1,4 @@
+{% raw -%}
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 name: Continuous Integration Tests
@@ -139,7 +140,7 @@ jobs:
           cpp_version: ${{ matrix.cpp_version }}
           toolchain_file: ${{ matrix.platform.toolchain }}
           cmake_extra_args: ${{ matrix.cmake_args.args }}
-
+{% endraw %}
   configuration-test:
     runs-on: ubuntu-latest
     strategy:
@@ -147,11 +148,12 @@ jobs:
       matrix:
         args:
           - name: "Disable build testing"
-            arg: "-DBEMAN_EXEMPLAR_BUILD_TESTS=OFF"
+            arg: "-DBEMAN_{{ cookiecutter.project_name.upper() }}_BUILD_TESTS=OFF"
           - name: "Disable example building"
-            arg: "-DBEMAN_EXEMPLAR_BUILD_EXAMPLES=OFF"
+            arg: "-DBEMAN_{{ cookiecutter.project_name.upper() }}_BUILD_EXAMPLES=OFF"
           - name: "Disable config-file package creation"
-            arg: "-DBEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE=OFF"
+            arg: "-DBEMAN_{{ cookiecutter.project_name.upper() }}_INSTALL_CONFIG_FILE_PACKAGE=OFF"
+{%- raw %}
     name: "CMake: ${{ matrix.args.name }}"
     steps:
       - uses: actions/checkout@v4
@@ -264,3 +266,5 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ github.token }}
+
+{%- endraw %}
