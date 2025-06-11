@@ -1,0 +1,16 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/cpp
+
+{
+	"name": "Beman Project Generic Devcontainer",
+	"image": "ghcr.io/bemanproject/devcontainers-gcc:14",
+	"postCreateCommand": "pre-commit",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cmake-tools"
+			]
+		}
+	}
+}
