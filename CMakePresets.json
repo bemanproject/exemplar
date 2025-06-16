@@ -13,9 +13,9 @@
           "value": "${sourceDir}/stagedir"
         },
         "CMAKE_CXX_STANDARD": "20",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./cmake/use-fetch-content.cmake",
-        "CMAKE_SKIP_TEST_ALL_DEPENDENCY": false
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "CMAKE_SKIP_TEST_ALL_DEPENDENCY": false,
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./infra/cmake/use-fetch-content.cmake"
       }
     },
     {
@@ -41,7 +41,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/gnu-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
       }
     },
     {
@@ -52,7 +52,7 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/gnu-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
       }
     },
     {
@@ -63,7 +63,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/llvm-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-toolchain.cmake"
       }
     },
     {
@@ -74,7 +74,7 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/llvm-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-toolchain.cmake"
       }
     },
     {
@@ -85,7 +85,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/appleclang-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
       }
     },
     {
@@ -96,7 +96,7 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/appleclang-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
       }
     },
     {
@@ -107,7 +107,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/msvc-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/msvc-toolchain.cmake"
       }
     },
     {
@@ -118,7 +118,7 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "cmake/msvc-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/msvc-toolchain.cmake"
       }
     }
   ],

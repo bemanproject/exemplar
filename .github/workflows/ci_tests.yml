@@ -10,6 +10,16 @@ on:
     - cron: '30 15 * * *'
 
 jobs:
+  beman-submodule-test:
+    runs-on: ubuntu-latest
+    name: "Check beman submodules for consistency"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: beman submodule consistency check
+        run: |
+          (set -o pipefail; ./infra/tools/beman-submodule/beman-submodule status | grep -qvF '+')
+
   preset-test:
     strategy:
       fail-fast: false
@@ -55,16 +65,16 @@ jobs:
         platform:
           - description: "Ubuntu GNU"
             os: ubuntu-latest
-            toolchain: "cmake/gnu-toolchain.cmake"
+            toolchain: "infra/cmake/gnu-toolchain.cmake"
           - description: "Ubuntu LLVM"
             os: ubuntu-latest
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
           - description: "Windows MSVC"
             os: windows-latest
-            toolchain: "cmake/msvc-toolchain.cmake"
+            toolchain: "infra/cmake/msvc-toolchain.cmake"
           - description: "Macos Appleclang"
             os: macos-latest
-            toolchain: "cmake/appleclang-toolchain.cmake"
+            toolchain: "infra/cmake/appleclang-toolchain.cmake"
         cpp_version: [17, 20, 23, 26]
         cmake_args:
           - description: "Default"
@@ -76,7 +86,7 @@ jobs:
           - platform:
               description: "Ubuntu GCC"
               os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
+              toolchain: "infra/cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Werror"
@@ -84,7 +94,7 @@ jobs:
           - platform:
               description: "Ubuntu GCC"
               os: ubuntu-latest
-              toolchain: "cmake/gnu-toolchain.cmake"
+              toolchain: "infra/cmake/gnu-toolchain.cmake"
             cpp_version: 17
             cmake_args:
               description: "Dynamic"
@@ -144,7 +154,7 @@ jobs:
         uses: ./.github/actions/cmake-build-test
         with:
           cpp_version: 17
-          toolchain_file: "cmake/gnu-toolchain.cmake"
+          toolchain_file: "infra/cmake/gnu-toolchain.cmake"
           cmake_extra_args: ${{ matrix.args.arg }}
           disable_test: true
 
@@ -156,25 +166,25 @@ jobs:
         compilers:
           - class: GNU
             version: 14
-            toolchain: "cmake/gnu-toolchain.cmake"
+            toolchain: "infra/cmake/gnu-toolchain.cmake"
           - class: GNU
             version: 13
-            toolchain: "cmake/gnu-toolchain.cmake"
+            toolchain: "infra/cmake/gnu-toolchain.cmake"
           - class: GNU
             version: 12
-            toolchain: "cmake/gnu-toolchain.cmake"
+            toolchain: "infra/cmake/gnu-toolchain.cmake"
           - class: LLVM
             version: 20
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
           - class: LLVM
             version: 19
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
           - class: LLVM
             version: 18
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
           - class: LLVM
             version: 17
-            toolchain: "cmake/llvm-toolchain.cmake"
+            toolchain: "infra/cmake/llvm-toolchain.cmake"
     name: "Compiler: ${{ matrix.compilers.class }} ${{ matrix.compilers.version }}"
     steps:
       - uses: actions/checkout@v4

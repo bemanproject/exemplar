@@ -33,7 +33,7 @@ runs:
           -S . \
           -DCMAKE_CXX_STANDARD=${{ inputs.cpp_version }} \
           -DCMAKE_TOOLCHAIN_FILE="${{ inputs.toolchain_file }}" \
-          -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES="./cmake/use-fetch-content.cmake" \
+          -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES="./infra/cmake/use-fetch-content.cmake" \
           ${{ matrix.cmake_args.args }}
       env:
         CMAKE_GENERATOR: "Ninja Multi-Config"

@@ -1,0 +1,13 @@
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+{
+	"name": "beman.infra Docker Devcontainer",
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"version": "latest",
+			"enableNonRootDocker": true,
+			"moby": false
+		},
+                "ghcr.io/devcontainers-extra/features/pre-commit:2": {}
+	}
+}

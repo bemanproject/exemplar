@@ -10,7 +10,7 @@ if(NOT BEMAN_EXEMPLAR_LOCKFILE)
     )
 endif()
 
-set(BemanExemplar_projectDir "${CMAKE_CURRENT_LIST_DIR}/..")
+set(BemanExemplar_projectDir "${CMAKE_CURRENT_LIST_DIR}/../..")
 message(TRACE "BemanExemplar_projectDir=\"${BemanExemplar_projectDir}\"")
 
 message(TRACE "BEMAN_EXEMPLAR_LOCKFILE=\"${BEMAN_EXEMPLAR_LOCKFILE}\"")
