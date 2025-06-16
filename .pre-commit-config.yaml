@@ -36,3 +36,8 @@ repos:
     rev: v2.3.0
     hooks:
       - id: codespell
+
+  - repo: https://github.com/neatudarius/infra
+    rev: beman-tidy-expose-via-precommit  # Temporary branch - TBD.
+    hooks:
+      - id: beman-tidy
