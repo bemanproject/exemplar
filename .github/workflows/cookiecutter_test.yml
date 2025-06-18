@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+name: Cookiecutter Test
+on:
+  push:
+  pull_request:
+
+jobs:
+  cookiecutter-test:
+    runs-on: ubuntu-latest
+    name: "Check cookiecutter for consistency"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: beman cookiecutter consistency check
+        run: |
+          ./cookiecutter/check_cookiecutter.sh
