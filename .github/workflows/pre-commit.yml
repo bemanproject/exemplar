@@ -5,6 +5,8 @@ on:
   # enough permission for reviewdog
   pull_request_target:
   push:
+    branches:
+      - main
 
 jobs:
   pre-commit-push:
