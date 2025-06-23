@@ -2,8 +2,6 @@
 
 set -euo pipefail
 
-set -x
-
 declare script_dir=$(realpath $(dirname "$BASH_SOURCE"))
 
 function check_consistency() {
