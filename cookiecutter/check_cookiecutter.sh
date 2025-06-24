@@ -47,6 +47,7 @@ function check_templating() {
         paper="P0898R3" \
         owner="bemanproject" \
         description="A Beman Library RLZrmX9NfS"
+    rm -rf "$out_dir_path/RLZrmX9NfS/infra"
     local grep_path
     grep_path=$(mktemp)
     grep \
