@@ -7,3 +7,4 @@ MD033: false
 # Update the comment in .clang-format if we no-longer tie these two column limits.
 MD013:
   line_length: 119
+  code_blocks: false
