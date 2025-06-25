@@ -12,15 +12,8 @@ on:
     - cron: '30 15 * * *'
 
 jobs:
-  beman-submodule-test:
-    runs-on: ubuntu-latest
-    name: "Check beman submodules for consistency"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: beman submodule consistency check
-        run: |
-          (set -o pipefail; ./infra/tools/beman-submodule/beman-submodule status | grep -qvF '+')
+  beman-submodule-check:
+    uses: ./.github/workflows/reusable-beman-submodule-check.yml
 
   preset-test:
     strategy:
