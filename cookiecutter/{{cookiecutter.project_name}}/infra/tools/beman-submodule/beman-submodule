@@ -6,26 +6,29 @@ import argparse
 import configparser
 import filecmp
 import os
-import pathlib
 import shutil
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 
-def directory_compare(dir1, dir2, ignore):
+
+def directory_compare(dir1: str | Path, dir2: str | Path, ignore):
+    dir1, dir2 = Path(dir1), Path(dir2)
+
     compared = filecmp.dircmp(dir1, dir2, ignore=ignore)
     if compared.left_only or compared.right_only or compared.diff_files:
         return False
     for common_dir in compared.common_dirs:
-        path1 = os.path.join(dir1, common_dir)
-        path2 = os.path.join(dir2, common_dir)
+        path1 = dir1 / common_dir
+        path2 = dir2 / common_dir
         if not directory_compare(path1, path2, ignore):
             return False
     return True
 
 class BemanSubmodule:
-    def __init__(self, dirpath, remote, commit_hash):
-        self.dirpath = dirpath
+    def __init__(self, dirpath: str | Path, remote: str, commit_hash: str):
+        self.dirpath = Path(dirpath)
         self.remote = remote
         self.commit_hash = commit_hash
 
@@ -43,22 +46,26 @@ def parse_beman_submodule_file(path):
     if not 'commit_hash' in config['beman_submodule']:
         fail()
     return BemanSubmodule(
-        str(pathlib.Path(path).resolve().parent),
-        config['beman_submodule']['remote'], config['beman_submodule']['commit_hash'])
+        Path(path).resolve().parent,
+        config['beman_submodule']['remote'],
+        config['beman_submodule']['commit_hash'])
 
-def get_beman_submodule(dir):
-    beman_submodule_filepath = os.path.join(dir, '.beman_submodule')
-    if os.path.isfile(beman_submodule_filepath):
+def get_beman_submodule(path: str | Path):
+    beman_submodule_filepath = Path(path) / '.beman_submodule'
+
+    if beman_submodule_filepath.is_file():
         return parse_beman_submodule_file(beman_submodule_filepath)
     else:
         return None
 
-def find_beman_submodules_in(dir):
-    assert os.path.isdir(dir)
+def find_beman_submodules_in(path):
+    path = Path(path)
+    assert path.is_dir()
+
     result = []
-    for dirpath, _, filenames in os.walk(dir):
+    for dirpath, _, filenames in path.walk():
         if '.beman_submodule' in filenames:
-            result.append(parse_beman_submodule_file(os.path.join(dirpath, '.beman_submodule')))
+            result.append(parse_beman_submodule_file(dirpath / '.beman_submodule'))
     return sorted(result, key=lambda module: module.dirpath)
 
 def cwd_git_repository_path():
@@ -92,19 +99,25 @@ def beman_submodule_status(beman_submodule):
     parent_repo_path = cwd_git_repository_path()
     if not parent_repo_path:
         raise Exception('this is not a git repository')
-    relpath = pathlib.Path(
-        beman_submodule.dirpath).relative_to(pathlib.Path(parent_repo_path))
+    relpath = Path(beman_submodule.dirpath).relative_to(Path(parent_repo_path))
     return status_character + ' ' + beman_submodule.commit_hash + ' ' + str(relpath)
 
 def beman_submodule_update(beman_submodule, remote):
     tmpdir = clone_beman_submodule_into_tmpdir(beman_submodule, remote)
+    tmp_path = Path(tmpdir.name)
+    sha_process = subprocess.run(
+        ['git', 'rev-parse', 'HEAD'], capture_output=True, check=True, text=True,
+        cwd=tmp_path)
+
     shutil.rmtree(beman_submodule.dirpath)
-    with open(os.path.join(tmpdir.name, '.beman_submodule'), 'w') as f:
+
+    submodule_path = tmp_path / '.beman_submodule'
+    with open(submodule_path, 'w') as f:
         f.write('[beman_submodule]\n')
         f.write(f'remote={beman_submodule.remote}\n')
-        f.write(f'commit_hash={beman_submodule.commit_hash}\n')
-    shutil.rmtree(os.path.join(tmpdir.name, '.git'))
-    shutil.copytree(tmpdir.name, beman_submodule.dirpath)
+        f.write(f'commit_hash={sha_process.stdout.strip()}\n')
+    shutil.rmtree(tmp_path / '.git')
+    shutil.copytree(tmp_path, beman_submodule.dirpath)
 
 def update_command(remote, path):
     if not path:
@@ -126,19 +139,21 @@ def add_command(repository, path):
         ['git', 'clone', repository], capture_output=True, check=True, cwd=tmpdir.name)
     repository_name = os.listdir(tmpdir.name)[0]
     if not path:
-        path = repository_name
-    if os.path.exists(path):
+        path = Path(repository_name)
+    else:
+        path = Path(path)
+    if path.exists():
         raise Exception(f'{path} exists')
-    os.makedirs(path)
-    tmpdir_repo = os.path.join(tmpdir.name, repository_name)
+    path.mkdir()
+    tmpdir_repo = Path(tmpdir.name) / repository_name
     sha_process = subprocess.run(
         ['git', 'rev-parse', 'HEAD'], capture_output=True, check=True, text=True,
         cwd=tmpdir_repo)
-    with open(os.path.join(tmpdir_repo, '.beman_submodule'), 'w') as f:
+    with open(tmpdir_repo / '.beman_submodule', 'w') as f:
         f.write('[beman_submodule]\n')
         f.write(f'remote={repository}\n')
         f.write(f'commit_hash={sha_process.stdout.strip()}\n')
-    shutil.rmtree(os.path.join(tmpdir_repo, '.git'))
+    shutil.rmtree(tmpdir_repo /'.git')
     shutil.copytree(tmpdir_repo, path, dirs_exist_ok=True)
 
 def status_command(paths):
