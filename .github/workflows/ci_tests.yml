@@ -22,6 +22,7 @@ jobs:
         run: |
           (set -o pipefail; ./infra/tools/beman-submodule/beman-submodule status | grep -qvF '+')
 
+
   preset-test:
     strategy:
       fail-fast: false
