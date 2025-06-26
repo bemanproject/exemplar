@@ -17,42 +17,19 @@ jobs:
     uses: ./.github/workflows/reusable-beman-submodule-check.yml
 
   preset-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        presets:
-          - preset: "gcc-debug"
-            platform: "ubuntu-latest"
-          - preset: "gcc-release"
-            platform: "ubuntu-latest"
-          - preset: "llvm-debug"
-            platform: "ubuntu-latest"
-          - preset: "llvm-release"
-            platform: "ubuntu-latest"
-          - preset: "appleclang-debug"
-            platform: "macos-latest"
-          - preset: "appleclang-release"
-            platform: "macos-latest"
-          - preset: "msvc-debug"
-            platform: "windows-latest"
-          - preset: "msvc-release"
-            platform: "windows-latest"
-    name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform }}"
-    runs-on: ${{ matrix.presets.platform }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Setup MSVC
-        if: startsWith(matrix.presets.platform, 'windows')
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
-      - name: Run preset
-        run: cmake --workflow --preset ${{ matrix.presets.preset }}
+    uses: ./.github/workflows/reusable-beman-preset-test.yml
+    with:
+      matrix_config: >
+        [
+          {"preset": "gcc-debug", "platform": "ubuntu-latest"},
+          {"preset": "gcc-release", "platform": "ubuntu-latest"},
+          {"preset": "llvm-debug", "platform": "ubuntu-latest"},
+          {"preset": "llvm-release", "platform": "ubuntu-latest"},
+          {"preset": "appleclang-debug", "platform": "ubuntu-latest"},
+          {"preset": "appleclang-release", "platform": "ubuntu-latest"},
+          {"preset": "msvc-debug", "platform": "windows-latest"},
+          {"preset": "msvc-release", "platform": "windows-latest"}
+        ]
 
   gtest-test:
     strategy:

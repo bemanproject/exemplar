@@ -1,0 +1,34 @@
+{% raw -%}
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+name: 'Beman preset test matrix'
+on:
+  workflow_call:
+    inputs:
+      matrix_config:
+        description: 'JSON array of {preset:"", platform:""} objects'
+        type: string
+        required: true
+jobs:
+  preset_test_matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        presets: ${{ fromJSON(inputs.matrix_config) }}
+    name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform }}"
+    runs-on: ${{ matrix.presets.platform }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup build environment
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: "~3.25.0"
+          ninjaVersion: "^1.11.1"
+      - name: Setup MSVC
+        if: startsWith(matrix.presets.platform, 'windows')
+        uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: x64
+      - name: Run preset
+        run: cmake --workflow --preset ${{ matrix.presets.preset }}
+{%- endraw %}
