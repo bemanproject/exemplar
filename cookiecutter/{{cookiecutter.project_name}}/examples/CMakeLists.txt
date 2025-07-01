@@ -1,5 +1,31 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+cmake_minimum_required(VERSION 3.25...4.0)
+
+project(
+    beman.{{cookiecutter.project_name}}.examples
+    DESCRIPTION "Examaples for Beman implementation of {{cookiecutter.project_name}}"
+    LANGUAGES CXX
+    VERSION 2.1.1
+)
+
+if(PROJECT_IS_TOP_LEVEL)
+    set(_find_package_option REQUIRED)
+
+    # see Professional CMake Chapter 40. Making Projects Consumable
+    option(CHECK_PROJECT_IS_CONSUMABLE NO)
+    if(CHECK_PROJECT_IS_CONSUMABLE)
+        set(_find_package_option)
+    endif()
+
+    find_package(beman.{{cookiecutter.project_name}} 2.1.1 EXACT ${_find_package_option})
+    if(NOT TARGET beman::{{cookiecutter.project_name}})
+        add_subdirectory(.. {{cookiecutter.project_name}}_src)
+    endif()
+
+    enable_testing()
+endif()
+
 set(ALL_EXAMPLES identity_direct_usage)
 
 # Example `identity_as_default_projection` need ranges support:
@@ -23,5 +49,9 @@ foreach(example ${ALL_EXAMPLES})
     target_link_libraries(
         beman.{{cookiecutter.project_name}}.examples.${example}
         PRIVATE beman::{{cookiecutter.project_name}}
+    )
+    add_test(
+        NAME beman.{{cookiecutter.project_name}}.examples.${example}
+        COMMAND $<TARGET_FILE:beman.{{cookiecutter.project_name}}.examples.${example}>
     )
 endforeach()
