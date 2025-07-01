@@ -10,7 +10,7 @@ target_link_libraries(
 )
 
 include(GoogleTest)
-gtest_discover_tests(beman.exemplar.tests.identity)
+gtest_discover_tests(beman.{{cookiecutter.project_name}}.tests.identity)
 
 # test if the targets are usable from the install directory
 add_test(
