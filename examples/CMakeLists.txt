@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.28...4.0)
+cmake_minimum_required(VERSION 3.25...4.0)
 
 project(
     beman.exemplar.examples
