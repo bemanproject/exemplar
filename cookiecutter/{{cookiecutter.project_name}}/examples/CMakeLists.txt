@@ -41,7 +41,7 @@ else()
     )
 endif()
 
-message("Examples to be built: ${ALL_EXAMPLES}")
+message(STATUS "Examples to be built: ${ALL_EXAMPLES}")
 
 foreach(example ${ALL_EXAMPLES})
     add_executable(beman.{{cookiecutter.project_name}}.examples.${example})
