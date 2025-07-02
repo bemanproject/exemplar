@@ -20,12 +20,12 @@ jobs:
     with:
       matrix_config: >
         [
-          {"preset": "gcc-debug", "platform": "ubuntu-latest"},
-          {"preset": "gcc-release", "platform": "ubuntu-latest"},
-          {"preset": "llvm-debug", "platform": "ubuntu-latest"},
-          {"preset": "llvm-release", "platform": "ubuntu-latest"},
-          {"preset": "appleclang-debug", "platform": "ubuntu-latest"},
-          {"preset": "appleclang-release", "platform": "ubuntu-latest"},
+          {"preset": "gcc-debug", "platform": "ghcr.io/ednolan/containers2-gcc:latest"},
+          {"preset": "gcc-release", "platform": "ghcr.io/ednolan/containers2-gcc:latest"},
+          {"preset": "llvm-debug", "platform": "ghcr.io/ednolan/containers2-clang:latest"},
+          {"preset": "llvm-release", "platform": "ghcr.io/ednolan/containers2-clang:latest"},
+          {"preset": "appleclang-debug", "platform": "macos-latest"},
+          {"preset": "appleclang-release", "platform": "macos-latest"},
           {"preset": "msvc-debug", "platform": "windows-latest"},
           {"preset": "msvc-release", "platform": "windows-latest"}
         ]
