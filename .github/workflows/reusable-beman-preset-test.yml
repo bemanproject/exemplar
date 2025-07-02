@@ -15,7 +15,8 @@ jobs:
       matrix:
         presets: ${{ fromJSON(inputs.matrix_config) }}
     name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform }}"
-    runs-on: ${{ matrix.presets.platform }}
+    runs-on: ${{ matrix.presets.runner || 'ubuntu-latest' }}
+    container: ${{ matrix.presets.image }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup build environment
@@ -24,7 +25,7 @@ jobs:
           cmakeVersion: "~3.25.0"
           ninjaVersion: "^1.11.1"
       - name: Setup MSVC
-        if: startsWith(matrix.presets.platform, 'windows')
+        if: startsWith(matrix.presets.runner, 'windows')
         uses: TheMrMilchmann/setup-msvc-dev@v3
         with:
           arch: x64
