@@ -15,7 +15,8 @@ jobs:
       matrix:
         presets: ${{ fromJSON(inputs.matrix_config) }}
     name: "Preset: ${{ matrix.presets.preset }} on ${{ matrix.presets.platform }}"
-    runs-on: ${{ matrix.presets.platform }}
+    runs-on: ${{ matrix.presets.runner || 'ubuntu-latest' }}
+    container: ${{ matrix.presets.image }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup build environment
@@ -29,4 +30,6 @@ jobs:
         with:
           arch: x64
       - name: Run preset
-        run: cmake --workflow --preset ${{ matrix.presets.preset }}
+        run: |
+          g++ --version
+          cmake --workflow --preset ${{ matrix.presets.preset }}
