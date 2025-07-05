@@ -1,2 +1,9 @@
 /compile_commands.json
 /build
+
+# ignore emacs temp files
+*~
+\#*\#
+
+# ignore vscode settings
+.vscode
