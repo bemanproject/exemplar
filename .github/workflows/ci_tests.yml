@@ -30,179 +30,116 @@ jobs:
           {"preset": "msvc-release", "runner": "windows-latest"}
         ]
 
-  gtest-test:
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - description: "Ubuntu GNU"
-            os: ubuntu-latest
-            toolchain: "infra/cmake/gnu-toolchain.cmake"
-          - description: "Ubuntu LLVM"
-            os: ubuntu-latest
-            toolchain: "infra/cmake/llvm-toolchain.cmake"
-          - description: "Windows MSVC"
-            os: windows-latest
-            toolchain: "infra/cmake/msvc-toolchain.cmake"
-          - description: "Macos Appleclang"
-            os: macos-latest
-            toolchain: "infra/cmake/appleclang-toolchain.cmake"
-        cpp_version: [17, 20, 23, 26]
-        cmake_args:
-          - description: "Default"
-          - description: "TSan"
-            args: "-DBEMAN_BUILDSYS_SANITIZER=TSan"
-          - description: "MaxSan"
-            args: "-DBEMAN_BUILDSYS_SANITIZER=MaxSan"
-        include:
-          - platform:
-              description: "Ubuntu GCC"
-              os: ubuntu-latest
-              toolchain: "infra/cmake/gnu-toolchain.cmake"
-            cpp_version: 17
-            cmake_args:
-              description: "Werror"
-              args: "-DCMAKE_CXX_FLAGS='-Werror=all -Werror=extra'"
-          - platform:
-              description: "Ubuntu GCC"
-              os: ubuntu-latest
-              toolchain: "infra/cmake/gnu-toolchain.cmake"
-            cpp_version: 17
-            cmake_args:
-              description: "Dynamic"
-              args: "-DBUILD_SHARED_LIBS=on"
-        exclude:
-            # MSVC does not support thread sanitizer
-          - platform:
-              description: "Windows MSVC"
-            cmake_args:
-              description: "TSan"
-
-    name: "Unit:
-              ${{ matrix.platform.description }}
-              ${{ matrix.cpp_version }}
-              ${{ matrix.cmake_args.description }}"
-    runs-on: ${{ matrix.platform.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Ninja
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Setup MSVC
-        if: startsWith(matrix.platform.os, 'windows')
-        uses: TheMrMilchmann/setup-msvc-dev@v3
-        with:
-          arch: x64
-      - name: Build and Test
-        uses: ./.github/actions/cmake-build-test
-        with:
-          cpp_version: ${{ matrix.cpp_version }}
-          toolchain_file: ${{ matrix.platform.toolchain }}
-          cmake_extra_args: ${{ matrix.cmake_args.args }}
-
-  configuration-test:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        args:
-          - name: "Disable build testing"
-            arg: "-DBEMAN_EXEMPLAR_BUILD_TESTS=OFF"
-          - name: "Disable example building"
-            arg: "-DBEMAN_EXEMPLAR_BUILD_EXAMPLES=OFF"
-          - name: "Disable config-file package creation"
-            arg: "-DBEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE=OFF"
-    name: "CMake: ${{ matrix.args.name }}"
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Build and Test
-        uses: ./.github/actions/cmake-build-test
-        with:
-          cpp_version: 17
-          toolchain_file: "infra/cmake/gnu-toolchain.cmake"
-          cmake_extra_args: ${{ matrix.args.arg }}
-          disable_test: true
-
-  compiler-test:
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        compilers:
-          - class: GNU
-            version: 14
-            toolchain: "infra/cmake/gnu-toolchain.cmake"
-          - class: GNU
-            version: 13
-            toolchain: "infra/cmake/gnu-toolchain.cmake"
-          - class: GNU
-            version: 12
-            toolchain: "infra/cmake/gnu-toolchain.cmake"
-          - class: LLVM
-            version: 20
-            toolchain: "infra/cmake/llvm-toolchain.cmake"
-          - class: LLVM
-            version: 19
-            toolchain: "infra/cmake/llvm-toolchain.cmake"
-          - class: LLVM
-            version: 18
-            toolchain: "infra/cmake/llvm-toolchain.cmake"
-          - class: LLVM
-            version: 17
-            toolchain: "infra/cmake/llvm-toolchain.cmake"
-    name: "Compiler: ${{ matrix.compilers.class }} ${{ matrix.compilers.version }}"
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup build environment
-        uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
-      - name: Install Compiler
-        id: install-compiler
-        run: |
-          sudo add-apt-repository universe
-          sudo apt-get update
-
-          if [ "${{ matrix.compilers.class }}" = "GNU" ]; then
-            CC=gcc-${{ matrix.compilers.version }}
-            CXX=g++-${{ matrix.compilers.version }}
-
-            sudo apt-get install -y $CC
-            sudo apt-get install -y $CXX
-
-            $CC --version
-            $CXX --version
-          else
-            wget https://apt.llvm.org/llvm.sh
-            chmod +x llvm.sh
-            sudo bash llvm.sh ${{ matrix.compilers.version }}
-
-            CC=clang-${{ matrix.compilers.version }}
-            CXX=clang++-${{ matrix.compilers.version }}
-
-            $CC --version
-            $CXX --version
-          fi
-
-          echo "CC=$CC" >> "$GITHUB_OUTPUT"
-          echo "CXX=$CXX" >> "$GITHUB_OUTPUT"
-      - name: Build and Test
-        uses: ./.github/actions/cmake-build-test
-        with:
-          cpp_version: 20
-          toolchain_file: ${{ matrix.compilers.toolchain }}
+  build-and-test:
+    uses: ./.github/workflows/reusable-beman-build-and-test.yml
+    with:
+      matrix_config: >
+        {
+          "gcc": [
+            { "versions": ["15"],
+              "tests": [
+                { "cxxversions": ["c++26"],
+                  "tests": [
+                    { "stdlibs": ["libstdc++"],
+                      "tests": [
+                        "Debug.Default", "Release.Default", "Debug.TSan", "Debug.MaxSan",
+                        "Debug.Werror", "Debug.Dynamic"
+                      ]
+                    }
+                  ]
+                },
+                { "cxxversions": ["c++23", "c++20", "c++17"],
+                  "tests": [{ "stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            },
+            { "versions": ["14", "13"],
+              "tests": [
+                { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
+                  "tests": [{ "stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            },
+            {
+              "versions": ["12", "11"],
+              "tests": [
+                { "cxxversions": ["c++23", "c++20", "c++17"],
+                  "tests": [{ "stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            }
+          ],
+          "clang": [
+            { "versions": ["20"],
+              "tests": [
+                {"cxxversions": ["c++26"],
+                  "tests": [
+                    { "stdlibs": ["libstdc++", "libc++"],
+                      "tests": [
+                        "Debug.Default", "Release.Default", "Debug.TSan", "Debug.MaxSan",
+                        "Debug.Werror", "Debug.Dynamic"
+                      ]
+                    }
+                  ]
+                },
+                { "cxxversions": ["c++23", "c++20", "c++17"],
+                  "tests": [
+                    {"stdlibs": ["libstdc++", "libc++"], "tests": ["Release.Default"]}
+                  ]
+                }
+              ]
+            },
+            { "versions": ["19", "18"],
+              "tests": [
+                { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
+                  "tests": [
+                    {"stdlibs": ["libstdc++", "libc++"], "tests": ["Release.Default"]}
+                  ]
+                }
+              ]
+            },
+            { "versions": ["17"],
+              "tests": [
+                { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
+                  "tests": [{"stdlibs": ["libc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            },
+            { "versions": ["17"],
+              "tests": [
+                { "cxxversions": ["c++20", "c++17"],
+                  "tests": [{"stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            }
+          ],
+          "appleclang": [
+            { "versions": ["latest"],
+              "tests": [
+                { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
+                  "tests": [{ "stdlibs": ["libc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            }
+          ],
+          "msvc": [
+            { "versions": ["latest"],
+              "tests": [
+                { "cxxversions": ["c++23"],
+                  "tests": [
+                    { "stdlibs": ["stl"],
+                      "tests": ["Debug.Default", "Release.Default", "Debug.MaxSan"]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
 
   create-issue-when-fault:
     runs-on: ubuntu-latest
-    needs: [preset-test, gtest-test, configuration-test, compiler-test]
+    needs: [preset-test, build-and-test]
     if: failure() && github.event_name == 'schedule'
     steps:
       # See https://github.com/cli/cli/issues/5075
