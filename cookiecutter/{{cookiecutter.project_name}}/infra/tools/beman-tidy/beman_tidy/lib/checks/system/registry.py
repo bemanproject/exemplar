@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 from typing import Dict, Type, List
@@ -19,9 +19,11 @@ def register_beman_standard_check(check: str):
     Notes: Only register most derived check classes, which are actually part from
     The Beman Standard - e.g., README.TITLE, README.BADGES, etc.
     """
+
     def decorator(check_class: Type) -> Type:
         _beman_standard_check_registry[check] = check_class
         return check_class
+
     return decorator
 
 

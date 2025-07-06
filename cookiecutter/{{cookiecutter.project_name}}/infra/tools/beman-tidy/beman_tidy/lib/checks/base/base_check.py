@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 from abc import ABC, abstractmethod
@@ -20,24 +20,30 @@ class BaseCheck(ABC):
         """
 
         # check name -  e.g. "README.TITLE"
-        self.name = name if name is not None else get_beman_standard_check_name_by_class(
-            self.__class__)
-        assert self.name is not None, f"Check name not found for class: {self.__class__.__name__}"
+        self.name = (
+            name
+            if name is not None
+            else get_beman_standard_check_name_by_class(self.__class__)
+        )
+        assert self.name is not None, (
+            f"Check name not found for class: {self.__class__.__name__}"
+        )
 
         # save the check config
         self.config = beman_standard_check_config[self.name]
 
         # set type - e.g. "REQUIREMENT" or "RECOMMENDATION"
         self.type = beman_standard_check_config[self.name]["type"]
-        assert self.type in [
-            'REQUIREMENT', 'RECOMMENDATION'], f"Invalid check type: {self.type} for check = {self.name}."
+        assert self.type in ["REQUIREMENT", "RECOMMENDATION"], (
+            f"Invalid check type: {self.type} for check = {self.name}."
+        )
 
         # set full text body - e.g. "The README.md should begin ..."
         self.full_text_body = beman_standard_check_config[self.name]["full_text_body"]
         assert self.full_text_body is not None
 
         # set log level - e.g. "ERROR" or "WARNING"
-        self.log_level = 'ERROR' if self.type == 'REQUIREMENT' else 'WARNING'
+        self.log_level = "ERROR" if self.type == "REQUIREMENT" else "WARNING"
         self.log_enabled = False
 
         # set repo info
@@ -51,7 +57,9 @@ class BaseCheck(ABC):
         assert self.library_name is not None
 
         # set beman library maturity model
-        beman_library_maturity_model = beman_standard_check_config["README.LIBRARY_STATUS"]
+        beman_library_maturity_model = beman_standard_check_config[
+            "README.LIBRARY_STATUS"
+        ]
         assert "values" in beman_library_maturity_model
         assert len(beman_library_maturity_model["values"]) == 4
         self.beman_library_maturity_model = beman_library_maturity_model["values"]
@@ -108,4 +116,4 @@ class BaseCheck(ABC):
         """
 
         if self.log_enabled and enabled:
-            print(f'[{self.log_level:<15}][{self.name:<25}]: {message}')
+            print(f"[{self.log_level:<15}][{self.name:<25}]: {message}")

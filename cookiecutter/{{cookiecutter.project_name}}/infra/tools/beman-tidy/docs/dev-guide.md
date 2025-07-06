@@ -1,28 +1,5 @@
 # Beman Tidy Development Guide
 
-Expected Development Flow:
-
-* Find a Beman Standard check that is not implemented.
-* Add a new entry to the `.beman-standard.yml` file.
-* Add a new check to the `lib/checks/beman_standard/` directory (find existing checks for inspiration).
-* Add tests for the new check.
-* Run the tests.
-* Commit the changes.
-
-Requirements:
-
-* `beman-tidy` must be able to run on Windows, Linux, and macOS, thus it's 100% Python.
-* `beman-tidy` must NOT use internet access.  A local snapshot of the standard is used (check `.beman-standard.yml`).
-* `beman-tidy` must have `verbose` and `non-verbose` modes. Default is `non-verbose`.
-* `beman-tidy` must have `dry-run` and `fix-inplace` modes. Default is `dry-run`.
-* `beman-tidy` must detect types of checks: failed, passed, skipped (not implemented) and print the summary/coverage.
-
-Limitations:
-
-* `2025-06-07`: `beman-tidy` will not support the `--fix-inplace` flag in the first iteration for most of the checks.
-* `2025-06-07`: `beman-tidy` may generate small changes to the standard (e.g., for automated fixes), while the standard
-  is not stable. Thus, the tool itself may be unstable.
-
 ## Tree structure
 
 * `README.md`: The public documentation for the `beman-tidy` tool.
@@ -32,19 +9,27 @@ Limitations:
   * `beman_tidy/lib/`: The library for the tool.
     * `beman_tidy/lib/checks/`: The checks for the tool.
     * `beman_tidy/lib/pipeline.py`: The checks pipeline for the `beman-tidy` tool.
-  * `beman_tidy/.beman-standard.yml`: Stable (offline)version of the standard.
+  * `beman_tidy/.beman-standard.yml`: Stable (offline) version of the standard.
 * `tests/`: Unit tests for the tool.
   * Structure is similar to the `beman_tidy/` directory.
   * `pytest` is used for testing.
 
 ## Adding a new check
 
-* `[mandatory]` Make sure `beman_tidy/.beman-standard.yml` reflects your check metadata (latest status from [BEMAN_STANDARD.md](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md).
+Find an unimplemented check in the [BEMAN_STANDARD.md](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md) file and check that is not already assigned in [Planning for beman-tidy: The Codebase Bemanification Tool](https://github.com/orgs/bemanproject/projects/8/views/1).
+
+
+Check this PR example: [beman-tidy: add check - README.LIBRARY_STATUS](https://github.com/bemanproject/infra/pull/35).
+
+<details>
+<summary>Step by step tutorial: add a new check</summary>
+
+* `[mandatory]` Make sure `beman_tidy/.beman-standard.yml` reflects your check metadata (latest status from [BEMAN_STANDARD.md](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md)).
   * `[optional]` New syntax / keys from yml config can be added in
-    [infra/tools/beman-tidy/beman_tidy/lib/utils_git.py:load_beman_standard_config()](https://github.com/bemanproject/infra/blob/main/tools/beman-tidy/beman_tidy/lib/utils/git.py#L68)
+    [infra/tools/beman-tidy/beman_tidy/lib/utils_git.py:load_beman_standard_config()](https://github.com/bemanproject/infra/blob/main/tools/beman-tidy/beman_tidy/lib/utils/git.py)
     if not already implemented. Checks for TODOs in `load_beman_standard_config()`.
 * `[mandatory]` Add the check to the `beman_tidy/lib/checks/beman_standard/` directory.
-  * `[mandatory]` E.g., `README.*` checks will most likely go to a path similar to `beman_tidy/lib/checks/beman_standard/readme.py`.
+  * `[mandatory]` e.g., `README.*` checks will most likely go to a path similar to `beman_tidy/lib/checks/beman_standard/readme.py`.
   * `[mandatory]` Use an appropriate base class - e.g., defaults like `FileBaseCheck` / `DirectoryBaseCheck` or create
     specializations for reusing code - e.g.,  `ReadmeBaseCheck(FileBaseCheck)` / `CmakeBaseCheck(FileBaseCheck)` /
     `CppBaseCheck(FileBaseCheck)` etc.
@@ -55,13 +40,12 @@ Limitations:
     class ReadmeTitleCheck(ReadmeBaseCheck):
     ```
 
-* `[mandatory]` Import the check to the `beman_tidy/lib/pipeline.py` file (e.g.,
-  `from .checks.beman_standard.readme import ReadmeTitleCheck`).
 * `[mandatory]` Add tests for the check to the `tests/beman_standard/` directory. More in [Writing Tests](#writing-tests).
 * `[optional]` Updates docs if needed in `README.md` and `docs/dev-guide.md` files.
 * `[optional]` Update the `beman_tidy/cli.py` file if the public API has changed.
 
-Check this PR example: [beman-tidy: add check - README.LIBRARY_STATUS](https://github.com/bemanproject/infra/pull/35).
+</details>
+
 
 ## Linting
 
@@ -89,10 +73,10 @@ collected 6 items
 
 tests/beman_standard/readme/test_readme.py::test__README_TITLE__valid PASSED                                                                                                                                                                  [ 16%]
 tests/beman_standard/readme/test_readme.py::test__README_TITLE__invalid PASSED                                                                                                                                                                [ 33%]
-tests/beman_standard/readme/test_readme.py::test__README_TITLE__fix_invalid PASSED                                                                                                                                                            [ 50%]
+tests/beman_standard/readme/test_readme.py::test__README_TITLE__fix_inplace PASSED                                                                                                                                                            [ 50%]
 tests/beman_standard/readme/test_readme.py::test__README_BADGES__valid PASSED                                                                                                                                                                 [ 66%]
 tests/beman_standard/readme/test_readme.py::test__README_BADGES__invalid PASSED                                                                                                                                                               [ 83%]
-tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_invalid SKIPPED (NOT implemented)                                                                                                                                        [100%]
+tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_inplace SKIPPED (NOT implemented)                                                                                                                                        [100%]
 
 =========================================================================================================== 5 passed, 1 skipped in 0.07s ============================================================================================================
 ```
@@ -111,7 +95,7 @@ tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_invalid SKI
     `tests/lib/checks/beman_standard/readme/data/valid/`.
   * e.g., for `check_category = "readme"` and `test_case_name = "invalid"` the data is in
     `tests/lib/checks/beman_standard/readme/data/invalid/`.
-  * e.g., for `check_category = "readme"` and `test_case_name = "fix_invalid"` the data may use both `valid` and
+  * e.g., for `check_category = "readme"` and `test_case_name = "fix_inplace"` the data may use both `valid` and
     `invalid` files. It is recommended to not change these files and use temporary copies having suffix `.delete_me`
     (which are not tracked by git).
 * Default setup / mocks:
@@ -121,7 +105,7 @@ tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_invalid SKI
 * Always add at least 3 test cases for each check.
   * `valid`: The test case for the valid case.
   * `invalid`: The test case for the invalid case.
-  * `fix_invalid`: The test case for the fix invalid case. If the fix is not (yet) implementable, add a
+  * `fix_inplace`: The test case for the fix invalid case. If the fix is not (yet) implementable, add a
     `@pytest.mark.skip(reason="NOT implemented")` decorator to track the progress.
 
 ## Changing dependencies
@@ -133,3 +117,19 @@ tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_invalid SKI
 * Run `uv build` to build the wheel.
 * Run `uv run beman-tidy --help` to check if the new dependency is available.
 * Commit the changes from `pyproject.toml`, `pylock.toml` and `uv.lock`.
+
+## Development Notes
+
+Requirements:
+
+* `beman-tidy` must be able to run on Windows, Linux, and macOS, thus it's 100% Python.
+* `beman-tidy` must NOT use internet access.  A local snapshot of the standard is used (check `.beman-standard.yml`).
+* `beman-tidy` must have `verbose` and `non-verbose` modes. Default is `non-verbose`.
+* `beman-tidy` must have `dry-run` and `fix-inplace` modes. Default is `dry-run`.
+* `beman-tidy` must detect types of checks: failed, passed, skipped (not implemented) and print the summary/coverage.
+
+Limitations:
+
+* `2025-06-07`: `beman-tidy` will not support the `--fix-inplace` flag in the first iteration for most of the checks.
+* `2025-06-07`: `beman-tidy` may generate small changes to the standard (e.g., for automated fixes), while the standard
+  is not stable. Thus, the tool itself may be unstable.

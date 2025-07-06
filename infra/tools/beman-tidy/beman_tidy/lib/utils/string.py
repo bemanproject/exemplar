@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 import re
@@ -14,7 +14,11 @@ def is_beman_snake_case(name):
     It must NOT end with a C++ target standard version - e.g. 17, 20, 23, 26, 32, etc.
     """
 
-    return name[:6] == "beman." and is_snake_case(name[6:]) and not re.match(".*[0-9]+$", name[6:])
+    return (
+        name[:6] == "beman."
+        and is_snake_case(name[6:])
+        and not re.match(".*[0-9]+$", name[6:])
+    )
 
 
 def match_badges(string):
@@ -25,7 +29,9 @@ def match_badges(string):
         return None
 
     badges_str = re.findall(r"!\[[^\]]+\]\([^)]+\)", string)
-    return [re.match(r"!\[([^\]]+)\]\(([^)]+)\)", badge).groups() for badge in badges_str]
+    return [
+        re.match(r"!\[([^\]]+)\]\(([^)]+)\)", badge).groups() for badge in badges_str
+    ]
 
 
 def skip_lines(lines, n):
