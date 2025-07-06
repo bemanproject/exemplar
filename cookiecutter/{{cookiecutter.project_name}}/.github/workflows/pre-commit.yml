@@ -11,5 +11,5 @@ on:
 
 jobs:
   pre-commit:
-    uses: ./.github/workflows/beman-reusable-pre-commit.yml
+    uses: ./.github/workflows/reusable-beman-pre-commit.yml
 {%- endraw %}
