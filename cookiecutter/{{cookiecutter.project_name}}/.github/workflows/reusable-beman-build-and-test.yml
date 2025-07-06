@@ -106,6 +106,7 @@ jobs:
           echo "build_config=${test%%[.]*}" >> "$GITHUB_OUTPUT"
           test_type=${test##*[.]}
           case $test_type in
+            Default) ;;
             TSan)
               echo "cmake_extra_args=-DBEMAN_BUILDSYS_SANITIZER=TSan" >> "$GITHUB_OUTPUT" ;;
             MaxSan)
@@ -143,5 +144,5 @@ jobs:
           ls -R /opt/beman.package
       - name: Test
         shell: bash
-        run: ctest --test-dir build --build-config ${{ steps.vars.outputs.build_config }}
+        run: ctest --test-dir build --build-config ${{ steps.vars.outputs.build_config }} --output-on-failure
 {%- endraw %}
