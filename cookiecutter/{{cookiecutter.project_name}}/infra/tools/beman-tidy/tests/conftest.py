@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 import pytest
@@ -25,7 +25,7 @@ def _setup_test_environment():
     root_dir = Path(__file__).parent.parent
 
     # Add the project root to PYTHONPATH if not already there
-    if str(root_dir) not in os.environ.get('PYTHONPATH', ''):
-        os.environ['PYTHONPATH'] = f"{root_dir}:{os.environ.get('PYTHONPATH', '')}"
+    if str(root_dir) not in os.environ.get("PYTHONPATH", ""):
+        os.environ["PYTHONPATH"] = f"{root_dir}:{os.environ.get('PYTHONPATH', '')}"
 
     yield

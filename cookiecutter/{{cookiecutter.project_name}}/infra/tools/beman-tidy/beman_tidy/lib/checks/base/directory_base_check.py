@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 from abc import abstractmethod
@@ -14,7 +14,6 @@ class DirectoryBaseCheck(BaseCheck):
 
     def __init__(self, repo_info, beman_standard_check_config, relative_path):
         super().__init__(repo_info, beman_standard_check_config)
-        print(repo_info)
 
         # set path - e.g. "src/beman/exemplar"
         self.path = self.repo_path / relative_path

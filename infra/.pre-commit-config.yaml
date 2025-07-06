@@ -7,14 +7,18 @@ repos:
     -   id: check-yaml
     -   id: check-added-large-files
 
-    # Markdown linting
-    # Config file: .markdownlint.yaml
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.42.0
-    hooks:
-    - id: markdownlint
-
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
       - id: codespell
+
+  # Python linting and formatting
+  # config file: ruff.toml (not currently present but add if needed)
+  # https://docs.astral.sh/ruff/configuration/
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.1
+    hooks:
+      - id: ruff-check
+        files: ^tools/beman-tidy/
+      - id: ruff-format
+        files: ^tools/beman-tidy/

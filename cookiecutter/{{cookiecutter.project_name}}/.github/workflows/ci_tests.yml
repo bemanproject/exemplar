@@ -21,14 +21,14 @@ jobs:
     with:
       matrix_config: >
         [
-          {"preset": "gcc-debug", "platform": "ubuntu-latest"},
-          {"preset": "gcc-release", "platform": "ubuntu-latest"},
-          {"preset": "llvm-debug", "platform": "ubuntu-latest"},
-          {"preset": "llvm-release", "platform": "ubuntu-latest"},
-          {"preset": "appleclang-debug", "platform": "ubuntu-latest"},
-          {"preset": "appleclang-release", "platform": "ubuntu-latest"},
-          {"preset": "msvc-debug", "platform": "windows-latest"},
-          {"preset": "msvc-release", "platform": "windows-latest"}
+          {"preset": "gcc-debug", "image": "ghcr.io/bemanproject/infra-containers-gcc:latest"},
+          {"preset": "gcc-release", "image": "ghcr.io/bemanproject/infra-containers-gcc:latest"},
+          {"preset": "llvm-debug", "image": "ghcr.io/bemanproject/infra-containers-clang:latest"},
+          {"preset": "llvm-release", "image": "ghcr.io/bemanproject/infra-containers-clang:latest"},
+          {"preset": "appleclang-debug", "runner": "macos-latest"},
+          {"preset": "appleclang-release", "runner": "macos-latest"},
+          {"preset": "msvc-debug", "runner": "windows-latest"},
+          {"preset": "msvc-release", "runner": "windows-latest"}
         ]
 
   gtest-test:

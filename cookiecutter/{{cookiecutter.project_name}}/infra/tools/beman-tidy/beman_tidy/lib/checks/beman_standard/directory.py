@@ -1,8 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 from ..base.directory_base_check import DirectoryBaseCheck
 from ..system.registry import register_beman_standard_check
+
 
 # [DIRECTORY.*] checks category.
 class BemanTreeDirectoryCheck(DirectoryBaseCheck):
@@ -11,7 +12,11 @@ class BemanTreeDirectoryCheck(DirectoryBaseCheck):
     """
 
     def __init__(self, repo_info, beman_standard_check_config, prefix_path):
-        super().__init__(repo_info, beman_standard_check_config, f"{prefix_path}/beman/{repo_info['name']}")
+        super().__init__(
+            repo_info,
+            beman_standard_check_config,
+            f"{prefix_path}/beman/{repo_info['name']}",
+        )
 
 
 # TODO DIRECTORY.INTERFACE_HEADERS
@@ -26,6 +31,7 @@ class DirectorySourcesCheck(BemanTreeDirectoryCheck):
     """
     Check if the sources directory is src/beman/<short_name>.
     """
+
     def __init__(self, repo_info, beman_standard_check_config):
         super().__init__(repo_info, beman_standard_check_config, "src")
 

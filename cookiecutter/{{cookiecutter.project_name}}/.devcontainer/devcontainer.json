@@ -3,7 +3,7 @@
 
 {
 	"name": "Beman Project Generic Devcontainer",
-	"image": "ghcr.io/bemanproject/devcontainers-gcc:14",
+	"image": "ghcr.io/bemanproject/infra-containers-devcontainer-gcc:14",
 	"postCreateCommand": "pre-commit",
 	"customizations": {
 		"vscode": {

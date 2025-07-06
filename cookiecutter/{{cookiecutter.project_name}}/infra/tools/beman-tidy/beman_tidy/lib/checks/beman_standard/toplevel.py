@@ -1,7 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-from ..base.base_check import BaseCheck
+from .cmake import CMakeBaseCheck
+from .license import LicenseBaseCheck
+from .readme import ReadmeBaseCheck
 from ..system.registry import register_beman_standard_check
 
 # [TOPLEVEL.*] checks category.
@@ -10,42 +12,46 @@ from ..system.registry import register_beman_standard_check
 # Note: ToplevelBaseCheck is not a registered check!
 
 
-class ToplevelBaseCheck(BaseCheck):
-    def __init__(self, repo_info, beman_standard_check_config):
-        super().__init__(repo_info, beman_standard_check_config)
-
-@register_beman_standard_check("TOPLEVEL.CMAKE")
-class ToplevelCmakeCheck(ToplevelBaseCheck):
+@register_beman_standard_check(check="TOPLEVEL.CMAKE")
+class ToplevelCmakeCheck(CMakeBaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
         super().__init__(repo_info, beman_standard_check_config)
 
     def check(self):
-        """
-        self.config["value"] contains the CMake file name.
-        """
-        self.path = self.repo_path / self.config["value"]
-        assert self.config["value"].endswith(".txt")
-
-        if not self.path.exists():
-            self.log("The top-level CMake file does not exist.")
-            return False
-
-        try:
-            with open(self.path, 'r') as file:
-                if len(file.read()) == 0:
-                    self.log("The top-level CMake file is empty.")
-                    return False
-        except Exception:
-            self.log("Failed to read the top-level CMake file.")
-            return False
-
-        return True
+        return super().pre_check()
 
     def fix(self):
         # TODO: Implement the fix.
         pass
 
-# TODO TOPLEVEL.LICENSE - use FileBaseCheck
+
+@register_beman_standard_check("TOPLEVEL.LICENSE")
+class ToplevelLicenseCheck(LicenseBaseCheck):
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config)
+
+    def check(self):
+        # since this class simply checks for the existence of a LICENSE file,
+        # there's nothing more to do than the default pre-check.
+        return super().pre_check()
+
+    def fix(self):
+        self.log(
+            "Please add a LICENSE file to the repository. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#license for more information."
+        )
 
 
-# TODO TOPLEVEL.README - use ReadmeBaseCheck
+@register_beman_standard_check("TOPLEVEL.README")
+class ToplevelReadmeCheck(ReadmeBaseCheck):
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config)
+
+    def check(self):
+        # since this class simply checks for the existence of a README file,
+        # there's nothing more to do than the default pre-check.
+        return super().pre_check()
+
+    def fix(self):
+        self.log(
+            "Please write a README file. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#readmemd for the desired format."
+        )

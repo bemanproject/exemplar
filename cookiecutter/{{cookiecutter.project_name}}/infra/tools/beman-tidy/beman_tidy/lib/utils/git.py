@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 import sys
@@ -55,8 +55,7 @@ def get_repo_info(path: str):
         print(f"The path '{path}' is not inside a valid Git repository.")
         sys.exit(1)
     except Exception:
-        print(
-            f"An error occurred while getting repository information. Check {path}.")
+        print(f"An error occurred while getting repository information. Check {path}.")
         sys.exit(1)
 
 
@@ -100,7 +99,7 @@ def load_beman_standard_config(path=get_beman_standard_config_path()):
                 # TODO: Implement the regex check.
                 pass
             elif "file_name" in entry:
-                pass
+                check_config["file_name"] = entry["file_name"]
             elif "directory_name" in entry:
                 pass
             elif "values" in entry:
@@ -115,8 +114,7 @@ def load_beman_standard_config(path=get_beman_standard_config_path()):
             elif "default_group" in entry:
                 check_config["default_group"] = entry["default_group"]
             else:
-                raise ValueError(
-                    f"Invalid entry in Beman Standard YAML: {entry}")
+                raise ValueError(f"Invalid entry in Beman Standard YAML: {entry}")
 
         beman_standard_check_config[check_name] = check_config
 

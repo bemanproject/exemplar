@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 import re
@@ -30,7 +30,8 @@ class ReadmeTitleCheck(ReadmeBaseCheck):
         regex = rf"^# {re.escape(self.library_name)}: (.*)$"  # noqa: F541
         if not re.match(regex, first_line):
             self.log(
-                f"The first line of the file '{self.path}' is invalid. It should start with '# {self.library_name}: <short_description>'.")
+                f"The first line of the file '{self.path}' is invalid. It should start with '# {self.library_name}: <short_description>'."
+            )
             return False
 
         return True
@@ -57,11 +58,11 @@ class ReadmeBadgesCheck(ReadmeBaseCheck):
         assert len(badges) == 4  # The number of library maturity model states
 
         # Check if exactly one of the required badges is present.
-        badge_count = len(
-            [badge for badge in badges if self.has_content(badge)])
+        badge_count = len([badge for badge in badges if self.has_content(badge)])
         if badge_count != 1:
             self.log(
-                f"The file '{self.path}' does not contain exactly one of the required badges from {badges}")
+                f"The file '{self.path}' does not contain exactly one of the required badges from {badges}"
+            )
             return False
 
         return True
@@ -69,6 +70,7 @@ class ReadmeBadgesCheck(ReadmeBaseCheck):
     def fix(self):
         # TODO: Implement the fix.
         pass
+
 
 # TODO README.PURPOSE
 
@@ -89,11 +91,11 @@ class ReadmeLibraryStatusCheck(ReadmeBaseCheck):
         assert len(statuses) == len(self.beman_library_maturity_model)
 
         # Check if at least one of the required status values is present.
-        status_count = len(
-            [status for status in statuses if self.has_content(status)])
+        status_count = len([status for status in statuses if self.has_content(status)])
         if status_count != 1:
             self.log(
-                f"The file '{self.path}' does not contain exactly one of the required statuses from {statuses}")
+                f"The file '{self.path}' does not contain exactly one of the required statuses from {statuses}"
+            )
             return False
 
         return True
