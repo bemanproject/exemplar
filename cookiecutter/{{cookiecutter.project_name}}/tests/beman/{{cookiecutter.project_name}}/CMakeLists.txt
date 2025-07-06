@@ -17,8 +17,9 @@ if(BEMAN_{{cookiecutter.project_name.upper()}}_INSTALL_CONFIG_FILE_PACKAGE)
     add_test(
         NAME install-to-stagedir
         COMMAND
-            ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} --prefix
-            ${CMAKE_BINARY_DIR}/stagedir
+            ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR} #
+            --prefix ${CMAKE_BINARY_DIR}/stagedir #
+            --config $<CONFIG>
     )
     add_test(
         NAME find-package-test
