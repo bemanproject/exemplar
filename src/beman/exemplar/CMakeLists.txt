@@ -11,9 +11,9 @@ target_sources(
     beman.exemplar
     PUBLIC
         FILE_SET HEADERS
-        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../include
-        FILES
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../../include/beman/exemplar/identity.hpp
+            BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../include
+            FILES
+                ${CMAKE_CURRENT_SOURCE_DIR}/../../../include/beman/exemplar/identity.hpp
 )
 
 set_target_properties(
@@ -22,10 +22,10 @@ set_target_properties(
 )
 
 install(
-    TARGETS beman.exemplar COMPONENT beman.exemplar
+    TARGETS beman.exemplar
+    COMPONENT beman.exemplar
     EXPORT beman.exemplar
-    DESTINATION
-    ${CMAKE_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}$<$<CONFIG:Debug>:/debug>
     FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )

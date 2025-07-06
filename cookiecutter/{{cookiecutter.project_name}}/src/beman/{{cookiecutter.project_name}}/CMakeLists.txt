@@ -11,9 +11,9 @@ target_sources(
     beman.{{cookiecutter.project_name}}
     PUBLIC
         FILE_SET HEADERS
-        BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../include
-        FILES
-            ${CMAKE_CURRENT_SOURCE_DIR}/../../../include/beman/{{cookiecutter.project_name}}/identity.hpp
+            BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/../../../include
+            FILES
+                ${CMAKE_CURRENT_SOURCE_DIR}/../../../include/beman/{{cookiecutter.project_name}}/identity.hpp
 )
 
 set_target_properties(
@@ -22,10 +22,10 @@ set_target_properties(
 )
 
 install(
-    TARGETS beman.{{cookiecutter.project_name}} COMPONENT beman.{{cookiecutter.project_name}}
+    TARGETS beman.{{cookiecutter.project_name}}
+    COMPONENT beman.{{cookiecutter.project_name}}
     EXPORT beman.{{cookiecutter.project_name}}
-    DESTINATION
-    ${CMAKE_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}$<$<CONFIG:Debug>:/debug>
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}$<$<CONFIG:Debug>:/debug>
     FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
