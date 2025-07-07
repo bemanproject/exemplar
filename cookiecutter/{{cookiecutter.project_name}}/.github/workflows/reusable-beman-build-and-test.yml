@@ -104,6 +104,7 @@ jobs:
           test=${{ matrix.config.test }}
           echo "build_config=${test%%[.]*}" >> "$GITHUB_OUTPUT"
           test_type=${test##*[.]}
+          echo "test_type=$test_type" >> "$GITHUB_OUTPUT"
           case $test_type in
             Default) ;;
             TSan)
@@ -114,6 +115,8 @@ jobs:
               echo "cmake_extra_args=-DCMAKE_CXX_FLAGS='-Werror=all -Werror=extra'" >> "$GITHUB_OUTPUT" ;;
             Dynamic)
               echo "cmake_extra_args=-DBUILD_SHARED_LIBS=on" >> "$GITHUB_OUTPUT" ;;
+            Coverage)
+              echo "cmake_extra_args=-DCMAKE_CXX_FLAGS='-fno-default-inline -fno-inline --coverage -fprofile-abs-path'" >> "$GITHUB_OUTPUT";;
             *)
               echo "cmake_extra_args=$test_type" >> "$GITHUB_OUTPUT" ;;
           esac
@@ -144,3 +147,26 @@ jobs:
       - name: Test
         shell: bash
         run: ctest --test-dir build --build-config ${{ steps.vars.outputs.build_config }} --output-on-failure
+      - name: Generate Coverage Files
+        if: steps.vars.outputs.test_type == 'Coverage'
+        shell: bash
+        run: |
+          cat > gcovr.cfg <<EOF
+          root = $GITHUB_WORKSPACE
+          gcov-executable = gcov-${{ matrix.config.version }}
+          exclude = $GITHUB_WORKSPACE/build/.*
+          exclude = $GITHUB_WORKSPACE/examples/.*
+          exclude = $GITHUB_WORKSPACE/tests/.*
+          coveralls = $GITHUB_WORKSPACE/coverage.json
+          coveralls-pretty = yes
+          EOF
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          gcovr --verbose --config gcovr.cfg .
+          cat coverage.json
+      - name: Upload Coverage Data to Coveralls
+        if: steps.vars.outputs.test_type == 'Coverage'
+        uses: coverallsapp/github-action@main
+        with:
+          file: coverage.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          debug: true

@@ -130,7 +130,6 @@ def beman_submodule_update(beman_submodule, remote):
     if beman_submodule.allow_untracked_files:
         for path in get_paths(beman_submodule):
             path2 = Path(beman_submodule.dirpath) / path
-            print("removing", path2)
             if Path(path2).is_dir():
                 shutil.rmtree(path2)
             elif Path(path2).is_file():
@@ -144,7 +143,7 @@ def beman_submodule_update(beman_submodule, remote):
         f.write(f'remote={beman_submodule.remote}\n')
         f.write(f'commit_hash={sha_process.stdout.strip()}\n')
         if beman_submodule.allow_untracked_files:
-            f.write(f'allow_untracked_files=True')
+            f.write(f'allow_untracked_files=True\n')
     shutil.rmtree(tmp_path / '.git')
     shutil.copytree(tmp_path, beman_submodule.dirpath, dirs_exist_ok=True)
 
