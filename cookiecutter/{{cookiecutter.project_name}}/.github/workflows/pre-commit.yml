@@ -1,4 +1,3 @@
-{% raw -%}
 name: Lint Check (pre-commit)
 
 on:
@@ -12,4 +11,3 @@ on:
 jobs:
   pre-commit:
     uses: ./.github/workflows/reusable-beman-pre-commit.yml
-{%- endraw %}

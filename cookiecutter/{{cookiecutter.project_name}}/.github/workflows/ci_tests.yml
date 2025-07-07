@@ -1,4 +1,3 @@
-{% raw -%}
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 name: Continuous Integration Tests
@@ -142,4 +141,3 @@ jobs:
     needs: [preset-test, build-and-test]
     if: failure() && github.event_name == 'schedule'
     uses: ./.github/workflows/reusable-beman-create-issue-when-fault.yml
-{%- endraw %}

@@ -1,4 +1,3 @@
-{% raw -%}
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 name: 'Beman build-and-test matrix'
@@ -145,4 +144,3 @@ jobs:
       - name: Test
         shell: bash
         run: ctest --test-dir build --build-config ${{ steps.vars.outputs.build_config }} --output-on-failure
-{%- endraw %}

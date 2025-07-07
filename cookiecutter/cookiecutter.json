@@ -5,6 +5,7 @@
   "owner": "github-user-name",
   "description": "Short project description.",
   "_copy_without_render": [
-    "infra"
+    "infra",
+    ".github/workflows"
   ]
 }

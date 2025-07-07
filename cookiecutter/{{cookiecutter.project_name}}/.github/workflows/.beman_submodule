@@ -1,0 +1,4 @@
+[beman_submodule]
+remote=https://github.com/bemanproject/infra-workflows.git
+commit_hash=cc68f719c9f41468a38412ed2987090ebc8aa504
+allow_untracked_files=True

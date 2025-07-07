@@ -1,4 +1,3 @@
-{% raw -%}
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 name: 'beman-submodule check'
@@ -19,4 +18,3 @@ jobs:
       - name: beman submodule consistency check
         run: |
           (set -o pipefail; ${{ inputs.infra_path }}/tools/beman-submodule/beman-submodule status | grep -qvF '+')
-{%- endraw %}
