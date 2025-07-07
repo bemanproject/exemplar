@@ -14,16 +14,19 @@ import tempfile
 from pathlib import Path
 
 
-def directory_compare(dir1: str | Path, dir2: str | Path, ignore):
-    dir1, dir2 = Path(dir1), Path(dir2)
+def directory_compare(
+        reference: str | Path, actual: str | Path, ignore, allow_untracked_files: bool):
+    reference, actual = Path(reference), Path(actual)
 
-    compared = filecmp.dircmp(dir1, dir2, ignore=ignore)
-    if compared.left_only or compared.right_only or compared.diff_files:
+    compared = filecmp.dircmp(reference, actual, ignore=ignore)
+    if (compared.left_only
+        or (compared.right_only and not allow_untracked_files)
+        or compared.diff_files):
         return False
     for common_dir in compared.common_dirs:
-        path1 = dir1 / common_dir
-        path2 = dir2 / common_dir
-        if not directory_compare(path1, path2, ignore):
+        path1 = reference / common_dir
+        path2 = actual / common_dir
+        if not directory_compare(path1, path2, ignore, allow_untracked_files):
             return False
     return True
 
@@ -105,7 +108,9 @@ def get_paths(beman_submodule):
 
 def beman_submodule_status(beman_submodule):
     tmpdir = clone_beman_submodule_into_tmpdir(beman_submodule, False)
-    if directory_compare(tmpdir.name, beman_submodule.dirpath, ['.beman_submodule', '.git']):
+    if directory_compare(
+            tmpdir.name, beman_submodule.dirpath, ['.beman_submodule', '.git'],
+            beman_submodule.allow_untracked_files):
         status_character=' '
     else:
         status_character='+'
@@ -178,7 +183,7 @@ def add_command(repository, path, allow_untracked_files):
         f.write(f'remote={repository}\n')
         f.write(f'commit_hash={sha_process.stdout.strip()}\n')
         if allow_untracked_files:
-            f.write(f'allow_untracked_files=True')
+            f.write(f'allow_untracked_files=True\n')
     shutil.rmtree(tmpdir_repo /'.git')
     shutil.copytree(tmpdir_repo, path, dirs_exist_ok=True)
 

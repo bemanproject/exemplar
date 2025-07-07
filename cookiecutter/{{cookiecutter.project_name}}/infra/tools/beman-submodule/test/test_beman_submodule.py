@@ -80,13 +80,40 @@ def test_directory_compare():
         create_dir_structure(path_a)
         create_dir_structure(path_b)
 
-        assert beman_submodule.directory_compare(dir_a, dir_b, [])
+        assert beman_submodule.directory_compare(dir_a, dir_b, [], False)
 
         with open(path_a / 'bar' / 'quux.txt', 'w') as f:
             f.write('quux')
 
-        assert not beman_submodule.directory_compare(path_a, path_b, [])
-        assert beman_submodule.directory_compare(path_a, path_b, ['quux.txt'])
+        assert not beman_submodule.directory_compare(path_a, path_b, [], False)
+        assert beman_submodule.directory_compare(path_a, path_b, ['quux.txt'], False)
+
+def test_directory_compare_untracked_files():
+    def create_dir_structure(dir_path: Path):
+        bar_path = dir_path / 'bar'
+        os.makedirs(bar_path)
+
+        with open(dir_path / 'foo.txt', 'w') as f:
+            f.write('foo')
+        with open(bar_path / 'baz.txt', 'w') as f:
+            f.write('baz')
+
+    with tempfile.TemporaryDirectory() as reference, \
+         tempfile.TemporaryDirectory() as actual:
+        path_a = Path(reference)
+        path_b = Path(actual)
+
+        create_dir_structure(path_a)
+        create_dir_structure(path_b)
+        (path_b / 'c.txt').touch()
+
+        assert beman_submodule.directory_compare(reference, actual, [], True)
+
+        with open(path_a / 'bar' / 'quux.txt', 'w') as f:
+            f.write('quux')
+
+        assert not beman_submodule.directory_compare(path_a, path_b, [], True)
+        assert beman_submodule.directory_compare(path_a, path_b, ['quux.txt'], True)
 
 def test_parse_beman_submodule_file():
     def valid_file():
@@ -197,13 +224,14 @@ def test_clone_beman_submodule_into_tmpdir():
     module = beman_submodule.get_beman_submodule(Path(tmpdir2.name) / 'foo')
     module.commit_hash = sha
     tmpdir3 = beman_submodule.clone_beman_submodule_into_tmpdir(module, False)
-    assert not beman_submodule.directory_compare(tmpdir.name, tmpdir3.name, ['.git'])
+    assert not beman_submodule.directory_compare(
+        tmpdir.name, tmpdir3.name, ['.git'], False)
     tmpdir4 = beman_submodule.clone_beman_submodule_into_tmpdir(module, True)
-    assert beman_submodule.directory_compare(tmpdir.name, tmpdir4.name, ['.git'])
+    assert beman_submodule.directory_compare(tmpdir.name, tmpdir4.name, ['.git'], False)
     subprocess.run(
         ['git', 'reset', '--hard', sha], capture_output=True, check=True,
         cwd=tmpdir.name)
-    assert beman_submodule.directory_compare(tmpdir.name, tmpdir3.name, ['.git'])
+    assert beman_submodule.directory_compare(tmpdir.name, tmpdir3.name, ['.git'], False)
     os.chdir(original_cwd)
 
 def test_get_paths():
@@ -272,9 +300,9 @@ def test_update_command_no_paths():
         ['git', 'reset', '--hard', parent_sha], capture_output=True, check=True,
         cwd=tmpdir.name)
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'], False)
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'], False)
     subprocess.run(
         ['git', 'reset', '--hard', orig_sha], capture_output=True, check=True,
         cwd=tmpdir.name)
@@ -284,9 +312,9 @@ def test_update_command_no_paths():
     with open(Path(tmpdir2.name) / 'bar' / '.beman_submodule', 'r') as f:
         assert f.read() == f'[beman_submodule]\nremote={tmpdir.name}\ncommit_hash={orig_sha}\n'
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'], False)
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'], False)
     os.chdir(original_cwd)
 
 def test_update_command_with_path():
@@ -329,9 +357,10 @@ def test_update_command_with_path():
         ['git', 'reset', '--hard', parent_sha], capture_output=True, check=True,
         cwd=tmpdir.name)
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'], False)
     assert beman_submodule.directory_compare(
-        tmpdir_parent_parent_copy.name, Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'])
+        tmpdir_parent_parent_copy.name,
+        Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'], False)
     subprocess.run(
         ['git', 'reset', '--hard', orig_sha], capture_output=True, check=True,
         cwd=tmpdir.name)
@@ -341,9 +370,10 @@ def test_update_command_with_path():
     with open(Path(tmpdir2.name) / 'bar' / '.beman_submodule', 'r') as f:
         assert f.read() == f'[beman_submodule]\nremote={tmpdir.name}\ncommit_hash={parent_sha}\n'
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'], False)
     assert beman_submodule.directory_compare(
-        tmpdir_parent_parent_copy.name, Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'])
+        tmpdir_parent_parent_copy.name,
+        Path(tmpdir2.name) / 'bar', ['.git', '.beman_submodule'], False)
     os.chdir(original_cwd)
 
 def test_update_command_untracked_files():
@@ -380,7 +410,7 @@ def test_add_command():
         cwd=tmpdir.name)
     sha = sha_process.stdout.strip()
     assert beman_submodule.directory_compare(
-        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'])
+        tmpdir.name, Path(tmpdir2.name) / 'foo', ['.git', '.beman_submodule'], False)
     with open(Path(tmpdir2.name) / 'foo' / '.beman_submodule', 'r') as f:
         assert f.read() == f'[beman_submodule]\nremote={tmpdir.name}\ncommit_hash={sha}\n'
     os.chdir(original_cwd)
@@ -428,6 +458,21 @@ def test_status_command_with_path(capsys):
     beman_submodule.status_command(['bar'])
     sha = sha_process.stdout.strip()
     assert capsys.readouterr().out == '+ ' + sha + ' bar\n'
+    os.chdir(original_cwd)
+
+def test_status_command_untracked_files(capsys):
+    tmpdir = create_test_git_repository()
+    tmpdir2 = create_test_git_repository()
+    original_cwd = Path.cwd()
+    os.chdir(tmpdir2.name)
+    beman_submodule.add_command(tmpdir.name, 'foo', True)
+    sha_process = subprocess.run(
+        ['git', 'rev-parse', 'HEAD'], capture_output=True, check=True, text=True,
+        cwd=tmpdir.name)
+    (Path(tmpdir2.name) / 'foo' / 'c.txt').touch()
+    beman_submodule.status_command(['foo'])
+    sha = sha_process.stdout.strip()
+    assert capsys.readouterr().out == '  ' + sha + ' foo\n'
     os.chdir(original_cwd)
 
 def test_check_for_git():
