@@ -59,6 +59,10 @@ function(BemanExemplar_provideDependency method package_name)
         message(FATAL_ERROR "${BemanExemplar_lockfile}: ${BemanExemplar_error}")
     endif()
 
+    if(BemanExemplar_numDependencies EQUAL 0)
+        return()
+    endif()
+
     # Loop over each dependency object
     math(EXPR BemanExemplar_maxIndex "${BemanExemplar_numDependencies} - 1")
     foreach(BemanExemplar_index RANGE "${BemanExemplar_maxIndex}")

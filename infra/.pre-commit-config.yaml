@@ -12,6 +12,13 @@ repos:
     hooks:
       - id: codespell
 
+    # CMake linting and formatting
+  - repo: https://github.com/BlankSpruce/gersemi
+    rev: 0.15.1
+    hooks:
+    - id: gersemi
+      name: CMake linting
+
   # Python linting and formatting
   # config file: ruff.toml (not currently present but add if needed)
   # https://docs.astral.sh/ruff/configuration/

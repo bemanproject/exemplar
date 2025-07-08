@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
       - name: Setup MSVC
         if: matrix.config.compiler == 'msvc'
         uses: TheMrMilchmann/setup-msvc-dev@v3
@@ -153,7 +155,7 @@ jobs:
         run: |
           cat > gcovr.cfg <<EOF
           root = $GITHUB_WORKSPACE
-          gcov-executable = gcov-${{ matrix.config.version }}
+          gcov-executable = gcov
           exclude = $GITHUB_WORKSPACE/build/.*
           exclude = $GITHUB_WORKSPACE/examples/.*
           exclude = $GITHUB_WORKSPACE/tests/.*
