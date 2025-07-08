@@ -20,10 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup build environment
+        if: matrix.presets.runner
         uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: "~3.25.0"
-          ninjaVersion: "^1.11.1"
+          cmakeVersion: "4.0.3"
+          ninjaVersion: "1.13.0"
       - name: Setup MSVC
         if: startsWith(matrix.presets.runner, 'windows')
         uses: TheMrMilchmann/setup-msvc-dev@v3
