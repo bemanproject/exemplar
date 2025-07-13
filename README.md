@@ -390,9 +390,3 @@ This will generate such directory structure at `/opt/beman.exemplar`.
 └── lib
     └── libbeman.exemplar.a
 ```
-
-## Contributing
-
-Please do!
-You encourage you to checkout our [contributor's guide](docs/README.md).
-Issues and pull requests are appreciated.
