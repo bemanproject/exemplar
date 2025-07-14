@@ -161,6 +161,7 @@ jobs:
           exclude = $GITHUB_WORKSPACE/tests/.*
           coveralls = $GITHUB_WORKSPACE/coverage.json
           coveralls-pretty = yes
+          merge-mode-functions = separate
           EOF
           git config --global --add safe.directory $GITHUB_WORKSPACE
           gcovr --verbose --config gcovr.cfg .

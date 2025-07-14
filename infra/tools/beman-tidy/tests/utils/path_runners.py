@@ -22,13 +22,25 @@ def run_check_for_each_path(
         beman_standard_check_config = "/path/to/.beman-standard.yml"
     """
     for path in paths:
+        if os.path.isdir(path):
+            # For repo checks, modify the repo_info to point to the test directory
+            repo_info["top_level"] = Path(path)
+
         check_instance = check_class(repo_info, beman_standard_check_config)
-        check_instance.path = Path(path)
+
+        if os.path.isfile(path):
+            # For file checks, set the path directly on the check instance
+            check_instance.path = Path(path)
+
         check_instance.log_level = True
 
-        assert check_instance.pre_check() is True, (
-            f"[{check_instance.__class__.__name__}] pre_check() failed for {path}"
-        )
+        if os.path.isfile(path):
+            # For file-based checks, pre_check is expected to pass
+            assert check_instance.pre_check() is True, (
+                f"[{check_instance.__class__.__name__}] pre_check() failed for {path}"
+            )
+
+        # Run the main check
         assert check_instance.check() is expected_result, (
             f"[{check_instance.__class__.__name__}] check() failed for {path}"
         )

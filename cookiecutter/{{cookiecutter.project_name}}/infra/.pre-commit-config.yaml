@@ -18,6 +18,7 @@ repos:
     hooks:
     - id: gersemi
       name: CMake linting
+      exclude: ^.*/tests/.*/data/ # Exclude test data directories
 
   # Python linting and formatting
   # config file: ruff.toml (not currently present but add if needed)

@@ -30,7 +30,6 @@ REPOSITORY.NAME:
     - regex: <put a regex here if possible>
 REPOSITORY.CODEOWNERS:
     - type: REQUIREMENT
-    - default_group: "@bemanproject/core-reviewers"
 REPOSITORY.DISALLOW_GIT_SUBMODULES:
     - type: RECOMMENDATION
 
