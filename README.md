@@ -86,23 +86,22 @@ Full runnable examples can be found in [`examples/`](examples/).
 
 This project requires at least the following to build:
 
-* C++17
-* CMake 3.25
+* A C++ compiler that conforms to the C++17 standard or greater
+* CMake 3.25 or later
 * (Test Only) GoogleTest
 
-You can disable building tests by setting cmake option
+You can disable building tests by setting CMake option
 [`BEMAN_EXEMPLAR_BUILD_TESTS`](#beman_exemplar_build_tests) to `OFF`
 when configuring the project.
 
-Even when tests are being built and run, some will not be compiled
-unless provided compiler support **C++20** or ranges capabilities enabled.
+Even when tests are being built and run, some of them will not be compiled
+unless the provided compiler supports **C++20** ranges.
 
 > [!TIP]
 >
-> In the logs you will be able to see if there are any examples that aren't enabled
-> due to compiler capabilities or the configured C++ version.
+> The logs indicate examples disabled due to lack of compiler support.
 >
-> Below is an example:
+> For example:
 >
 > ```txt
 > -- Looking for __cpp_lib_ranges
@@ -118,10 +117,10 @@ unless provided compiler support **C++20** or ranges capabilities enabled.
 
 This project officially supports:
 
-* GNU GCC Compiler \[version 11-15\]
-* LLVM Clang++ Compiler (with libstdc++ or libc++) \[version 17-20\]
-* AppleClang compiler on Mac OS
-* MSVC compiler on Windows
+* GCC versions 11–15
+* LLVM Clang++ (with libstdc++ or libc++) versions 17–20
+* AppleClang version 15.0.0 (i.e., the [latest version on GitHub-hosted MacOS runners](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md))
+* MSVC version 19.44.35211.0 (i.e., the [latest version on GitHub-hosted Windows runners](https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md))
 
 > [!NOTE]
 >
@@ -137,60 +136,38 @@ This project officially supports:
 This project supports [GitHub Codespace](https://github.com/features/codespaces)
 via [Development Containers](https://containers.dev/),
 which allows rapid development and instant hacking in your browser.
-We recommend you using GitHub codespace to explore this project as this
+We recommend using GitHub codespace to explore this project as it
 requires minimal setup.
 
-You can create a codespace for this project by clicking this badge:
+Click the following badge to create a codespace:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/bemanproject/exemplar)
 
-For more detailed documentation regarding creating and developing inside of
-GitHub codespaces, please reference [this doc](https://docs.github.com/en/codespaces/).
+For more documentation on GitHub codespaces, please see
+[this doc](https://docs.github.com/en/codespaces/).
 
 > [!NOTE]
 >
-> The codespace container may take up to 5 minutes to build and spin-up,
-> this is normal as we need to build a custom docker container to setup
-> an environment appropriate for beman projects.
+> The codespace container may take up to 5 minutes to build and spin-up; this is normal.
 
 ### Develop locally on your machines
 
 <details>
-<summary> For Linux based systems </summary>
+<summary> For Linux </summary>
 
 Beman libraries require [recent versions of CMake](#build-environment),
-we advise you to download CMake directly from [CMake's website](https://cmake.org/download/)
-or install it via the [Kitware apt library](https://apt.kitware.com/).
+we recommend downloading CMake directly from [CMake's website](https://cmake.org/download/)
+or installing it with the [Kitware apt library](https://apt.kitware.com/).
 
 A [supported compiler](#supported-platforms) should be available from your package manager.
-Alternatively you could use an install script from official compiler vendors.
-
-Here is an example of how to install the latest stable version of clang
-as per [the official LLVM install guide](https://apt.llvm.org/).
-
-```bash
-bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-```
-
-If the included test suite is being built and run, a GoogleTest library will be
-required. Here is an example of installing GoogleTest on a Debian-based Linux
-environment:
-
-```bash
-apt install libgtest-dev
-```
-
-The precise command and package name will vary depending on the Linux OS you are
-using. Be sure to consult documentation and the package repository for the system
-you are using.
 
 </details>
 
 <details>
-<summary> For MacOS based systems </summary>
+<summary> For MacOS </summary>
 
 Beman libraries require [recent versions of CMake](#build-environment).
-You can use [`Homebrew`](https://brew.sh/) to install the latest major version of CMake.
+Use [`Homebrew`](https://brew.sh/) to install the latest version of CMake.
 
 ```bash
 brew install cmake
@@ -242,22 +219,20 @@ cmake --workflow --preset gcc-debug
 Generally, there are two kinds of presets, `debug` and `release`.
 
 The `debug` presets are designed to aid development, so it has debugging
-instrumentation enabled and as many sanitizers turned on as possible.
+instrumentation enabled and many sanitizers enabled.
 
 > [!NOTE]
 >
-> The set of sanitizer supports are different across compilers.
-> You can checkout the exact set of compiler arguments by looking at the toolchain
-> files under the [`cmake`](cmake/) directory.
+> The sanitizers that are enabled vary from compiler to compiler.
+> See the toolchain files under ([`cmake`](cmake/)) to determine the exact configuration used for each preset.
 
-The `release` presets are designed for use in production environments,
-thus they have the highest optimization turned on (e.g. `O3`).
+The `release` presets are designed for production use, and
+consequently have the highest optimization turned on (e.g. `O3`).
 
 ### Configure and Build Manually
 
-While [CMake Presets](#configure-and-build-the-project-using-cmake-presets) are
-convenient, you might want to set different configuration or compiler arguments
-than any provided preset supports.
+If the presets are not suitable for your use-case, a traditional CMake
+invocation will provide more configurability.
 
 To configure, build and test the project with extra arguments,
 you can run this set of commands.
@@ -297,14 +272,11 @@ The precise version of GoogleTest that will be used is maintained in
 
 ### Project specific configure arguments
 
-When configuring the project manually,
-you can pass an array of project specific CMake configs to customize your build.
-
-Project specific options are prefixed with `BEMAN_EXEMPLAR`.
+Project-specific options are prefixed with `BEMAN_EXEMPLAR`.
 You can see the list of available options with:
 
 ```bash
-cmake -LH | grep "BEMAN_EXEMPLAR" -C 2
+cmake -LH -S . -B build | grep "BEMAN_EXEMPLAR" -C 2
 ```
 
 <details>
@@ -314,7 +286,7 @@ cmake -LH | grep "BEMAN_EXEMPLAR" -C 2
 #### `BEMAN_EXEMPLAR_BUILD_TESTS`
 
 Enable building tests and test infrastructure. Default: ON.
-Values: { ON, OFF }.
+Values: `{ ON, OFF }`.
 
 You can configure the project to have this option turned off via:
 
@@ -323,10 +295,9 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_EXEMPLAR_BUILD_TESTS=OFF
 ```
 
 > [!TIP]
-> Because this project requires Google Tests as part of its development
-> dependency,
-> disable building tests avoids the project from pulling Google Tests from
-> GitHub.
+> Because this project requires GoogleTest for running tests,
+> disabling `BEMAN_EXEMPLAR_BUILD_TESTS` avoids the project from
+> cloning GoogleTest from GitHub.
 
 #### `BEMAN_EXEMPLAR_BUILD_EXAMPLES`
 
@@ -345,14 +316,14 @@ include an appropriate `beman.exemplar` header from your source code.
 
 > [!NOTE]
 >
-> `beman.exemplar` headers are to be included with the `beman/exemplar/` directories prefixed.
-> It is not supported to alter include search paths to spell the include target another way. For instance,
-> `#include <identity.hpp>` is not a supported interface.
+> `beman.exemplar` headers are to be included with the `beman/exemplar/` prefix.
+> Altering include search paths to spell the include target another way (e.g.
+> `#include <identity.hpp>`) is unsupported.
 
-How you will link your project against `beman.exemplar` will depend on your build system.
-CMake instructions are provided in following sections.
+The process for incorporating `beman.exemplar` into your project depends on the
+build system being used. Instructions for CMake are provided in following sections.
 
-### Linking your project to beman.exemplar with CMake
+### Incorporating `beman.exemplar` into your project with CMake
 
 For CMake based projects,
 you will need to use the `beman.exemplar` CMake module
@@ -363,13 +334,13 @@ find_package(beman.exemplar REQUIRED)
 ```
 
 You will also need to add `beman::exemplar` to the link libraries of
-any libraries or executables that include beman.exemplar's header file.
+any libraries or executables that include `beman.exemplar` headers.
 
 ```cmake
 target_link_libraries(yourlib PUBLIC beman::exemplar)
 ```
 
-### Produce beman.exemplar static library locally
+### Produce beman.exemplar static library
 
 You can include exemplar's headers locally
 by producing a static `libbeman.exemplar.a` library.
