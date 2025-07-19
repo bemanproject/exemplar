@@ -16,6 +16,7 @@ from .checks.beman_standard.general import *  # noqa: F401, F403
 from .checks.beman_standard.license import *  # noqa: F401, F403
 from .checks.beman_standard.readme import *  # noqa: F401, F403
 from .checks.beman_standard.release import *  # noqa: F401, F403
+from .checks.beman_standard.repository import *  # noqa: F401, F403
 from .checks.beman_standard.toplevel import *  # noqa: F401, F403
 
 red_color = "\033[91m"
@@ -76,7 +77,7 @@ def run_checks_pipeline(checks_to_run, args, beman_standard_check_config):
     def run_pipeline_helper():
         # Internal checks
         if args.fix_inplace:
-            run_check(DisallowFixInplaceAndUnstagedChangesCheck, log_enabled=False)
+            run_check(DisallowFixInplaceAndUnstagedChangesCheck, log_enabled=True)
 
         implemented_checks = get_registered_beman_standard_checks()
         all_checks = beman_standard_check_config

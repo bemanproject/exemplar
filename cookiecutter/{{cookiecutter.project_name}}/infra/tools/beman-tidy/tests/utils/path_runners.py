@@ -5,6 +5,33 @@ import os
 from pathlib import Path
 
 
+def run_check_for_each_repo_info(
+    expected_result, check_class, repo_infos, beman_standard_check_config
+):
+    """
+    Run repo-info-based check (check_class) for each given repo_info: evaluate check_class(repo_infos[i]).
+
+    This is useful for checks that work with repository metadata rather than file paths.
+
+    Example:
+        expected_result = True / False
+        repo_infos = [
+            {"default_branch": "main", ...},
+            {"default_branch": "master", ...},
+        ]
+        check_class = RepositoryDefaultBranchCheck
+        beman_standard_check_config = "/path/to/.beman-standard.yml"
+    """
+    for repo_info in repo_infos:
+        check_instance = check_class(repo_info, beman_standard_check_config)
+        check_instance.log_level = True
+
+        # Run the main check
+        assert check_instance.check() is expected_result, (
+            f"[{check_instance.__class__.__name__}] check() failed for repo_info: {repo_info}"
+        )
+
+
 def run_check_for_each_path(
     expected_result, paths, check_class, repo_info, beman_standard_check_config
 ):

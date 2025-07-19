@@ -6,12 +6,11 @@ import re
 from ..base.file_base_check import FileBaseCheck
 from ..system.registry import register_beman_standard_check
 
+
 # [README.*] checks category.
 # All checks in this file extend the ReadmeBaseCheck class.
 #
 # Note: ReadmeBaseCheck is not a registered check!
-
-
 class ReadmeBaseCheck(FileBaseCheck):
     def __init__(self, repo_info, beman_standard_check_config):
         super().__init__(repo_info, beman_standard_check_config, "README.md")
@@ -52,24 +51,40 @@ class ReadmeBadgesCheck(ReadmeBaseCheck):
 
     def check(self):
         """
-        self.config["values"] contains a fixed set of Beman badges.
+        self.config["values"] contains a fixed set of Beman badges,
+        check .beman-standard.yml for the desired format.
         """
-        badges = self.config["values"]
-        assert len(badges) == 4  # The number of library maturity model states
 
-        # Check if exactly one of the required badges is present.
-        badge_count = len([badge for badge in badges if self.has_content(badge)])
-        if badge_count != 1:
-            self.log(
-                f"The file '{self.path}' does not contain exactly one of the required badges from {badges}"
-            )
-            return False
+        def validate_badges(category, badges):
+            if category == "library_status":
+                assert len(badges) == 4  # The number of library maturity model states.
+            elif category == "standard_target":
+                assert (
+                    len(badges) == 2
+                )  # The number of standard targets specified in the Beman Standard.
 
-        return True
+        def count_badges(badges):
+            return len([badge for badge in badges if self.has_content(badge)])
+
+        count_failed = 0
+        for category_data in self.config["values"]:
+            category = list(category_data.keys())[0]
+            badges = category_data[category]
+            validate_badges(category, badges)
+
+            if count_badges(badges) != 1:
+                self.log(
+                    f"The file '{self.path}' does not contain exactly one required badge of category '{category}'."
+                )
+                count_failed += 1
+
+        return count_failed == 0
 
     def fix(self):
-        # TODO: Implement the fix.
-        pass
+        self.log(
+            "Please add required badges in README.md file. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#readmebadges for the desired format."
+        )
+        return True
 
 
 @register_beman_standard_check("README.IMPLEMENTS")
@@ -107,7 +122,7 @@ class ReadmeImplementsCheck(ReadmeBaseCheck):
         self.log(
             "Please write a Implements line in README.md file. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#readmeimplements for the desired format."
         )
-        return False
+        return True
 
 
 @register_beman_standard_check("README.LIBRARY_STATUS")
@@ -133,5 +148,7 @@ class ReadmeLibraryStatusCheck(ReadmeBaseCheck):
         return True
 
     def fix(self):
-        # TODO: Implement the fix.
-        pass
+        self.log(
+            "Please write a Status line in README.md file. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#readmelibrary_status for the desired format."
+        )
+        return True

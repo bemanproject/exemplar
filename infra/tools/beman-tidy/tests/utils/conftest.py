@@ -13,6 +13,7 @@ def mock_repo_info():
         "name": "exemplar",
         "remote_url": "https://github.com/bemanproject/exemplar",
         "current_branch": "main",
+        "default_branch": "main",
         "commit_hash": 0,
         "status": "",
         "unstaged_changes": "",

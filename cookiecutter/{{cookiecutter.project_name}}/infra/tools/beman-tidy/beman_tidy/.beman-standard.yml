@@ -30,6 +30,8 @@ REPOSITORY.NAME:
     - regex: <put a regex here if possible>
 REPOSITORY.CODEOWNERS:
     - type: REQUIREMENT
+REPOSITORY.DEFAULT_BRANCH:
+    - type: REQUIREMENT
 REPOSITORY.DISALLOW_GIT_SUBMODULES:
     - type: RECOMMENDATION
 
@@ -56,11 +58,16 @@ README.TITLE:
     - type: RECOMMENDATION
 README.BADGES:
     - type: REQUIREMENT
-    - values: [
+    - values:
+        - library_status: [
             "![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg)",
             "![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_production_ready_api_may_undergo_changes.svg)",
             "![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_production_ready_stable_api.svg)",
             "![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_retired.svg)"
+        ]
+        - standard_target: [
+            "![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp26.svg)",
+            "![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp29.svg)"
         ]
 README.PURPOSE:
     - type: RECOMMENDATION
@@ -110,30 +117,18 @@ CMAKE.AVOID_PASSTHROUGHS:
 # DIRECTORY
 DIRECTORY.INTERFACE_HEADERS:
     - type: REQUIREMENT
-    - directory_name: include
-    - regex: <put a regex here if possible - e.g. include/beman/${LIBRARY_NAME}>
 DIRECTORY.IMPLEMENTATION_HEADERS:
     - type: REQUIREMENT
-    - regex: <put a regex here if possible - e.g. include/beman/${LIBRARY_NAME}/detail or include/beman/${LIBRARY_NAME}/detail_/>
 DIRECTORY.SOURCES:
     - type: REQUIREMENT
-    - directory_name: src
-    - regex: <put a regex here if possible - e.g. src/beman/${LIBRARY_NAME}>
 DIRECTORY.TESTS:
     - type: REQUIREMENT
-    - directory_name: tests
-    - regex: <put a regex here if possible - e.g. tests/beman/${LIBRARY_NAME}>
 DIRECTORY.EXAMPLES:
     - type: REQUIREMENT
-    - directory_name: examples
-    - regex: <put a regex here if possible>
 DIRECTORY.DOCS:
     - type: REQUIREMENT
-    - directory_name: docs
-    - regex: <put a regex here if possible>
 DIRECTORY.PAPERS:
     - type: REQUIREMENT
-    - directory_name: papers
 
 # FILE
 FILE.CPP_NAMES:

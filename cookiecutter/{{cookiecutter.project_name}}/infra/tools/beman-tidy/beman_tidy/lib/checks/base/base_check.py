@@ -30,16 +30,28 @@ class BaseCheck(ABC):
         )
 
         # save the check config
-        self.config = beman_standard_check_config[self.name]
+        self.config = (
+            beman_standard_check_config[self.name]
+            if "INTERNAL." not in self.name
+            else None
+        )
 
         # set type - e.g. "REQUIREMENT" or "RECOMMENDATION"
-        self.type = beman_standard_check_config[self.name]["type"]
+        self.type = (
+            beman_standard_check_config[self.name]["type"]
+            if "INTERNAL." not in self.name
+            else "REQUIREMENT"
+        )
         assert self.type in ["REQUIREMENT", "RECOMMENDATION"], (
             f"Invalid check type: {self.type} for check = {self.name}."
         )
 
         # set full text body - e.g. "The README.md should begin ..."
-        self.full_text_body = beman_standard_check_config[self.name]["full_text_body"]
+        self.full_text_body = (
+            beman_standard_check_config[self.name]["full_text_body"]
+            if "INTERNAL." not in self.name
+            else ""
+        )
         assert self.full_text_body is not None
 
         # set log level - e.g. "ERROR" or "WARNING"
