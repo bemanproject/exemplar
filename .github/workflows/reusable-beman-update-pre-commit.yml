@@ -1,9 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
 name: Pre-commit auto-update
 
 on:
-  schedule:
-    - cron: "0 0 * * 0"  # Weekly
-  workflow_dispatch:
+  workflow_call:
 
 jobs:
   auto-update:

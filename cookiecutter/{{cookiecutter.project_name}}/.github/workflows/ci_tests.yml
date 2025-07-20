@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '30 15 * * *'
+    - cron: "0 0 * * 0"
 
 jobs:
   beman-submodule-check:
@@ -136,5 +137,9 @@ jobs:
 
   create-issue-when-fault:
     needs: [preset-test, build-and-test]
-    if: failure() && github.event_name == 'schedule'
+    if: failure() && github.event.schedule == '30 15 * * *'
     uses: ./.github/workflows/reusable-beman-create-issue-when-fault.yml
+
+  auto-update-pre-commit:
+    if: github.event.schedule == '00 16 * * 0'
+    uses: ./.github/workflows/reusable-beman-update-pre-commit.yml
