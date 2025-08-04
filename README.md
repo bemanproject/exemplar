@@ -242,7 +242,12 @@ To configure, build and test the project with extra arguments,
 you can run this set of commands.
 
 ```bash
-cmake -B build -S . -DCMAKE_CXX_STANDARD=20 # Your extra arguments here.
+cmake \
+  -B build \
+  -S . \
+  -DCMAKE_CXX_STANDARD=20 \
+  -DCMAKE_PREFIX_PATH=./infra/cmake \
+  # Your extra arguments here.
 cmake --build build
 ctest --test-dir build
 ```
@@ -254,6 +259,14 @@ ctest --test-dir build
 > therefore,
 > you will need to specify the C++ version via `CMAKE_CXX_STANDARD`
 > when manually configuring the project.
+
+
+> [!NOTE]
+>
+> You only need to set `CMAKE_PREFIX_PATH` if you want to use the
+> CMake modules provided in the `infra/` directory of this repository.
+> If you have those modules packaged in your environment, you can install
+> them with your package manager and omit this argument.
 
 ### Finding and Fetching GTest from GitHub
 
