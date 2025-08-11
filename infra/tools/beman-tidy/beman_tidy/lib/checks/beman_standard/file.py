@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-# [FILE.*] checks category.
+# [file.*] checks category.
 # All checks in this file extend the FileBaseCheck class.
 #
 # Note: FileBaseCheck is not a registered check!
 
 
-# TODO FILE.NAMES
+# TODO file.names
 
 
-# TODO FILE.TEST_NAMES
+# TODO file.test_names
 
 
-# TODO FILE.LICENSE_ID
+# TODO file.license_id
 
 
-# TODO FILE.COPYRIGHT
+# TODO file.copyright

@@ -5,7 +5,7 @@ from ..base.directory_base_check import DirectoryBaseCheck
 from ..system.registry import register_beman_standard_check
 
 
-# [DIRECTORY.*] checks category.
+# [directory.*] checks category.
 # All checks in this file extend the DirectoryBaseCheck class.
 #
 # Note: DirectoryBaseCheck is not a registered check!
@@ -30,13 +30,13 @@ class BemanTreeDirectoryCheck(DirectoryBaseCheck):
         )
 
 
-# TODO DIRECTORY.INTERFACE_HEADERS
+# TODO directory.interface_headers
 
 
-# TODO DIRECTORY.IMPLEMENTATION_HEADERS
+# TODO directory.implementation_headers
 
 
-@register_beman_standard_check("DIRECTORY.SOURCES")
+@register_beman_standard_check("directory.sources")
 class DirectorySourcesCheck(BemanTreeDirectoryCheck):
     """
     Check if the sources directory is src/beman/<short_name>.
@@ -61,14 +61,14 @@ class DirectorySourcesCheck(BemanTreeDirectoryCheck):
             forbidden_prefix = self.repo_path / forbidden_prefix
             if forbidden_prefix.exists():
                 self.log(
-                    f"Please move source files from {forbidden_prefix} to src/beman/{self.repo_name}. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#directorysources for more information."
+                    f"Please move source files from {forbidden_prefix} to src/beman/{self.repo_name}. See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorysources for more information."
                 )
                 return False
 
         # If `src/` exists, src/beman/<short_name> also should exist.
         if (self.repo_path / "src/").exists() and not self.path.exists():
             self.log(
-                f"Please use the required source files location: src/beman/{self.repo_name}. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#directorysources for more information."
+                f"Please use the required source files location: src/beman/{self.repo_name}. See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorysources for more information."
             )
             return False
 
@@ -80,17 +80,190 @@ class DirectorySourcesCheck(BemanTreeDirectoryCheck):
         # we cannot do a proper implementation for fix().
         if not self.check():
             self.log(
-                f"Please manually move sources to src/beman/{self.repo_name}. See https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md#directorysources for more information."
+                f"Please manually move sources to src/beman/{self.repo_name}. See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorysources for more information."
             )
 
 
-# TODO DIRECTORY.TESTS
+# TODO directory.tests
 
 
-# TODO DIRECTORY.EXAMPLES
+@register_beman_standard_check("directory.examples")
+class DirectoryExamplesCheck(DirectoryBaseCheck):
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config, "examples")
+
+    def check(self):
+        """
+        All example files must reside within the top-level examples/ directory. Each project must have at least one relevant example.
+        Tree Example:
+        examples/
+        ├── CMakeLists.txt
+        ├── identity_as_default_projection.cpp
+        └── identity_direct_usage.cpp
+        """
+        # Check if the examples/ directory contains at least one relevant example.
+        if len(list(self.path.glob("**/*.cpp"))) == 0:
+            self.log(
+                "Missing one relevant example - cannot find examples/**/*.cpp. "
+                "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directoryexamples for more information."
+            )
+            return False
+
+        if len(list(self.path.glob("**/*CMakeLists.txt"))) == 0:
+            self.log(
+                "Missing CMakeLists.txt for examples - cannot find examples/**/*CMakeLists.txt. "
+                "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directoryexamples for more information."
+            )
+            return False
+
+        # Check passes if the examples/ directory exists and contains at least one relevant example.
+        return True
+
+    def fix(self):
+        self.log(
+            "Please add a relevant example to the examples/ directory. "
+            "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directoryexamples for more information."
+        )
 
 
-# TODO DIRECTORY.DOCS
+@register_beman_standard_check("directory.docs")
+class DirectoryDocsCheck(DirectoryBaseCheck):
+    """
+    Check if the all documentation files reside within docs/ directory.
+    Exception: root README.md file.
+    """
+
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config, "docs")
+
+    def pre_check(self):
+        # Need to override this, because DIRECTORY.DOCS is conditional
+        # (a repo without any documentation is still valid).
+        return True
+
+    def check(self):
+        # Exclude directories that are not part of the documentation.
+        exclude_dirs = ["src", "papers", "examples", ".github"]
+        if self.path.exists():
+            exclude_dirs.append("docs")
+        if self.repo_name == "exemplar":
+            exclude_dirs.extend(["cookiecutter", "infra"])
+
+        # Find all MD files in the repository.
+        misplaced_md_files = [
+            p
+            for p in self.repo_path.rglob("*.md")
+            if not any(
+                excluded in p.parts for excluded in exclude_dirs
+            )  # exclude files in excluded directories
+            and p != self.repo_path / "README.md"  # exclude root README.md
+        ]
+
+        # Check if any MD files are misplaced.
+        if len(misplaced_md_files) > 0:
+            for misplaced_md_file in misplaced_md_files:
+                self.log(f"Misplaced MD file found: {misplaced_md_file}")
+
+            self.log(
+                "Please move all documentation files within the docs/ directory, except for the root README.md file. "
+                "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorydocs for more information."
+            )
+
+            return False
+
+        # Check passes if there is no docs/ directory or no misplaced MD files are found
+        return True
+
+    def fix(self):
+        self.log(
+            "Please manually move documentation files to the docs/ directory, except for the root README.md file. "
+            "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorydocs for more information."
+        )
 
 
-# TODO DIRECTORY.PAPERS
+@register_beman_standard_check("directory.papers")
+class DirectoryPapersCheck(DirectoryBaseCheck):
+    """
+    Check if the all paper related files reside within papers/ directory.
+    """
+
+    def __init__(self, repo_info, beman_standard_check_config):
+        super().__init__(repo_info, beman_standard_check_config, "papers")
+
+    def pre_check(self):
+        # Need to override this, because DIRECTORY.PAPERS is conditional
+        # (a repo without any paper files is still valid - no papers/ directory required)
+        return True
+
+    def check(self):
+        """
+        If present, all paper related files (e.g., WIP LaTeX/Markdown projects for ISO Standardization), must reside within the top-level papers/ directory.
+        Tree Example:
+        papers/
+        └── P2988
+            ├── Makefile
+            ├── README.md
+            └── abstract.bst
+        """
+        # Exclude directories that are not part of the papers/ directory.
+        exclude_dirs = ["src", "docs", "examples", ".github"]
+        if self.path.exists():
+            exclude_dirs.append("papers")
+        if self.repo_name == "exemplar":
+            exclude_dirs.extend(["cookiecutter", "infra"])
+
+        # File extensions that are considered "paper-related"
+        paper_extensions = [
+            ".md",
+            ".bib",
+            ".bst",
+            ".tex",
+            ".sty",
+            ".cls",
+            ".pdf",
+            ".docx",
+            ".org",
+            ".html",
+            ".css",
+            ".js",
+            ".asciidoc",
+            ".asc",
+            ".ad",
+            ".ascdoc",
+            ".rst",
+            ".wip",
+            ".draft",
+            ".proposal",
+            ".standard",
+        ]
+
+        # Find all misplaced paper-related files in the repository.
+        misplaced_paper_files = []
+        for extension in paper_extensions:
+            for p in self.repo_path.rglob(f"*{extension}"):
+                # Exclude files that are already in excluded directories.
+                if (
+                    not any(excluded in str(p) for excluded in exclude_dirs)
+                    and p != self.repo_path / "README.md"
+                ):
+                    misplaced_paper_files.append(p)
+
+        if len(misplaced_paper_files) > 0:
+            for misplaced_paper_file in misplaced_paper_files:
+                self.log(f"Misplaced paper file found: {misplaced_paper_file}")
+
+            self.log(
+                "Please move all paper related files (and directories if applicable) within the papers/ directory. "
+                "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorypapers for more information."
+            )
+
+            return False
+
+        # Check passes if there is no papers/ directory and no misplaced paper files are found
+        return True
+
+    def fix(self):
+        self.log(
+            "Please move all paper related files (and directories if applicable) to papers/ directory. "
+            "See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#directorypapers for more information."
+        )
