@@ -9,7 +9,7 @@ assignees: ''
 
 <!--
 Please follow our code of conduct when engaging in the Beman community:
-https://github.com/bemanproject/beman/blob/main/docs/CODE_OF_CONDUCT.md
+https://github.com/bemanproject/beman/blob/main/docs/code_of_conduct.md
 -->
 
 ## I am attempting to
