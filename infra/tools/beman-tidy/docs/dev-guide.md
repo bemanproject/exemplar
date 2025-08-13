@@ -16,27 +16,27 @@
 
 ## Adding a new check
 
-Find an unimplemented check in the [BEMAN_STANDARD.md](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md) file and check that is not already assigned in [Planning for beman-tidy: The Codebase Bemanification Tool](https://github.com/orgs/bemanproject/projects/8/views/1).
+Find an unimplemented check in the [beman_standard.md](https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md) file and check that is not already assigned in [Planning for beman-tidy: The Codebase Bemanification Tool](https://github.com/orgs/bemanproject/projects/8/views/1).
 
 
-Check this PR example: [beman-tidy: add check - README.LIBRARY_STATUS](https://github.com/bemanproject/infra/pull/35).
+Check this PR example: [beman-tidy: add check - readme.library_status](https://github.com/bemanproject/infra/pull/35).
 
 <details>
 <summary>Step by step tutorial: add a new check</summary>
 
-* `[mandatory]` Make sure `beman_tidy/.beman-standard.yml` reflects your check metadata (latest status from [BEMAN_STANDARD.md](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md)).
+* `[mandatory]` Make sure `beman_tidy/.beman-standard.yml` reflects your check metadata (latest status from [beman_standard.md](https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md)).
   * `[optional]` New syntax / keys from yml config can be added in
     [infra/tools/beman-tidy/beman_tidy/lib/utils_git.py:load_beman_standard_config()](https://github.com/bemanproject/infra/blob/main/tools/beman-tidy/beman_tidy/lib/utils/git.py)
     if not already implemented. Checks for TODOs in `load_beman_standard_config()`.
 * `[mandatory]` Add the check to the `beman_tidy/lib/checks/beman_standard/` directory.
-  * `[mandatory]` e.g., `README.*` checks will most likely go to a path similar to `beman_tidy/lib/checks/beman_standard/readme.py`.
+  * `[mandatory]` e.g., `readme.*` checks will most likely go to a path similar to `beman_tidy/lib/checks/beman_standard/readme.py`.
   * `[mandatory]` Use an appropriate base class - e.g., defaults like `FileBaseCheck` / `DirectoryBaseCheck` or create
     specializations for reusing code - e.g.,  `ReadmeBaseCheck(FileBaseCheck)` / `CmakeBaseCheck(FileBaseCheck)` /
     `CppBaseCheck(FileBaseCheck)` etc.
   * `[mandatory]` Register the new check via `@register_beman_standard_check` decorator - e.g.,
 
     ```python
-    @register_beman_standard_check("README.TITLE")
+    @register_beman_standard_check("readme.title")
     class ReadmeTitleCheck(ReadmeBaseCheck):
     ```
 
@@ -71,12 +71,12 @@ rootdir: /Users/dariusn/dev/dn/git/Beman/infra/tools/beman-tidy
 configfile: pyproject.toml
 collected 6 items
 
-tests/beman_standard/readme/test_readme.py::test__README_TITLE__valid PASSED                                                                                                                                                                  [ 16%]
-tests/beman_standard/readme/test_readme.py::test__README_TITLE__invalid PASSED                                                                                                                                                                [ 33%]
-tests/beman_standard/readme/test_readme.py::test__README_TITLE__fix_inplace PASSED                                                                                                                                                            [ 50%]
-tests/beman_standard/readme/test_readme.py::test__README_BADGES__valid PASSED                                                                                                                                                                 [ 66%]
-tests/beman_standard/readme/test_readme.py::test__README_BADGES__invalid PASSED                                                                                                                                                               [ 83%]
-tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_inplace SKIPPED (NOT implemented)                                                                                                                                        [100%]
+tests/beman_standard/readme/test_readme.py::test__readme_title__valid passed                                                                                                                                                                  [ 16%]
+tests/beman_standard/readme/test_readme.py::test__readme_title__invalid passed                                                                                                                                                                [ 33%]
+tests/beman_standard/readme/test_readme.py::test__readme_title__fix_inplace passed                                                                                                                                                            [ 50%]
+tests/beman_standard/readme/test_readme.py::test__readme_badges__valid passed                                                                                                                                                                 [ 66%]
+tests/beman_standard/readme/test_readme.py::test__readme_badges__invalid passed                                                                                                                                                               [ 83%]
+tests/beman_standard/readme/test_readme.py::test__readme_badges__fix_inplace skipped (not implemented)                                                                                                                                        [100%]
 
 =========================================================================================================== 5 passed, 1 skipped in 0.07s ============================================================================================================
 ```
@@ -87,9 +87,24 @@ tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_inplace SKI
   check.
   * e.g., for `check_category = "readme"` the test file is `tests/lib/checks/beman_standard/readme/test_readme.py`.
 * `test__<check_category>__<test_case_name>()` function inside the test file.
-  * e.g., for `check_category = "readme"` and `test_case_name = "valid"` the function is `test__README_TITLE__valid()`.
-  * e.g., for `check_category = "readme"` and `test_case_name = "invalid"` the function is
-    `test__README_TITLE__invalid()`.
+  * `test_case_name` can be `valid`, `invalid`, `fix_inplace` or `skipped`.
+  * If the check is implemented and must be run, add 3 test functions: `valid`, `invalid` and `fix_inplace` (some of them can be a `@pytest.mark.skip(reason="not implemented")` decorator, but at least one must be actually implemented).
+  * If the check is implemented as a dummy (e.g., cannot be properly implemented), add the `skipped` function.
+    `should_skip()` must log a reason why it is skipped.
+  * Note: The number of tests is already enforced by a unit test in `tests/lib/checks/system/test_registry.py`, which is looking for the test functions for new added checks!
+  * Examples:
+    * Runnable check - `readme.title`:
+      * for `check_category = "readme"` and `test_case_name = "valid"` the function is `test__readme_title__valid()`.
+      * for `check_category = "readme"` and `test_case_name = "invalid"` the function is
+        `test__readme_title__invalid()`.
+      * for `check_category = "readme"` and `test_case_name = "fix_inplace"` the function is
+        `test__readme_title__fix_inplace()`.
+    * Skippable check - `license.criteria`:
+      * for `check_category = "license"` and `test_case_name = "skipped"` the function is
+        `test__license_criteria__skipped()`.
+      * `should_skip()` must log a reason why it is skipped.
+      * `should_skip()` must return `True`.
+      * `check()` and `fix()` must provide a `return True` implementation.
 * `tests/beman_standard/<check_category>/data/`: The data for the tests (e.g., files, directories, etc.).
   * e.g., for `check_category = "readme"` and `test_case_name = "valid"` the data is in
     `tests/lib/checks/beman_standard/readme/data/valid/`.
@@ -106,7 +121,7 @@ tests/beman_standard/readme/test_readme.py::test__README_BADGES__fix_inplace SKI
   * `valid`: The test case for the valid case.
   * `invalid`: The test case for the invalid case.
   * `fix_inplace`: The test case for the fix invalid case. If the fix is not (yet) implementable, add a
-    `@pytest.mark.skip(reason="NOT implemented")` decorator to track the progress.
+    `@pytest.mark.skip(reason="not implemented")` decorator to track the progress.
 
 ## Changing dependencies
 
@@ -127,6 +142,7 @@ Requirements:
 * `beman-tidy` must have `verbose` and `non-verbose` modes. Default is `non-verbose`.
 * `beman-tidy` must have `dry-run` and `fix-inplace` modes. Default is `dry-run`.
 * `beman-tidy` must detect types of checks: failed, passed, skipped (not implemented) and print the summary/coverage.
+* `beman-tidy` can access configuration files shipped with the tool itself (e.g., `.beman-standard.yml` or `LICENSE`). All such files must be in the `beman_tidy/` directory to be automatically available in exported packages. It cannot access files from the repository itself (e.g., `infra/LICENSE` or `infra/tools/beman-tidy/README.md`).
 
 Limitations:
 

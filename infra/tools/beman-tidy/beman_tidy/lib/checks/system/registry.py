@@ -12,12 +12,12 @@ def register_beman_standard_check(check: str):
     Decorator to register a check class with a specific ID.
 
     Usage:
-        @register_beman_standard_check("README.TITLE")
+        @register_beman_standard_check("readme.title")
         class ReadmeTitleCheck(ReadmeBaseCheck):
             ...
 
     Notes: Only register most derived check classes, which are actually part from
-    The Beman Standard - e.g., README.TITLE, README.BADGES, etc.
+    The Beman Standard - e.g., readme.title, readme.badges, etc.
     """
 
     def decorator(check_class: Type) -> Type:

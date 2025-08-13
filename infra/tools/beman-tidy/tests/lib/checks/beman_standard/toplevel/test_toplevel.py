@@ -20,7 +20,7 @@ valid_prefix = f"{test_data_prefix}/valid"
 invalid_prefix = f"{test_data_prefix}/invalid"
 
 
-def test__TOPLEVEL_CMAKE__valid(repo_info, beman_standard_check_config):
+def test__toplevel_cmake__valid(repo_info, beman_standard_check_config):
     """
     Test that repositories with valid CMakeLists.txt pass the check.
     """
@@ -38,7 +38,7 @@ def test__TOPLEVEL_CMAKE__valid(repo_info, beman_standard_check_config):
     )
 
 
-def test__TOPLEVEL_CMAKE__invalid(repo_info, beman_standard_check_config):
+def test__toplevel_cmake__invalid(repo_info, beman_standard_check_config):
     """
     Test that repositories with invalid CMakeLists.txt fail the check.
     """
@@ -60,12 +60,12 @@ def test__TOPLEVEL_CMAKE__invalid(repo_info, beman_standard_check_config):
     )
 
 
-@pytest.mark.skip(reason="NOT implemented")
-def test__TOPLEVEL_CMAKE__fix_inplace(repo_info, beman_standard_check_config):
+@pytest.mark.skip(reason="not implemented")
+def test__toplevel_cmake__fix_inplace(repo_info, beman_standard_check_config):
     pass
 
 
-def test__TOPLEVEL_LICENSE__valid(repo_info, beman_standard_check_config):
+def test__toplevel_license__valid(repo_info, beman_standard_check_config):
     """
     Test that repositories with valid LICENSE pass the check.
     """
@@ -83,7 +83,7 @@ def test__TOPLEVEL_LICENSE__valid(repo_info, beman_standard_check_config):
     )
 
 
-def test__TOPLEVEL_LICENSE__invalid(repo_info, beman_standard_check_config):
+def test__toplevel_license__invalid(repo_info, beman_standard_check_config):
     """
     Test that repositories with invalid LICENSE fail the check.
     """
@@ -105,12 +105,12 @@ def test__TOPLEVEL_LICENSE__invalid(repo_info, beman_standard_check_config):
     )
 
 
-@pytest.mark.skip(reason="NOT implemented")
-def test__TOPLEVEL_LICENSE__fix_inplace(repo_info, beman_standard_check_config):
+@pytest.mark.skip(reason="not implemented")
+def test__toplevel_license__fix_inplace(repo_info, beman_standard_check_config):
     pass
 
 
-def test__TOPLEVEL_README__valid(repo_info, beman_standard_check_config):
+def test__toplevel_readme__valid(repo_info, beman_standard_check_config):
     """
     Test that repositories with valid README.md pass the check.
     """
@@ -128,7 +128,7 @@ def test__TOPLEVEL_README__valid(repo_info, beman_standard_check_config):
     )
 
 
-def test__TOPLEVEL_README__invalid(repo_info, beman_standard_check_config):
+def test__toplevel_readme__invalid(repo_info, beman_standard_check_config):
     """
     Test that repositories with invalid README.md fail the check.
     """
@@ -150,6 +150,6 @@ def test__TOPLEVEL_README__invalid(repo_info, beman_standard_check_config):
     )
 
 
-@pytest.mark.skip(reason="NOT implemented")
-def test__TOPLEVEL_README__fix_inplace(repo_info, beman_standard_check_config):
+@pytest.mark.skip(reason="not implemented")
+def test__toplevel_readme__fix_inplace(repo_info, beman_standard_check_config):
     pass

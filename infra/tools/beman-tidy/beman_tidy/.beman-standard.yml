@@ -1,63 +1,57 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-# TODO: 2025-06-07: This file is a partial stable snapshot of the standard.
-# TODOs and placeholders will be solved in follow-up PRs when implementing the checks.
+# 2025-08-04: Latest Beman Standard (https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md)
+# snapshot made by neatudarius.
+# Please report any issue related to this file to https://github.com/bemanproject/infra/issues.
 
 # LICENSE
-LICENSE.APPROVED:
-    - type: REQUIREMENT
-    - licenses:
-        - apache-v2:
-            - spdx: "Apache License v2.0 with LLVM Exceptions"
-            - path: "docs/licenses/apache-v2.txt"
-        - boost-v1:
-            - spdx: "Boost Software License 1.0"
-            - path: "docs/licenses/boost-v1.txt"
-        - mit:
-            - spdx: "The MIT License"
-            - path: "docs/licenses/mit.txt"
-LICENSE.APACHE_LLVM:
-    - type: RECOMMENDATION
-LICENSE.CRITERIA:
-    - type: REQUIREMENT
+license.approved:
+    - type: Requirement
+license.apache_llvm:
+    - type: Recommendation
+license.criteria:
+    - type: Requirement
 
 # GENERAL
-LIBRARY.NAMES:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible>
-REPOSITORY.NAME:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible>
-REPOSITORY.CODEOWNERS:
-    - type: REQUIREMENT
-REPOSITORY.DEFAULT_BRANCH:
-    - type: REQUIREMENT
-REPOSITORY.DISALLOW_GIT_SUBMODULES:
-    - type: RECOMMENDATION
+library.name:
+    - type: Recommendation
+
+# REPOSITORY
+repository.name:
+    - type: Requirement
+repository.default_branch:
+    - type: Requirement
+repository.codeowners:
+    - type: Requirement
+repository.code_review_rules:
+    - type: Requirement
+repository.disallow_git_submodules:
+    - type: Recommendation
 
 # RELEASE
-RELEASE.GITHUB:
-    - type: REQUIREMENT
-RELEASE.NOTES:
-    - type: RECOMMENDATION
-RELEASE.GODBOLT_TRUNK_VERSION:
-    - type: RECOMMENDATION
+release.github:
+    - type: Requirement
+release.notes:
+    - type: Recommendation
+release.godbolt_trunk_version:
+    - type: Recommendation
+
 # TOP LEVEL
-TOPLEVEL.CMAKE:
-    - type: REQUIREMENT
+toplevel.cmake:
+    - type: Requirement
     - value: CMakeLists.txt
-TOPLEVEL.LICENSE:
-    - type: REQUIREMENT
+toplevel.license:
+    - type: Requirement
     - file_name: LICENSE
-TOPLEVEL.README:
-    - type: REQUIREMENT
+toplevel.readme:
+    - type: Requirement
     - file_name: README.md
 
 # README
-README.TITLE:
-    - type: RECOMMENDATION
-README.BADGES:
-    - type: REQUIREMENT
+readme.title:
+    - type: Recommendation
+readme.badges:
+    - type: Requirement
     - values:
         - library_status: [
             "![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg)",
@@ -69,89 +63,77 @@ README.BADGES:
             "![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp26.svg)",
             "![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp29.svg)"
         ]
-README.PURPOSE:
-    - type: RECOMMENDATION
-README.IMPLEMENTS:
-    - type: RECOMMENDATION
-README.LIBRARY_STATUS:
-    - type: REQUIREMENT
+readme.purpose:
+    - type: Recommendation
+readme.implements:
+    - type: Recommendation
+readme.library_status:
+    - type: Requirement
     - values: [
-            "**Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#under-development-and-not-yet-ready-for-production-use)",
-            "**Status**: [Production ready. API may undergo changes.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#production-ready-api-may-undergo-changes)",
-            "**Status**: [Production ready. Stable API.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#production-ready-stable-api)",
-            "**Status**: [Retired. No longer maintained or actively developed.](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_LIBRARY_MATURITY_MODEL.md#retired-no-longer-maintained-or-actively-developed)",
+            "**Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#under-development-and-not-yet-ready-for-production-use)",
+            "**Status**: [Production ready. API may undergo changes.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#production-ready-api-may-undergo-changes)",
+            "**Status**: [Production ready. Stable API.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#production-ready-stable-api)",
+            "**Status**: [Retired. No longer maintained or actively developed.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#retired-no-longer-maintained-or-actively-developed)",
         ]
+readme.license:
+    - type: Requirement
 
 # CMAKE
-CMAKE.DEFAULT:
-    - type: RECOMMENDATION
-CMAKE.USE_FETCH_CONTENT:
-    - type: RECOMMENDATION
-CMAKE.PROJECT_NAME:
-    - type: RECOMMENDATION
-CMAKE.PASSIVE_PROJECTS:
-    - type: RECOMMENDATION
-CMAKE.LIBRARY_NAME:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible>
-CMAKE.LIBRARY_ALIAS:
-    - type: REQUIREMENT
-    - regex: <put a regex here if possible>
-CMAKE.TARGET_NAMES:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible>
-CMAKE.PASSIVE_TARGETS:
-    - type: REQUIREMENT
-    - regex: <put a regex here if possible>
-CMAKE.CONFIG:
-    - type: REQUIREMENT
-CMAKE.SKIP_TESTS:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible>
-CMAKE.SKIP_EXAMPLES:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible>
-CMAKE.AVOID_PASSTHROUGHS:
-    - type: RECOMMENDATION
+cmake.default:
+    - type: Recommendation
+cmake.use_fetch_content:
+    - type: Recommendation
+cmake.project_name:
+    - type: Recommendation
+cmake.passive_projects:
+    - type: Recommendation
+cmake.library_name:
+    - type: Recommendation
+cmake.library_alias:
+    - type: Requirement
+cmake.target_names:
+    - type: Recommendation
+cmake.passive_targets:
+    - type: Requirement
+cmake.config:
+    - type: Requirement
+cmake.skip_tests:
+    - type: Recommendation
+cmake.skip_examples:
+    - type: Recommendation
+cmake.avoid_passthroughs:
+    - type: Recommendation
 
 # DIRECTORY
-DIRECTORY.INTERFACE_HEADERS:
-    - type: REQUIREMENT
-DIRECTORY.IMPLEMENTATION_HEADERS:
-    - type: REQUIREMENT
-DIRECTORY.SOURCES:
-    - type: REQUIREMENT
-DIRECTORY.TESTS:
-    - type: REQUIREMENT
-DIRECTORY.EXAMPLES:
-    - type: REQUIREMENT
-DIRECTORY.DOCS:
-    - type: REQUIREMENT
-DIRECTORY.PAPERS:
-    - type: REQUIREMENT
+directory.interface_headers:
+    - type: Requirement
+directory.implementation_headers:
+    - type: Requirement
+directory.sources:
+    - type: Requirement
+directory.tests:
+    - type: Requirement
+directory.examples:
+    - type: Requirement
+directory.docs:
+    - type: Requirement
+directory.papers:
+    - type: Requirement
 
 # FILE
-FILE.CPP_NAMES:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible - e.g. ${snake_case}.cpp, ${snake_case}.test.cpp>
-FILE.TEST_NAMES:
-    - type: REQUIREMENT
-    - regex: <put a regex here if possible - e.g. ${snake_case}.test.cpp>
-FILE.LICENSE_ID:
-    - type: REQUIREMENT
-    - regex: [
-            "// SPDX-License-Identifier: <SPDX License Expression>",
-            "# SPDX-License-Identifier: <SPDX License Expression>",
-            "<!-- SPDX-License-Identifier: <SPDX License Expression> -->"
-        ]
-FILE.COPYRIGHT:
-    - type: RECOMMENDATION
-    - regex: <put a regex here if possible - exclude copyright lines>
+file.cpp_names:
+    - type: Recommendation
+file.test_names:
+    - type: Requirement
+file.license_id:
+    - type: Requirement
+file.copyright:
+    - type: Recommendation
 
 # CPP
-CPP.NAMESPACE:
-    - type: RECOMMENDATION
-CPP.NO_FLAG_FORKING:
-    - type: REQUIREMENT
-CPP.EXTENSION_IDENTIFIERS:
-    - type: RECOMMENDATION
+cpp.namespace:
+    - type: Recommendation
+cpp.no_flag_forking:
+    - type: Requirement
+cpp.extension_identifiers:
+    - type: Recommendation

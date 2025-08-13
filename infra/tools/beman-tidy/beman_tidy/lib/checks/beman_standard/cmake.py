@@ -3,7 +3,7 @@
 
 from ..base.file_base_check import FileBaseCheck
 
-# [CMAKE.*] checks category.
+# [cmake.*] checks category.
 # All checks in this file extend the CMakeBaseCheck class.
 #
 # Note: CMakeBaseCheck is not a registered check!
@@ -14,34 +14,34 @@ class CMakeBaseCheck(FileBaseCheck):
         super().__init__(repo_info, beman_standard_check_config, "CMakeLists.txt")
 
 
-# TODO CMAKE.DEFAULT
+# TODO cmake.default
 
 
-# TODO CMAKE.USE_FETCH_CONTENT
+# TODO cmake.use_fetch_content
 
 
-# TODO CMAKE.PROJECT_NAME
+# TODO cmake.project_name
 
 
-# TODO CMAKE.PASSIVE_PROJECTS
+# TODO cmake.passive_projects
 
 
-# TODO CMAKE.LIBRARY_NAME
+# TODO cmake.library_name
 
 
-# TODO CMAKE.LIBRARY_ALIAS
+# TODO cmake.library_alias
 
 
-# TODO CMAKE.TARGET_NAMES
+# TODO cmake.target_names
 
 
-# TODO CMAKE.PASSIVE_TARGETS
+# TODO cmake.passive_targets
 
 
-# TODO CMAKE.SKIP_TESTS
+# TODO cmake.skip_tests
 
 
-# TODO CMAKE.SKIP_EXAMPLES
+# TODO cmake.skip_examples
 
 
-# TODO CMAKE.AVOID_PASSTHROUGHS
+# TODO cmake.avoid_passthroughs

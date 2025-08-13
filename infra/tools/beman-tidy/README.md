@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ## Description
 
 `beman-tidy` is a tool used to check and apply
-[The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/BEMAN_STANDARD.md).
+[The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md).
 
 Purpose: The tool is used to `check` (`--dry-run`) and `apply` (`--fix-inplace`) the Beman Standard to a repository.
 Note: `2025-06-07`: In order to make the best and quickly use of the tool in the entire organization, most of the
@@ -67,7 +67,7 @@ options:
   --verbose, --no-verbose
                         print verbose output for each check
   --require-all, --no-require-all
-                        all checks are required regardless of the check type (e.g., RECOMMENDATION becomes REQUIREMENT)
+                        all checks are required regardless of the check type (e.g., Recommendation becomes Requirement)
   --checks CHECKS       array of checks to run
 ```
 
@@ -76,77 +76,98 @@ options:
 ```shell
 # dry-run, require-all, non-verbose
 $ uv run beman-tidy /path/to/exemplar --require-all
-Summary    REQUIREMENT:  1 checks PASSED, 0 checks FAILED, 4 skipped (NOT implemented).
-Summary RECOMMENDATION:  2 checks PASSED, 1 checks FAILED, 35 skipped (NOT implemented).
+Summary    Requirement:  18 checks passed, 1 checks failed, 5 checks skipped,  23 checks not implemented.
+Summary Recommendation:  0 checks passed, 0 checks failed, 0 checks skipped,  0 checks not implemented.
 
-Coverage    REQUIREMENT: 100.0% (1/1 checks passed).
-Coverage RECOMMENDATION: 66.67% (2/3 checks passed).
+Coverage    Requirement:  95.83% (23/24 checks passed).
+Coverage Recommendation:   0.00% (0/0 checks passed).
+Coverage          TOTAL:  95.83% (23/24 checks passed).
 
 # dry-run, non-require-all, non-verbose
-$ uv run beman-tidy /path/to/exemplar
-Summary    REQUIREMENT:  1 checks PASSED, 0 checks FAILED, 4 skipped (NOT implemented).
-Summary RECOMMENDATION:  2 checks PASSED, 1 checks FAILED, 35 skipped (NOT implemented).
+Summary    Requirement:  13 checks passed, 1 checks failed, 3 checks skipped,  9 checks not implemented.
+Summary Recommendation:  5 checks passed, 0 checks failed, 2 checks skipped,  14 checks not implemented.
 
-Coverage    REQUIREMENT: 100.0% (1/1 checks passed).
-Note: RECOMMENDATIONs are not included (--require-all NOT set).
-
+Coverage    Requirement:  66.67% (16/24 checks passed).
+Coverage Recommendation: 100.00% (7/7 checks passed).
+Coverage          TOTAL:  74.19% (23/31 checks passed).
 ```
 
-or verbose mode:
+or verbose mode without errors:
 
 ```shell
 # dry-run, require-all, verbose mode - no errors
-$ uv run beman-tidy /path/to/exemplar --require-all --verbose
 beman-tidy pipeline started ...
 
-Running check [RECOMMENDATION][README.TITLE] ...
-    check [RECOMMENDATION][README.TITLE] ... PASSED
+Running check [Requirement][license.approved] ...
+[info           ][license.approved         ]: Valid Apache License - Version 2.0 with LLVM Exceptions found in LICENSE file.
+	check [Requirement][license.approved] ... passed
 
-Running check [REQUIREMENT][README.BADGES] ...
-    check [REQUIREMENT][README.BADGES] ... PASSED
+Running check [Requirement][license.apache_llvm] ...
+	check [Requirement][license.apache_llvm] ... passed
 
-Running check [RECOMMENDATION][README.LIBRARY_STATUS] ...
-    check [RECOMMENDATION][README.LIBRARY_STATUS] ... PASSED
+Running check [Requirement][license.criteria] ...
+[skipped        ][license.criteria         ]: beman-tidy cannot actually check license.criteria. Please ignore this message if license.approved has passed. See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#licensecriteria for more information.
+Running check [Requirement][license.criteria] ... skipped
 
-Running check [RECOMMENDATION][DIRECTORY.SOURCES] ...
-[WARNING        ][DIRECTORY.SOURCES        ]: The directory '/Users/dariusn/dev/dn/git/Beman/exemplar/src/beman/exemplar' does not exist.
-    check [RECOMMENDATION][DIRECTORY.SOURCES] ... FAILED
+...
 
+Running check [Requirement][readme.title] ...
+	check [Requirement][readme.title] ... passed
+
+Running check [Requirement][readme.badges] ...
+	check [Requirement][readme.badges] ... passed
+
+Running check [Requirement][readme.implements] ...
+	check [Requirement][readme.implements] ... passed
+
+...
 
 beman-tidy pipeline finished.
 
-Summary    REQUIREMENT:  1 checks PASSED, 0 checks FAILED, 4 skipped (NOT implemented).
-Summary RECOMMENDATION:  2 checks PASSED, 1 checks FAILED, 35 skipped (NOT implemented).
+Summary    Requirement:  19 checks passed, 0 checks failed, 3 checks skipped,  23 checks not implemented.
+Summary Recommendation:  0 checks passed, 0 checks failed, 2 checks skipped,  0 checks not implemented.
 
-Coverage    REQUIREMENT: 100.0% (1/1 checks passed).
-Coverage RECOMMENDATION: 66.67% (2/3 checks passed).
+Coverage    Requirement: 100.00% (24/24 checks passed).
+Coverage Recommendation:   0.00% (0/0 checks passed).
+Coverage          TOTAL: 100.00% (24/24 checks passed).
 ```
 
+or verbose mode with errors:
+
 ```shell
-# dry-run, require-all, verbose mode - no errors
-$ uv run beman-tidy /path/to/exemplar --require-all --verbose
+# dry-run, require-all, verbose mode - with errors
 beman-tidy pipeline started ...
 
-Running check [RECOMMENDATION][README.TITLE] ...
-    check [RECOMMENDATION][README.TITLE] ... PASSED
+Running check [Requirement][license.approved] ...
+[info           ][license.approved         ]: Valid Apache License - Version 2.0 with LLVM Exceptions found in LICENSE file.
+	check [Requirement][license.approved] ... passed
 
-Running check [REQUIREMENT][README.BADGES] ...
-    check [REQUIREMENT][README.BADGES] ... PASSED
+Running check [Requirement][license.apache_llvm] ...
+	check [Requirement][license.apache_llvm] ... passed
 
-Running check [RECOMMENDATION][README.LIBRARY_STATUS] ...
-    check [RECOMMENDATION][README.LIBRARY_STATUS] ... PASSED
+Running check [Requirement][license.criteria] ...
+[skipped        ][license.criteria         ]: beman-tidy cannot actually check license.criteria. Please ignore this message if license.approved has passed. See https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md#licensecriteria for more information.
+Running check [Requirement][license.criteria] ... skipped
 
-Running check [RECOMMENDATION][DIRECTORY.SOURCES] ...
-    check [RECOMMENDATION][DIRECTORY.SOURCES] ... PASSED
+...
 
+Running check [Requirement][readme.implements] ...
+	check [Requirement][readme.implements] ... passed
+
+Running check [Requirement][readme.library_status] ...
+[error          ][readme.library_status    ]: The file '/Users/dariusn/dev/dn/git/Beman/exemplar/README.md' does not contain exactly one of the required statuses from ['**Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#under-development-and-not-yet-ready-for-production-use)', '**Status**: [Production ready. API may undergo changes.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#production-ready-api-may-undergo-changes)', '**Status**: [Production ready. Stable API.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#production-ready-stable-api)', '**Status**: [Retired. No longer maintained or actively developed.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#retired-no-longer-maintained-or-actively-developed)']
+	check [Requirement][readme.library_status] ... failed
+
+...
 
 beman-tidy pipeline finished.
 
-Summary    REQUIREMENT:  1 checks PASSED, 0 checks FAILED, 4 skipped (NOT implemented).
-Summary RECOMMENDATION:  3 checks PASSED, 0 checks FAILED, 35 skipped (NOT implemented).
+Summary    Requirement:  18 checks passed, 1 checks failed, 3 checks skipped,  23 checks not implemented.
+Summary Recommendation:  0 checks passed, 0 checks failed, 2 checks skipped,  0 checks not implemented.
 
-Coverage    REQUIREMENT: 100.0% (1/1 checks passed).
-Coverage RECOMMENDATION: 100.0% (3/3 checks passed).
+Coverage    Requirement:  95.83% (23/24 checks passed).
+Coverage Recommendation:   0.00% (0/0 checks passed).
+Coverage          TOTAL:  95.83% (23/24 checks passed).
 ```
 
 - Run beman-tidy on the exemplar repository (fix issues in-place):
