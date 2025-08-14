@@ -1,3 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+###############################
+# Git Line Endings            #
+###############################
+# This file is used to define how Git handles line endings for various file types.
+# It ensures consistent line endings across different operating systems.
+# For more information, see: https://git-scm.com/docs/gitattributes
+# Set the default behavior to automatically normalize line endings and convert them to LF in the repository.
+# This fixes possible consistency issues for cross-platform projects when developing in a devcontainer.
+# For more info please check https://code.visualstudio.com/docs/devcontainers/tips-and-tricks#_resolving-git-line-ending-issues-in-containers-resulting-in-many-modified-files.
+
+* text=auto eol=lf
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
+*.{vcxproj,vcxproj.filters} text eol=crlf
+
 infra/** linguist-vendored
 cookiecutter/** linguist-vendored
 *.bib -linguist-detectable
