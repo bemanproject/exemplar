@@ -29,7 +29,7 @@ TEST(IdentityTest, call_identity_with_custom_type) {
 
 TEST(IdentityTest, compare_std_vs_beman) {
 // Requires: std::identity support.
-#if defined(__cpp_lib_identity)
+#if defined(__cpp_lib_type_identity)
     std::identity std_id;
     exe::identity beman_id;
     for (int i = -100; i < 100; ++i) {

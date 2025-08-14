@@ -1,0 +1,5 @@
+infra/** linguist-vendored
+cookiecutter/** linguist-vendored
+*.bib -linguist-detectable
+*.tex -linguist-detectable
+papers/* linguist-documentation

@@ -41,7 +41,7 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
     )
 
     write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/beman.exemplar-version.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/beman.exemplar-config-version.cmake"
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY ExactVersion
     )
@@ -49,7 +49,7 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
     install(
         FILES
             "${CMAKE_CURRENT_BINARY_DIR}/beman.exemplar-config.cmake"
-            "${CMAKE_CURRENT_BINARY_DIR}/beman.exemplar-version.cmake"
+            "${CMAKE_CURRENT_BINARY_DIR}/beman.exemplar-config-version.cmake"
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/beman.exemplar"
         COMPONENT beman.exemplar
     )
