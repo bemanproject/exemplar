@@ -247,6 +247,7 @@ cmake \
   -S . \
   -DCMAKE_CXX_STANDARD=20 \
   -DCMAKE_PREFIX_PATH=./infra/cmake \
+  -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./infra/cmake/use-fetch-content.cmake \
   # Your extra arguments here.
 cmake --build build
 ctest --test-dir build
