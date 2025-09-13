@@ -12,6 +12,7 @@
 #include <iostream>
 #include <ranges>
 #include <string>
+#include <vector>
 
 namespace exe = beman::{{cookiecutter.project_name}};
 
