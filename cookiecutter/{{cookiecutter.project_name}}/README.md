@@ -122,7 +122,7 @@ unless the provided compiler supports **C++20** ranges.
 This project officially supports:
 
 * GCC versions 11–15
-* LLVM Clang++ (with libstdc++ or libc++) versions 17–20
+* LLVM Clang++ (with libstdc++ or libc++) versions 17–21
 * AppleClang version 15.0.0 (i.e., the [latest version on GitHub-hosted MacOS runners](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md))
 * MSVC version 19.44.35211.0 (i.e., the [latest version on GitHub-hosted Windows runners](https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md))
 

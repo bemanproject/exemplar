@@ -72,7 +72,7 @@ jobs:
             }
           ],
           "clang": [
-            { "versions": ["20"],
+            { "versions": ["21"],
               "tests": [
                 {"cxxversions": ["c++26"],
                   "tests": [
@@ -91,7 +91,7 @@ jobs:
                 }
               ]
             },
-            { "versions": ["19", "18"],
+            { "versions": ["20", "19", "18"],
               "tests": [
                 { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
                   "tests": [
