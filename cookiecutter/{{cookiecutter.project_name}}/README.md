@@ -123,8 +123,8 @@ This project officially supports:
 
 * GCC versions 11–15
 * LLVM Clang++ (with libstdc++ or libc++) versions 17–21
-* AppleClang version 15.0.0 (i.e., the [latest version on GitHub-hosted MacOS runners](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md))
-* MSVC version 19.44.35211.0 (i.e., the [latest version on GitHub-hosted Windows runners](https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md))
+* AppleClang version 17.0.0 (i.e., the [latest version on GitHub-hosted macOS runners](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md))
+* MSVC version 19.44.35215.0 (i.e., the [latest version on GitHub-hosted Windows runners](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md))
 
 > [!NOTE]
 >
