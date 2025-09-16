@@ -153,7 +153,8 @@ function(BemanExemplar_provideDependency method package_name)
                     BemanExemplar_debug
                     "Redirecting find_package calls for ${BemanExemplar_pkgName} "
                     "to FetchContent logic.\n"
-                    string
+                )
+                string(
                     APPEND
                     BemanExemplar_debug
                     "Fetching ${BemanExemplar_repo} at "
