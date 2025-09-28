@@ -1,3 +1,0 @@
-[submodule "wg21"]
-	path = papers/wg21
-	url = https://github.com/mpark/wg21.git

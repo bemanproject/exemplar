@@ -9,9 +9,9 @@ target_sources(
     beman.exemplar
     PUBLIC
         FILE_SET HEADERS
-        BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../../../include"
-        FILES
-            "${CMAKE_CURRENT_SOURCE_DIR}/../../../include/beman/exemplar/identity.hpp"
+            BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../../../include"
+            FILES
+                "${CMAKE_CURRENT_SOURCE_DIR}/../../../include/beman/exemplar/identity.hpp"
 )
 
 set_target_properties(beman.exemplar PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON)

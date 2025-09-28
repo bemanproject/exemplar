@@ -65,7 +65,8 @@ function(beman_install_library name)
     list(GET name_parts -1 component_name)
 
     install(
-        TARGETS "${target_name}" COMPONENT "${install_component_name}"
+        TARGETS "${target_name}"
+        COMPONENT "${install_component_name}"
         EXPORT "${export_name}"
         FILE_SET HEADERS
     )
