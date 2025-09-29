@@ -43,7 +43,7 @@ jobs:
                     { "stdlibs": ["libstdc++"],
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
-                        "Release.MaxSan", "Debug.Werror", "Debug.Dynamic",
+                        "Release.MaxSan", "Debug.Werror",
                         "Debug.Coverage"
                       ]
                     }
@@ -78,7 +78,7 @@ jobs:
                     { "stdlibs": ["libstdc++", "libc++"],
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
-                        "Release.MaxSan", "Debug.Werror", "Debug.Dynamic"
+                        "Release.MaxSan", "Debug.Werror"
                       ]
                     }
                   ]

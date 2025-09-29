@@ -4,22 +4,31 @@ set -euo pipefail
 
 declare script_dir=$(realpath $(dirname "$BASH_SOURCE"))
 
-function check_consistency() {
-    local out_dir_path
-    out_dir_path=$(mktemp --directory --dry-run)
-    cd /tmp
+function stamp() {
+    local cookiecutter_dir="$1" ; shift
+    local output_dir="$1" ; shift
+    local library_type="$1" ; shift
     python3 \
         -m cookiecutter \
         --no-input \
-        --output-dir "$out_dir_path" \
-        "$script_dir" \
+        --output-dir "$output_dir" \
+        "$cookiecutter_dir" \
         project_name="exemplar" \
         cpp_build_version="17" \
         paper="P0898R3" \
         owner="bemanproject" \
         description="A Beman Library Exemplar" \
-        godbolt_link="https://godbolt.org/z/4qEPK87va"
+        godbolt_link="https://godbolt.org/z/4qEPK87va" \
+        library_type="$library_type"
+}
+
+function check_consistency() {
+    local out_dir_path
+    out_dir_path=$(mktemp --directory --dry-run)
+    cd /tmp
+    stamp "$script_dir" "$out_dir_path" "interface"
     cp "$script_dir"/../.github/workflows/cookiecutter_test.yml "$out_dir_path"/exemplar/.github/workflows
+    cp "$script_dir"/../.github/workflows/static_exemplar_test.yml "$out_dir_path"/exemplar/.github/workflows
     local diff_path
     diff_path=$(mktemp)
     diff -r "$script_dir/.." "$out_dir_path/exemplar" \
@@ -65,12 +74,17 @@ function check_templating() {
     rm "$grep_path"
 }
 
-function main() {
-    local cookiecutter_venv_path
-    cookiecutter_venv_path=$(mktemp --directory --dry-run)
+function setup_venv() {
+    local path="$1" ; shift
     python3 -m venv "$cookiecutter_venv_path"
     source "$cookiecutter_venv_path/bin/activate"
     python3 -m pip install cookiecutter >& /dev/null
+}
+
+function main() {
+    local cookiecutter_venv_path
+    cookiecutter_venv_path=$(mktemp --directory --dry-run)
+    setup_venv "$cookiecutter_venv_path"
     check_consistency
     check_templating
     rm -rf "$cookiecutter_venv_path"

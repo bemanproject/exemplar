@@ -312,7 +312,6 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_{{cookiecutter.project_name.
 
 Enable building examples. Default: ON. Values: { ON, OFF }.
 
-
 #### `BEMAN_{{cookiecutter.project_name.upper()}}_INSTALL_CONFIG_FILE_PACKAGE`
 
 Enable installing the CMake config file package. Default: ON.
@@ -358,10 +357,13 @@ any libraries or executables that include `beman.{{cookiecutter.project_name}}` 
 target_link_libraries(yourlib PUBLIC beman::{{cookiecutter.project_name}})
 ```
 
-### Produce beman.{{cookiecutter.project_name}} static library
+### Produce beman.{{cookiecutter.project_name}} {{ cookiecutter.library_type }} library
 
-You can include {{cookiecutter.project_name}}'s headers locally
-by producing a static `libbeman.{{cookiecutter.project_name}}.a` library.
+{% if cookiecutter.library_type == "interface" %}
+You can produce {{cookiecutter.project_name}}'s interface library locally by:
+{% else %}
+You can produce {{cookiecutter.project_name}}'s static library `libbeman.{{cookiecutter.project_name}}.a` by:
+{% endif %}
 
 ```bash
 cmake --workflow --preset gcc-release
@@ -370,6 +372,21 @@ cmake --install build/gcc-release --prefix /opt/beman
 
 This will generate the following directory structure at `/opt/beman`.
 
+{% if cookiecutter.library_type == "interface" %}
+```txt
+/opt/beman
+├── include
+│   └── beman
+│       └── {{cookiecutter.project_name}}
+│           └── identity.hpp
+└── lib
+    └── cmake
+        └── beman.{{cookiecutter.project_name}}
+            ├── beman.{{cookiecutter.project_name}}-config-version.cmake
+            ├── beman.{{cookiecutter.project_name}}-config.cmake
+            └── beman.{{cookiecutter.project_name}}-targets.cmake
+```
+{% else %}
 ```txt
 /opt/beman
 ├── include
@@ -378,10 +395,11 @@ This will generate the following directory structure at `/opt/beman`.
 │           └── identity.hpp
 └── lib
     ├── cmake
-    │   └── beman.{{cookiecutter.project_name}}
-    │       ├── beman.{{cookiecutter.project_name}}-config-version.cmake
-    │       ├── beman.{{cookiecutter.project_name}}-config.cmake
-    │       ├── beman.{{cookiecutter.project_name}}-targets-debug.cmake
-    │       └── beman.{{cookiecutter.project_name}}-targets.cmake
+    │   └── beman.{{cookiecutter.project_name}}
+    │       ├── beman.{{cookiecutter.project_name}}-config-version.cmake
+    │       ├── beman.{{cookiecutter.project_name}}-config.cmake
+    │       ├── beman.{{cookiecutter.project_name}}-targets-debug.cmake
+    │       └── beman.{{cookiecutter.project_name}}-targets.cmake
     └── libbeman.{{cookiecutter.project_name}}.a
 ```
+{% endif %}

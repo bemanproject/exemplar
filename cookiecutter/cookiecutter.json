@@ -5,6 +5,7 @@
   "owner": "github-user-name",
   "description": "Short project description.",
   "godbolt_link": "https://www.example.com",
+  "library_type": ["interface", "static"],
   "_copy_without_render": [
     "infra"
   ],
