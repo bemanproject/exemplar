@@ -24,6 +24,7 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
+{% if cookiecutter.library_type == "interface" %}
 add_library(beman.{{cookiecutter.project_name}} INTERFACE)
 add_library(beman::{{cookiecutter.project_name}} ALIAS beman.{{cookiecutter.project_name}})
 
@@ -40,6 +41,9 @@ set_target_properties(beman.{{cookiecutter.project_name}} PROPERTIES VERIFY_INTE
 
 find_package(beman-install-library REQUIRED)
 beman_install_library(beman.{{cookiecutter.project_name}})
+{% else %}
+add_subdirectory(src/beman/{{cookiecutter.project_name}})
+{% endif %}
 
 include(CTest)
 

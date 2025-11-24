@@ -44,7 +44,8 @@ jobs:
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
                         "Release.MaxSan", "Debug.Werror",
-                        "Debug.Coverage"
+                        "Debug.Coverage"{% if cookiecutter.library_type == "static" %}, "Debug.Dynamic"{% endif %}
+
                       ]
                     }
                   ]
@@ -78,7 +79,8 @@ jobs:
                     { "stdlibs": ["libstdc++", "libc++"],
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
-                        "Release.MaxSan", "Debug.Werror"
+                        "Release.MaxSan", "Debug.Werror"{% if cookiecutter.library_type == "static" %}, "Debug.Dynamic"{% endif %}
+
                       ]
                     }
                   ]

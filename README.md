@@ -357,9 +357,9 @@ any libraries or executables that include `beman.exemplar` headers.
 target_link_libraries(yourlib PUBLIC beman::exemplar)
 ```
 
-### Produce beman.exemplar library
+### Produce beman.exemplar interface library
 
-You can install exemplar's headers locally by:
+You can produce exemplar's interface library locally by:
 
 ```bash
 cmake --workflow --preset gcc-release
