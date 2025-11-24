@@ -312,7 +312,6 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_EXEMPLAR_BUILD_TESTS=OFF
 
 Enable building examples. Default: ON. Values: { ON, OFF }.
 
-
 #### `BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE`
 
 Enable installing the CMake config file package. Default: ON.
@@ -377,11 +376,9 @@ This will generate the following directory structure at `/opt/beman`.
 │       └── exemplar
 │           └── identity.hpp
 └── lib
-    ├── cmake
-    │   └── beman.exemplar
-    │       ├── beman.exemplar-config-version.cmake
-    │       ├── beman.exemplar-config.cmake
-    │       ├── beman.exemplar-targets-debug.cmake
-    │       └── beman.exemplar-targets.cmake
-    └── libbeman.exemplar.a
+    └── cmake
+        └── beman.exemplar
+            ├── beman.exemplar-config-version.cmake
+            ├── beman.exemplar-config.cmake
+            └── beman.exemplar-targets.cmake
 ```
