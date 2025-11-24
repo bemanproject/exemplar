@@ -372,12 +372,12 @@ This will generate the following directory structure at `/opt/beman`.
 /opt/beman
 ├── include
 │   └── beman
-│       └── exemplar
+│       └── {{cookiecutter.project_name}}
 │           └── identity.hpp
 └── lib
     └── cmake
-        └── beman.exemplar
-            ├── beman.exemplar-config-version.cmake
-            ├── beman.exemplar-config.cmake
-            └── beman.exemplar-targets.cmake
+        └── beman.{{cookiecutter.project_name}}
+            ├── beman.{{cookiecutter.project_name}}-config-version.cmake
+            ├── beman.{{cookiecutter.project_name}}-config.cmake
+            └── beman.{{cookiecutter.project_name}}-targets.cmake
 ```
