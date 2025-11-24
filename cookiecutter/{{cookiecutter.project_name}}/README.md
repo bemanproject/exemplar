@@ -312,7 +312,6 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_{{cookiecutter.project_name.
 
 Enable building examples. Default: ON. Values: { ON, OFF }.
 
-
 #### `BEMAN_{{cookiecutter.project_name.upper()}}_INSTALL_CONFIG_FILE_PACKAGE`
 
 Enable installing the CMake config file package. Default: ON.
@@ -358,10 +357,9 @@ any libraries or executables that include `beman.{{cookiecutter.project_name}}` 
 target_link_libraries(yourlib PUBLIC beman::{{cookiecutter.project_name}})
 ```
 
-### Produce beman.{{cookiecutter.project_name}} static library
+### Produce beman.{{cookiecutter.project_name}} library
 
-You can include {{cookiecutter.project_name}}'s headers locally
-by producing a static `libbeman.{{cookiecutter.project_name}}.a` library.
+You can install {{cookiecutter.project_name}}'s headers locally by:
 
 ```bash
 cmake --workflow --preset gcc-release
@@ -374,14 +372,12 @@ This will generate the following directory structure at `/opt/beman`.
 /opt/beman
 ├── include
 │   └── beman
-│       └── {{cookiecutter.project_name}}
+│       └── exemplar
 │           └── identity.hpp
 └── lib
-    ├── cmake
-    │   └── beman.{{cookiecutter.project_name}}
-    │       ├── beman.{{cookiecutter.project_name}}-config-version.cmake
-    │       ├── beman.{{cookiecutter.project_name}}-config.cmake
-    │       ├── beman.{{cookiecutter.project_name}}-targets-debug.cmake
-    │       └── beman.{{cookiecutter.project_name}}-targets.cmake
-    └── libbeman.{{cookiecutter.project_name}}.a
+    └── cmake
+        └── beman.exemplar
+            ├── beman.exemplar-config-version.cmake
+            ├── beman.exemplar-config.cmake
+            └── beman.exemplar-targets.cmake
 ```

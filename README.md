@@ -357,10 +357,9 @@ any libraries or executables that include `beman.exemplar` headers.
 target_link_libraries(yourlib PUBLIC beman::exemplar)
 ```
 
-### Produce beman.exemplar static library
+### Produce beman.exemplar library
 
-You can include exemplar's headers locally
-by producing a static `libbeman.exemplar.a` library.
+You can install exemplar's headers locally by:
 
 ```bash
 cmake --workflow --preset gcc-release
