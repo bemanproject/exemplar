@@ -18,7 +18,8 @@ function check_consistency() {
         paper="P0898R3" \
         owner="bemanproject" \
         description="A Beman Library Exemplar" \
-        godbolt_link="https://godbolt.org/z/4qEPK87va"
+        godbolt_link="https://godbolt.org/z/4qEPK87va" \
+        library_type="interface"
     cp "$script_dir"/../.github/workflows/cookiecutter_test.yml "$out_dir_path"/exemplar/.github/workflows
     local diff_path
     diff_path=$(mktemp)
