@@ -312,7 +312,6 @@ cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_EXEMPLAR_BUILD_TESTS=OFF
 
 Enable building examples. Default: ON. Values: { ON, OFF }.
 
-
 #### `BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE`
 
 Enable installing the CMake config file package. Default: ON.
@@ -358,10 +357,9 @@ any libraries or executables that include `beman.exemplar` headers.
 target_link_libraries(yourlib PUBLIC beman::exemplar)
 ```
 
-### Produce beman.exemplar static library
+### Produce beman.exemplar interface library
 
-You can include exemplar's headers locally
-by producing a static `libbeman.exemplar.a` library.
+You can produce exemplar's interface library locally by:
 
 ```bash
 cmake --workflow --preset gcc-release
@@ -377,11 +375,9 @@ This will generate the following directory structure at `/opt/beman`.
 │       └── exemplar
 │           └── identity.hpp
 └── lib
-    ├── cmake
-    │   └── beman.exemplar
-    │       ├── beman.exemplar-config-version.cmake
-    │       ├── beman.exemplar-config.cmake
-    │       ├── beman.exemplar-targets-debug.cmake
-    │       └── beman.exemplar-targets.cmake
-    └── libbeman.exemplar.a
+    └── cmake
+        └── beman.exemplar
+            ├── beman.exemplar-config-version.cmake
+            ├── beman.exemplar-config.cmake
+            └── beman.exemplar-targets.cmake
 ```

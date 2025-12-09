@@ -24,9 +24,28 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
-include(CTest)
+{% if cookiecutter.library_type == "interface" %}
+add_library(beman.{{cookiecutter.project_name}} INTERFACE)
+add_library(beman::{{cookiecutter.project_name}} ALIAS beman.{{cookiecutter.project_name}})
 
+target_sources(
+    beman.{{cookiecutter.project_name}}
+    PUBLIC
+        FILE_SET HEADERS
+            BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include"
+            FILES
+                "${CMAKE_CURRENT_SOURCE_DIR}/include/beman/{{cookiecutter.project_name}}/identity.hpp"
+)
+
+set_target_properties(beman.{{cookiecutter.project_name}} PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON)
+
+find_package(beman-install-library REQUIRED)
+beman_install_library(beman.{{cookiecutter.project_name}})
+{% else %}
 add_subdirectory(src/beman/{{cookiecutter.project_name}})
+{% endif %}
+
+include(CTest)
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS)
     add_subdirectory(tests/beman/{{cookiecutter.project_name}})
