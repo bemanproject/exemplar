@@ -5,8 +5,9 @@
   "owner": "github-user-name",
   "description": "Short project description.",
   "godbolt_link": "https://www.example.com",
+  "library_type": ["interface", "static"],
   "_copy_without_render": [
-    "infra",
-    ".github/workflows"
-  ]
+    "infra"
+  ],
+  "_jinja2_env_vars": {"trim_blocks": true}
 }
