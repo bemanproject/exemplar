@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.28...4.2)
 
 project(
     beman.exemplar # CMake Project Name, which is also the name of the top-level
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "A Beman Library Exemplar"
     LANGUAGES CXX
-    VERSION 2.2.1
+    VERSION 0.1.0
 )
 
 # [CMAKE.SKIP_TESTS]
@@ -24,11 +24,13 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
-include(CTest)
+# for find of beman-install-library
+set(CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/infra/cmake)
 
 add_subdirectory(src/beman/exemplar)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
+    enable_testing()
     add_subdirectory(tests/beman/exemplar)
 endif()
 
