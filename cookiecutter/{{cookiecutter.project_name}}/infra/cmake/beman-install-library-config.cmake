@@ -84,8 +84,8 @@ function(beman_install_library name)
 
     option(
         ${project_prefix}_INSTALL_CONFIG_FILE_PACKAGE
-        "Enable building examples. Default: ${PROJECT_IS_TOP_LEVEL}. Values: { ON, OFF }."
-        ${PROJECT_IS_TOP_LEVEL}
+        "Enable creating and installing a CMake config-file package. Default: ON. Values: { ON, OFF }."
+        ON
     )
 
     # By default, install the config package
