@@ -13,10 +13,10 @@ on:
 
 jobs:
   beman-submodule-check:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.1.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.2.1
 
   preset-test:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-preset-test.yml@1.1.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-preset-test.yml@1.2.1
     with:
       matrix_config: >
         [
@@ -31,7 +31,7 @@ jobs:
         ]
 
   build-and-test:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-build-and-test.yml@1.1.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-build-and-test.yml@1.2.1
     with:
       matrix_config: >
         {
@@ -134,7 +134,16 @@ jobs:
           ]
         }
 
+  install-test:
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-install-test.yml@1.2.1
+    with:
+      image: ghcr.io/bemanproject/infra-containers-gcc:latest
+      cxx_standard: 26
+{% if cookiecutter.project_name == "exemplar" %}
+      main_header: identity.hpp
+{% endif %}
+
   create-issue-when-fault:
     needs: [preset-test, build-and-test]
     if: failure() && github.event_name == 'schedule'
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.1.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.2.1

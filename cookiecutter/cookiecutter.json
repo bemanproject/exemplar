@@ -6,7 +6,7 @@
   "description": "Short project description.",
   "godbolt_link": "https://www.example.com",
   "_copy_without_render": [
-    "infra",
-    ".github/workflows"
-  ]
+    "infra"
+  ],
+  "_jinja2_env_vars": {"trim_blocks": true}
 }
