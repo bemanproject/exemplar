@@ -15,6 +15,3 @@ target_sources(
 )
 
 set_target_properties(beman.{{cookiecutter.project_name}} PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON)
-
-find_package(beman-install-library REQUIRED)
-beman_install_library(beman.{{cookiecutter.project_name}})

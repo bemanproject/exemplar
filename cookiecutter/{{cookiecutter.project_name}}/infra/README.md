@@ -2,8 +2,6 @@
 
 <!-- SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception -->
 
-[![beman-tidy tests](https://github.com/bemanproject/infra/actions/workflows/beman-tidy.yml/badge.svg)](https://github.com/bemanproject/infra/actions/workflows/beman-tidy.yml)
-
 This repository contains the infrastructure for The Beman Project. This is NOT a library repository,
 so it does not respect the usual structure of a Beman library repository nor The Beman Standard!
 
