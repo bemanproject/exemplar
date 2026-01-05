@@ -29,7 +29,6 @@ include(infra/cmake/beman-install-library-config.cmake)
 
 add_subdirectory(src/beman/{{cookiecutter.project_name}})
 
-find_package(beman-install-library REQUIRED)
 beman_install_library(beman.{{cookiecutter.project_name}})
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS)

@@ -29,7 +29,6 @@ include(infra/cmake/beman-install-library-config.cmake)
 
 add_subdirectory(src/beman/exemplar)
 
-find_package(beman-install-library REQUIRED)
 beman_install_library(beman.exemplar)
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
