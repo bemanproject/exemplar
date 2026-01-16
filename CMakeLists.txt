@@ -24,10 +24,23 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
+option(BEMAN_EXEMPLAR_BUILD_SHARED "Build exemplar as shared library" OFF)
+option(BEMAN_HAS_MODULES "Build CXX_MODULES" ${CMAKE_CXX_SCAN_FOR_MODULES})
+
 # for find of beman-install-library
 include(infra/cmake/beman-install-library-config.cmake)
 
-add_library(beman.exemplar INTERFACE)
+if(BEMAN_EXEMPLAR_BUILD_SHARED)
+    set(BUILD_SHARED_LIBS ON)
+endif()
+
+if(BEMAN_HAS_MODULES)
+    # XXX add_library(beman.exemplar src/identity.cpp)
+    add_library(beman.exemplar)
+    target_compile_definitions(beman.exemplar PUBLIC BEMAN_HAS_MODULES)
+else()
+    add_library(beman.exemplar INTERFACE)
+endif()
 add_library(beman::exemplar ALIAS beman.exemplar)
 
 target_sources(
@@ -35,14 +48,12 @@ target_sources(
     PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-set_target_properties(beman.exemplar PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON)
-
 add_subdirectory(include/beman/exemplar)
 
 beman_install_library(beman.exemplar)
 
+enable_testing()
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
-    enable_testing()
     add_subdirectory(tests/beman/exemplar)
 endif()
 
