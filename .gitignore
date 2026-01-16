@@ -2,6 +2,7 @@
 
 /.cache
 /compile_commands.json
+/CMakeUserPresets.json
 /build
 
 # ignore emacs temp files

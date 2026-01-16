@@ -69,6 +69,8 @@ function(beman_install_library name)
         COMPONENT "${install_component_name}"
         EXPORT "${export_name}"
         FILE_SET HEADERS
+        FILE_SET CXX_MODULES
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${package_name}/modules
     )
 
     set_target_properties(

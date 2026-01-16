@@ -2,6 +2,10 @@
 
 set(ALL_EXAMPLES identity_direct_usage)
 
+# XXX if(BEMAN_HAS_MODULES)
+list(APPEND ALL_EXAMPLES identity_module_usage)
+# XXX endif()
+
 # Example `identity_as_default_projection` need ranges support:
 include(CheckCXXSymbolExists)
 check_cxx_symbol_exists(__cpp_lib_ranges "ranges" HAS_RANGES)
@@ -23,5 +27,9 @@ foreach(example ${ALL_EXAMPLES})
     target_link_libraries(
         beman.exemplar.examples.${example}
         PRIVATE beman::exemplar
+    )
+    add_test(
+        NAME beman.exemplar.examples.${example}
+        COMMAND beman.exemplar.examples.${example}
     )
 endforeach()
