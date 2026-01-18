@@ -30,12 +30,14 @@ endif()
 if(NOT DEFINED CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 23)
 endif()
+
+if(CMAKE_CXX_STANDARD GREATER_EQUAL 20)
+    option(BEMAN_HAS_MODULES "Build CXX_MODULES" ${CMAKE_CXX_SCAN_FOR_MODULES})
+endif()
+
 if(PROJECT_IS_TOP_LEVEL)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
-
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
 
 # [CMAKE.SKIP_TESTS]
 option(
@@ -52,11 +54,6 @@ option(
 )
 
 option(BEMAN_EXEMPLAR_BUILD_SHARED "Build exemplar as shared library" OFF)
-option(BEMAN_HAS_MODULES "Build CXX_MODULES" ${CMAKE_CXX_SCAN_FOR_MODULES})
-
-# for find of beman-install-library
-include(infra/cmake/beman-install-library-config.cmake)
-
 if(BEMAN_EXEMPLAR_BUILD_SHARED)
     set(BUILD_SHARED_LIBS ON)
 endif()
@@ -65,6 +62,8 @@ if(BEMAN_HAS_MODULES)
     # Require C++20 or newer with extensions for modules!
     set(CMAKE_CXX_EXTENSIONS ON)
     set(CMAKE_CXX_STANDARD_REQURIED ON)
+    set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+    set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
     # XXX add_library(beman.exemplar src/identity.cpp)
     add_library(beman.exemplar)
     target_compile_definitions(beman.exemplar PUBLIC BEMAN_HAS_MODULES)
@@ -81,6 +80,7 @@ target_sources(
 
 add_subdirectory(include/beman/exemplar)
 
+include(infra/cmake/beman-install-library-config.cmake)
 beman_install_library(beman.exemplar)
 
 enable_testing()
