@@ -1,5 +1,24 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+cmake_minimum_required(VERSION 3.28...4.2)
+
+project(beman.exemplar.example LANGUAGES CXX)
+
+if(PROJECT_IS_TOP_LEVEL)
+    if(NOT DEFINED CMAKE_CXX_STANDARD)
+        set(CMAKE_CXX_STANDARD 23)
+        set(CMAKE_CXX_EXTENSIONS YES)
+        set(CMAKE_CXX_STANDARD_REQUIRED YES)
+    endif()
+    if(NOT DEFINED CMAKE_CXX_SCAN_FOR_MODULES)
+        set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+    endif()
+
+    find_package(beman.exemplar REQUIRED)
+
+    enable_testing()
+endif()
+
 set(ALL_EXAMPLES identity_direct_usage)
 
 # XXX if(BEMAN_HAS_MODULES)

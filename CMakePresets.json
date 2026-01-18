@@ -10,9 +10,10 @@
         "CMAKE_CXX_EXTENSIONS": true,
         "CMAKE_CXX_SCAN_FOR_MODULES": true,
         "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_STANDARD_REQUIRED": true,
         "CMAKE_EXPORT_COMPILE_COMMANDS": true,
         "CMAKE_SKIP_TEST_ALL_DEPENDENCY": false,
-        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./infra/cmake/use-fetch-content.cmake"
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "infra/cmake/use-fetch-content.cmake"
       }
     },
     {

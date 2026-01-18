@@ -35,12 +35,14 @@ if(BEMAN_EXEMPLAR_BUILD_SHARED)
 endif()
 
 if(BEMAN_HAS_MODULES)
+    # Require C++20 for modules
     # XXX add_library(beman.exemplar src/identity.cpp)
     add_library(beman.exemplar)
     target_compile_definitions(beman.exemplar PUBLIC BEMAN_HAS_MODULES)
 else()
     add_library(beman.exemplar INTERFACE)
 endif()
+
 add_library(beman::exemplar ALIAS beman.exemplar)
 
 target_sources(
@@ -53,6 +55,7 @@ add_subdirectory(include/beman/exemplar)
 beman_install_library(beman.exemplar)
 
 enable_testing()
+
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
     add_subdirectory(tests/beman/exemplar)
 endif()
