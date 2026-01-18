@@ -10,7 +10,7 @@ if(PROJECT_IS_TOP_LEVEL)
         set(CMAKE_CXX_EXTENSIONS YES)
         set(CMAKE_CXX_STANDARD_REQUIRED YES)
     endif()
-    if(NOT DEFINED CMAKE_CXX_SCAN_FOR_MODULES)
+    if(NOT DEFINED BEMAN_HAS_MODULES)
         set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
     endif()
 
@@ -21,9 +21,9 @@ endif()
 
 set(ALL_EXAMPLES identity_direct_usage)
 
-# XXX if(BEMAN_HAS_MODULES)
-list(APPEND ALL_EXAMPLES identity_module_usage)
-# XXX endif()
+if(BEMAN_HAS_MODULES)
+    list(APPEND ALL_EXAMPLES identity_module_usage)
+endif()
 
 # Example `identity_as_default_projection` need ranges support:
 include(CheckCXXSymbolExists)

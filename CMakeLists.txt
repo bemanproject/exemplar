@@ -27,7 +27,13 @@ else()
     set(CMAKE_CXX_SCAN_FOR_MODULES 0)
 endif()
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 23)
+endif()
+if(PROJECT_IS_TOP_LEVEL)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
+
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
 
@@ -56,7 +62,9 @@ if(BEMAN_EXEMPLAR_BUILD_SHARED)
 endif()
 
 if(BEMAN_HAS_MODULES)
-    # Require C++20 for modules
+    # Require C++20 or newer with extensions for modules!
+    set(CMAKE_CXX_EXTENSIONS ON)
+    set(CMAKE_CXX_STANDARD_REQURIED ON)
     # XXX add_library(beman.exemplar src/identity.cpp)
     add_library(beman.exemplar)
     target_compile_definitions(beman.exemplar PUBLIC BEMAN_HAS_MODULES)

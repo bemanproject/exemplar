@@ -7,8 +7,8 @@ if(BEMAN_HAS_MODULES)
         beman.exemplar
         PUBLIC FILE_SET CXX_MODULES FILES identity.cppm
     )
-    # NOTE: Require C++20 for modules is needed here!
-    target_compile_features(beman.exemplar PUBLIC cxx_std_20)
+    # NOTE: Require C++20 or newer for modules is needed here!
+    target_compile_features(beman.exemplar PUBLIC cxx_std_${CMAKE_CXX_STANDARD})
     if(WIN32 AND EXEMPLAR_BUILD_SHARED)
         set_target_properties(
             beman.exemplar

@@ -24,16 +24,20 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
         NAME find-package-test
         COMMAND
             ${CMAKE_CTEST_COMMAND} # --verbose
-            --output-on-failure -C $<CONFIG> --build-and-test
-            "${CMAKE_SOURCE_DIR}/examples"
-            "${CMAKE_CURRENT_BINARY_DIR}/find-package-test" --build-generator
-            ${CMAKE_GENERATOR} --build-makeprogram ${CMAKE_MAKE_PROGRAM}
-            --build-options "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
-            "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
+            --output-on-failure -C $<CONFIG> #
+            --build-and-test "${CMAKE_SOURCE_DIR}/examples"
+            "${CMAKE_CURRENT_BINARY_DIR}/find-package-test" #
+            --build-generator ${CMAKE_GENERATOR} #
+            --build-makeprogram ${CMAKE_MAKE_PROGRAM} #
+            --build-options #
+            "-DBEMAN_HAS_MODULES=${BEMAN_HAS_MODULES}"
+            "-DCMAKE_BUILD_TYPE=$<CONFIG>"
+            "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
             "-DCMAKE_CXX_EXTENSIONS=${CMAKE_CXX_EXTENSIONS}"
             "-DCMAKE_CXX_MODULE_STD=${CMAKE_CXX_MODULE_STD}"
             "-DCMAKE_CXX_SCAN_FOR_MODULES=${CMAKE_CXX_SCAN_FOR_MODULES}"
-            "-DCMAKE_BUILD_TYPE=$<CONFIG>"
+            "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
+            "-DCMAKE_CXX_STANDARD_REQURIED=${CMAKE_CXX_STANDARD_REQURIED}"
             "-DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/stagedir"
     )
 endif()
