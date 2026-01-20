@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.28...4.2)
+cmake_minimum_required(VERSION 3.20...4.2)
+
+include(cmake/prelude.cmake)
 
 project(
     beman.exemplar # CMake Project Name, which is also the name of the top-level
@@ -11,35 +13,7 @@ project(
 )
 
 # Modules opt in only on compilers that support it: msvc, g++-15 and clang-20+
-if(
-    CMAKE_CXX_COMPILER_ID STREQUAL "Clang"
-    AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 20
-    AND CMAKE_GENERATOR MATCHES "Ninja"
-)
-    set(CMAKE_CXX_SCAN_FOR_MODULES 1)
-elseif(
-    CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
-    AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 15
-    AND CMAKE_GENERATOR MATCHES "Ninja"
-)
-    set(CMAKE_CXX_SCAN_FOR_MODULES 1)
-elseif(MSVC)
-    set(CMAKE_CXX_SCAN_FOR_MODULES 1)
-else()
-    set(CMAKE_CXX_SCAN_FOR_MODULES 0)
-endif()
-
-if(NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 23)
-endif()
-
-if(CMAKE_CXX_STANDARD GREATER_EQUAL 20)
-    option(BEMAN_HAS_MODULES "Build CXX_MODULES" ${CMAKE_CXX_SCAN_FOR_MODULES})
-endif()
-
-if(PROJECT_IS_TOP_LEVEL)
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-endif()
+include(cmake/cxx-modules-rules.cmake)
 
 # [CMAKE.SKIP_TESTS]
 option(
@@ -82,7 +56,7 @@ target_sources(
 
 add_subdirectory(include/beman/exemplar)
 
-include(infra/cmake/beman-install-library-config.cmake)
+include(beman-install-library-config)
 beman_install_library(beman.exemplar)
 
 enable_testing()
