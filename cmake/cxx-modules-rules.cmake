@@ -88,8 +88,8 @@ endif()
 
 option(
     BEMAN_USE_STD_MODULE
-    "Check if import std; is possible"
-    ${PROJECT_IS_TOP_LEVEL}
+    "Check if 'import std;' is possible with the toolchain"
+    OFF
 )
 if(BEMAN_USE_STD_MODULE)
     # -------------------------------------------------------------------------
