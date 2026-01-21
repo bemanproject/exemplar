@@ -70,6 +70,8 @@ if(CMAKE_GENERATOR MATCHES "Ninja")
         set(CMAKE_CXX_SCAN_FOR_MODULES ON)
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+    else()
+        set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
     endif()
 endif()
 
@@ -80,12 +82,36 @@ if(CMAKE_CXX_STDLIB_MODULES_JSON)
     )
 endif()
 
-# Tell CMake that we explicitly want `import std`.
-# This will initialize the property on all targets declared after this to 1
-message(STATUS "CMAKE_CXX_COMPILER_IMPORT_STD=${CMAKE_CXX_COMPILER_IMPORT_STD}")
-if(${CMAKE_CXX_STANDARD} IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
-    set(CMAKE_CXX_MODULE_STD ON)
-    message(STATUS "CMAKE_CXX_MODULE_STD=${CMAKE_CXX_MODULE_STD}")
+if(NOT DEFINED CMAKE_CXX_MODULE_STD)
+    set(CMAKE_CXX_MODULE_STD OFF)
+endif()
+
+option(
+    BEMAN_USE_STD_MODULE
+    "Check if import std; is possible"
+    ${PROJECT_IS_TOP_LEVEL}
+)
+if(BEMAN_USE_STD_MODULE)
+    # -------------------------------------------------------------------------
+    # Tell CMake that we explicitly want `import std`.
+    # This will initialize the property on all targets declared after this to 1
+    # -------------------------------------------------------------------------
+    message(
+        STATUS
+        "CMAKE_CXX_COMPILER_IMPORT_STD=${CMAKE_CXX_COMPILER_IMPORT_STD}"
+    )
+    if(${CMAKE_CXX_STANDARD} IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
+        set(CMAKE_CXX_MODULE_STD ON)
+        option(
+            BEMAN_HAS_IMPORT_STD
+            "Build with import std; possible"
+            ${CMAKE_CXX_MODULE_STD}
+        )
+        message(STATUS "CMAKE_CXX_MODULE_STD=${CMAKE_CXX_MODULE_STD}")
+    else()
+        set(CMAKE_CXX_MODULE_STD OFF)
+        message(WARNING "CMAKE_CXX_MODULE_STD=${CMAKE_CXX_MODULE_STD}")
+    endif()
 endif()
 
 message(STATUS "CMAKE_CXX_SCAN_FOR_MODULES=${CMAKE_CXX_SCAN_FOR_MODULES}")
