@@ -37,7 +37,7 @@ endif()
 if(BEMAN_HAS_MODULES)
     # Require C++20 or newer with extensions for modules!
     set(CMAKE_CXX_EXTENSIONS ON)
-    set(CMAKE_CXX_STANDARD_REQURIED ON)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_CXX_VISIBILITY_PRESET hidden)
     set(CMAKE_VISIBILITY_INLINES_HIDDEN TRUE)
     # XXX add_library(beman.exemplar src/identity.cpp)

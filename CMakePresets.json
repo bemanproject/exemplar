@@ -7,6 +7,7 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": true,
         "CMAKE_CXX_EXTENSIONS": true,
         "CMAKE_CXX_SCAN_FOR_MODULES": true,
         "CMAKE_CXX_STANDARD": "23",
@@ -19,6 +20,17 @@
     {
       "name": "_debug-base",
       "hidden": true,
+      "warnings": {
+        "dev": true,
+        "deprecated": true,
+        "uninitialized": true,
+        "unusedCli": true,
+        "systemVars": false
+      },
+      "errors": {
+        "dev": false,
+        "deprecated": false
+      },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "BEMAN_BUILDSYS_SANITIZER": "MaxSan"
@@ -39,7 +51,6 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "BEMAN_USE_STD_MODULE": true,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
       }
     },
@@ -51,7 +62,6 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "BEMAN_USE_STD_MODULE": true,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
       }
     },
@@ -63,6 +73,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": false,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-libc++-toolchain.cmake"
       },
       "environment": {
@@ -78,6 +89,7 @@
         "_release-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": false,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-libc++-toolchain.cmake"
       },
       "environment": {
@@ -93,6 +105,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": false,
         "CMAKE_CXX_SCAN_FOR_MODULES": false,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
       }
@@ -105,6 +118,7 @@
         "_release-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": false,
         "CMAKE_CXX_SCAN_FOR_MODULES": false,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
       }

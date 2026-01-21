@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+set(BUILD_GMOCK OFF)
 find_package(GTest REQUIRED)
 
 add_executable(beman.exemplar.tests.identity)
@@ -37,7 +38,7 @@ if(BEMAN_EXEMPLAR_INSTALL_CONFIG_FILE_PACKAGE)
             "-D CMAKE_CXX_MODULE_STD=${CMAKE_CXX_MODULE_STD}"
             "-D CMAKE_CXX_SCAN_FOR_MODULES=${CMAKE_CXX_SCAN_FOR_MODULES}"
             "-D CMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
-            "-D CMAKE_CXX_STANDARD_REQURIED=${CMAKE_CXX_STANDARD_REQURIED}"
+            "-D CMAKE_CXX_STANDARD_REQUIRED=${CMAKE_CXX_STANDARD_REQUIRED}"
             "-D CMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/stagedir"
     )
 endif()
