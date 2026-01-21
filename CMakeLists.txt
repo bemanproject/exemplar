@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.20...4.2)
+cmake_minimum_required(VERSION 3.30...4.2)
 
 include(cmake/prelude.cmake)
 
@@ -13,7 +13,7 @@ project(
 )
 
 # Modules opt in only on compilers that support it: msvc, g++-15 and clang-20+
-include(cmake/cxx-modules-rules.cmake)
+include(cxx-modules-rules)
 
 # [CMAKE.SKIP_TESTS]
 option(

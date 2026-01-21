@@ -39,6 +39,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": true,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
       }
     },
@@ -50,6 +51,7 @@
         "_release-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": true,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
       }
     },
