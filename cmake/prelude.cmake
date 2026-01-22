@@ -2,8 +2,8 @@
 # This file must be included/used as CMAKE_PROJECT_TOP_LEVEL_INCLUDES -> before project() is called!
 #
 
-# ---- In-source guard ----
-include_guard()
+# ---- The include guard applies globally to the whole build ----
+include_guard(GLOBAL)
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
     message(
@@ -47,6 +47,9 @@ if("$ENV{CXX}" STREQUAL "" AND CMAKE_CXX_COMPILER)
     set(ENV{CXX} ${CMAKE_CXX_COMPILER})
 endif()
 
+# ---------------------------------------------------------------------------
+# Workaround needed for CMAKE and clang++ to find the libc++.modules.json file
+# ---------------------------------------------------------------------------
 if(
     CMAKE_VERSION VERSION_GREATER 4.2
     AND ("$ENV{CXX}" MATCHES "clang" OR CMAKE_CXX_COMPILER MATCHES "clang")

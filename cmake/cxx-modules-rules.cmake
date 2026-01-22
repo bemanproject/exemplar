@@ -3,8 +3,8 @@
 # This file must be included/used as CMAKE_PROJECT_INCLUDE -> after project()
 #
 
-# ---- In-source guard ----
-include_guard()
+# ---- The include guard applies within the current directory and below ----
+include_guard(DIRECTORY)
 
 if(NOT PROJECT_NAME)
     message(
@@ -18,6 +18,7 @@ if(NOT DEFINED CMAKE_CXX_SCAN_FOR_MODULES)
     set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 endif()
 
+# Control whether the test target depends on the all target.
 set(CMAKE_SKIP_TEST_ALL_DEPENDENCY OFF)
 
 # gersemi: off
@@ -38,9 +39,11 @@ if(NOT isMultiConfig)
 endif()
 set(CMAKE_DEBUG_POSTFIX _d)
 
+# ------------------------------------------------------------------------------
 # This property setting also needs to be consistent between the installed shared
 # library and its consumer, otherwise most toolchains will once again reject the
 # consumer's generated BMI.
+# ------------------------------------------------------------------------------
 if(NOT DEFINED CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 23)
 endif()
@@ -120,6 +123,7 @@ if(CMAKE_CXX_STANDARD GREATER_EQUAL 20)
     option(BEMAN_HAS_MODULES "Build CXX_MODULES" ${CMAKE_CXX_SCAN_FOR_MODULES})
 endif()
 
+# ------------------------------------------------------------------------------
 # Avoid creating CMAKE_..._OUTPUT_DIRECTORY as cache variables, they should not
 # be under the control of the developer. They should be controlled by the
 # project because parts of the project may make assumptions about the relative
@@ -127,6 +131,7 @@ endif()
 # also means they can be unset within subdirectories where test executables are
 # defined, allowing them to avoid being collected with the other main binaries
 # and cluttering up that area.
+# ------------------------------------------------------------------------------
 set(stageDir ${CMAKE_CURRENT_BINARY_DIR}/stagedir)
 include(GNUInstallDirs)
 
