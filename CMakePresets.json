@@ -7,14 +7,30 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_CXX_STANDARD": "20",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./infra/cmake/use-fetch-content.cmake"
+        "BEMAN_USE_STD_MODULE": true,
+        "CMAKE_CXX_EXTENSIONS": true,
+        "CMAKE_CXX_SCAN_FOR_MODULES": true,
+        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_STANDARD_REQUIRED": true,
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "CMAKE_SKIP_TEST_ALL_DEPENDENCY": false,
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "infra/cmake/use-fetch-content.cmake"
       }
     },
     {
       "name": "_debug-base",
       "hidden": true,
+      "warnings": {
+        "dev": true,
+        "deprecated": true,
+        "uninitialized": true,
+        "unusedCli": true,
+        "systemVars": false
+      },
+      "errors": {
+        "dev": false,
+        "deprecated": false
+      },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "BEMAN_BUILDSYS_SANITIZER": "MaxSan"
@@ -57,7 +73,12 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-toolchain.cmake"
+        "BEMAN_USE_STD_MODULE": false,
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-libc++-toolchain.cmake"
+      },
+      "environment": {
+        "CXX": "clang++",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++"
       }
     },
     {
@@ -68,7 +89,12 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-toolchain.cmake"
+        "BEMAN_USE_STD_MODULE": false,
+        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-libc++-toolchain.cmake"
+      },
+      "environment": {
+        "CXX": "clang++",
+        "CMAKE_CXX_FLAGS": "-stdlib=libc++"
       }
     },
     {
@@ -79,6 +105,8 @@
         "_debug-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": false,
+        "CMAKE_CXX_SCAN_FOR_MODULES": false,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
       }
     },
@@ -90,6 +118,8 @@
         "_release-base"
       ],
       "cacheVariables": {
+        "BEMAN_USE_STD_MODULE": false,
+        "CMAKE_CXX_SCAN_FOR_MODULES": false,
         "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
       }
     },
