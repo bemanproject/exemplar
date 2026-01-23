@@ -36,12 +36,16 @@ add_library(beman::{{cookiecutter.project_name}} ALIAS beman.{{cookiecutter.proj
 
 target_sources(
     beman.{{cookiecutter.project_name}}
-    PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    PUBLIC
+        FILE_SET HEADERS
+            BASE_DIRS
+                include #NO! "${CMAKE_CURRENT_SOURCE_DIR}/include"
+            FILES include/beman/{{cookiecutter.project_name}}/identity.hpp
 )
 
 set_target_properties(beman.{{cookiecutter.project_name}} PROPERTIES VERIFY_INTERFACE_HEADER_SETS ON)
 
-add_subdirectory(include/beman/{{cookiecutter.project_name}})
+#NO! add_subdirectory(include/beman/{{cookiecutter.project_name}})
 {% if cookiecutter.library_type == "static" %}
 add_subdirectory(src/beman/{{cookiecutter.project_name}})
 {% endif %}
@@ -50,7 +54,7 @@ beman_install_library(beman.{{cookiecutter.project_name}})
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS)
     enable_testing()
-    add_subdirectory(tests/beman/{{cookiecutter.project_name}})
+    add_subdirectory(tests)
 endif()
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_EXAMPLES)
