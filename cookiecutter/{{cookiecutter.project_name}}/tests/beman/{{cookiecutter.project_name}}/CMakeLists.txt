@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-set(BUILD_GMOCK OFF)
+set(BUILD_GMOCK OFF) # not needed yet
+set(INSTALL_GTEST OFF) # Disable GoogleTest installation too
 find_package(GTest REQUIRED)
 
 add_executable(beman.{{cookiecutter.project_name}}.tests.identity)
