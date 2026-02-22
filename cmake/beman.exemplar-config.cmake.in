@@ -1,4 +1,17 @@
-set(BEMAN_EXEMPLAR_VERSION @PROJECT_VERSION@)
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+include(CMakeFindDependencyMacro)
+@BEMAN_FIND_DEPENDENCIES@
+
+# Semicolon separated list of the project's dependencies
+# i.e.: "fmt 12.1.0 EXACT;cxxopts 2.2.0"
+# string(REGEX MATCHALL "[^;]+" SEPARATE_DEPENDENCIES "@BEMAN_DEPENDENCIES@" )
+# foreach(dependency ${SEPARATE_DEPENDENCIES})
+#   string(REPLACE " " ";" args "${dependency}")
+#   find_dependency(${args})
+# endforeach()
+
+# FIXME: what is this for? set(BEMAN_EXEMPLAR_VERSION @PROJECT_VERSION@)
 
 @PACKAGE_INIT@
 

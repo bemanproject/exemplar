@@ -1,6 +1,32 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+cmake_minimum_required(VERSION 3.30...4.3)
+
+include(../cmake/prelude.cmake)
+
+project(beman.exemplar.example LANGUAGES CXX)
+
+if(PROJECT_IS_TOP_LEVEL)
+    include(../cmake/cxx-modules-rules.cmake)
+
+    if(NOT DEFINED BEMAN_USE_MODULES)
+        set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+    endif()
+
+    find_package(beman.exemplar REQUIRED)
+
+    enable_testing()
+endif()
+
 set(ALL_EXAMPLES identity_direct_usage)
+
+if(BEMAN_USE_MODULES)
+    list(APPEND ALL_EXAMPLES identity_module_usage) # for usage w/o import
+
+    add_executable(identity_module_usage identity_module_usage.cpp)
+    target_link_libraries(identity_module_usage PRIVATE beman::exemplar)
+    add_test(NAME identity_module_usage COMMAND identity_module_usage)
+endif()
 
 # Example `identity_as_default_projection` need ranges support:
 include(CheckCXXSymbolExists)
@@ -22,6 +48,10 @@ foreach(example ${ALL_EXAMPLES})
     target_sources(beman.exemplar.examples.${example} PRIVATE ${example}.cpp)
     target_link_libraries(
         beman.exemplar.examples.${example}
-        PRIVATE beman::exemplar
+        PRIVATE beman::exemplar_headers
+    )
+    add_test(
+        NAME beman.exemplar.examples.${example}
+        COMMAND beman.exemplar.examples.${example}
     )
 endforeach()

@@ -2,7 +2,12 @@
 
 /.cache
 /compile_commands.json
+/cmake/presets/
+/cmake/CMakeUserPresets.json
+/CMakeUserPresets.json
+/GNUmakefile
 /build
+/src
 
 # ignore emacs temp files
 *~

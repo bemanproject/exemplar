@@ -16,6 +16,7 @@
 
 namespace exe = beman::exemplar;
 
+namespace {
 // Class with a pair of values.
 struct Pair {
     int         n;
@@ -52,6 +53,8 @@ template <std::ranges::input_range R,
 void print_std(const std::string_view rem, R&& range, Projection projection = {}) {
     print_helper(rem, range, projection);
 }
+
+} // namespace
 
 int main() {
     // A vector of pairs to print.
