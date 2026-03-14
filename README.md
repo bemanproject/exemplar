@@ -200,11 +200,6 @@ VS 2022" by typing it into Windows search bar. This shell environment will
 provide CMake, Ninja, and MSVC, allowing you to build the library and run the
 tests.
 
-Note that you will need to use FetchContent to build GoogleTest. To do so,
-please see the instructions in the "Build GoogleTest dependency from github.com"
-dropdown in the [Project specific configure
-arguments](#project-specific-configure-arguments) section.
-
 </details>
 
 ### Configure and Build the Project Using CMake Presets
