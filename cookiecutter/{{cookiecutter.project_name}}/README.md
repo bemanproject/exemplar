@@ -240,7 +240,7 @@ you can run this set of commands.
 cmake \
   -B build \
   -S . \
-  -DCMAKE_CXX_STANDARD=20 \
+  -DCMAKE_CXX_STANDARD={{cookiecutter.cpp_build_version}} \
   -DCMAKE_PREFIX_PATH=$PWD/infra/cmake \
   # Your extra arguments here.
 cmake --build build
@@ -266,7 +266,7 @@ Example commands:
 ```shell
 cmake -B build -S . \
     -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./infra/cmake/use-fetch-content.cmake \
-    -DCMAKE_CXX_STANDARD=20
+    -DCMAKE_CXX_STANDARD={{cookiecutter.cpp_build_version}}
 cmake --build build --target all
 cmake --build build --target test
 ```
@@ -295,7 +295,7 @@ Values: `{ ON, OFF }`.
 You can configure the project to have this option turned off via:
 
 ```bash
-cmake -B build -S . -DCMAKE_CXX_STANDARD=20 -DBEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS=OFF
+cmake -B build -S . -DCMAKE_CXX_STANDARD={{cookiecutter.cpp_build_version}} -DBEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS=OFF
 ```
 
 > [!TIP]
