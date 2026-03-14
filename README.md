@@ -140,19 +140,19 @@ This project officially supports:
 This project supports [GitHub Codespace](https://github.com/features/codespaces)
 via [Development Containers](https://containers.dev/),
 which allows rapid development and instant hacking in your browser.
-We recommend using GitHub codespace to explore this project as it
+We recommend using GitHub Codespace to explore this project as it
 requires minimal setup.
 
-Click the following badge to create a codespace:
+Click the following badge to create a Codespace:
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/bemanproject/exemplar)
 
-For more documentation on GitHub codespaces, please see
+For more documentation on GitHub Codespaces, please see
 [this doc](https://docs.github.com/en/codespaces/).
 
 > [!NOTE]
 >
-> The codespace container may take up to 5 minutes to build and spin-up; this is normal.
+> The Codespace container may take up to 5 minutes to build and spin-up; this is normal.
 
 ### Develop locally on your machines
 
