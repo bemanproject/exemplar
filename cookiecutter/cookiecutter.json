@@ -1,11 +1,11 @@
 {
   "project_name": "my_project_name",
-  "cpp_build_version": "26",
+  "minimum_cpp_build_version": "20",
   "paper": "PnnnnRr",
-  "owner": "github-user-name",
   "description": "Short project description.",
   "godbolt_link": "https://www.example.com",
   "library_type": ["interface", "static"],
+  "_owner": "bemanproject",
   "_ci_tests_cron": "",
   "_pre_commit_update_cron": "",
   "_copy_without_render": [

@@ -14,9 +14,8 @@ function stamp() {
         --output-dir "$output_dir" \
         "$cookiecutter_dir" \
         project_name="exemplar" \
-        cpp_build_version="17" \
+        minimum_cpp_build_version="17" \
         paper="P0898R3" \
-        owner="bemanproject" \
         description="A Beman Library Exemplar" \
         godbolt_link="https://godbolt.org/z/4qEPK87va" \
         library_type="$library_type" \
@@ -55,9 +54,8 @@ function check_templating() {
         --output-dir "$out_dir_path" \
         "$script_dir" \
         project_name="RLZrmX9NfS" \
-        cpp_build_version="17" \
+        minimum_cpp_build_version="17" \
         paper="P0898R3" \
-        owner="bemanproject" \
         description="A Beman Library RLZrmX9NfS" \
         godbolt_link="https://godbolt.org/z/4qEPK87va" \
         _ci_tests_cron="30 15 * * 6" \
