@@ -30,7 +30,7 @@ Its direct usage is usually not needed.
 The following code snippet illustrates how we can achieve a default projection using `beman::{{cookiecutter.project_name}}::identity`:
 
 ```cpp
-#include <beman/{{cookiecutter.project_name}}/identity.hpp>
+#include <beman/{{cookiecutter.project_name}}/{{cookiecutter.project_name}}.hpp>
 
 namespace exe = beman::{{cookiecutter.project_name}};
 
@@ -139,14 +139,14 @@ To use `beman.{{cookiecutter.project_name}}` in your C++ project,
 include an appropriate `beman.{{cookiecutter.project_name}}` header from your source code.
 
 ```c++
-#include <beman/{{cookiecutter.project_name}}/identity.hpp>
+#include <beman/{{cookiecutter.project_name}}/{{cookiecutter.project_name}}.hpp>
 ```
 
 > [!NOTE]
 >
 > `beman.{{cookiecutter.project_name}}` headers are to be included with the `beman/{{cookiecutter.project_name}}/` prefix.
 > Altering include search paths to spell the include target another way (e.g.
-> `#include <identity.hpp>`) is unsupported.
+> `#include <{{cookiecutter.project_name}}.hpp>`) is unsupported.
 
 The process for incorporating `beman.{{cookiecutter.project_name}}` into your project depends on the
 build system being used. Instructions for CMake are provided in following sections.
@@ -189,7 +189,8 @@ This will generate the following directory structure at `/opt/beman`.
 ├── include
 │   └── beman
 │       └── {{cookiecutter.project_name}}
-│           └── identity.hpp
+│           ├── {{cookiecutter.project_name}}.hpp
+│           └── ...
 └── lib
     └── cmake
         └── beman.{{cookiecutter.project_name}}
@@ -203,7 +204,8 @@ This will generate the following directory structure at `/opt/beman`.
 ├── include
 │   └── beman
 │       └── {{cookiecutter.project_name}}
-│           └── identity.hpp
+│           ├── {{cookiecutter.project_name}}.hpp
+│           └── ...
 └── lib
     ├── cmake
     │   └── beman.{{cookiecutter.project_name}}

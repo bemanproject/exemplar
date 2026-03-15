@@ -30,7 +30,7 @@ Its direct usage is usually not needed.
 The following code snippet illustrates how we can achieve a default projection using `beman::exemplar::identity`:
 
 ```cpp
-#include <beman/exemplar/identity.hpp>
+#include <beman/exemplar/exemplar.hpp>
 
 namespace exe = beman::exemplar;
 
@@ -139,14 +139,14 @@ To use `beman.exemplar` in your C++ project,
 include an appropriate `beman.exemplar` header from your source code.
 
 ```c++
-#include <beman/exemplar/identity.hpp>
+#include <beman/exemplar/exemplar.hpp>
 ```
 
 > [!NOTE]
 >
 > `beman.exemplar` headers are to be included with the `beman/exemplar/` prefix.
 > Altering include search paths to spell the include target another way (e.g.
-> `#include <identity.hpp>`) is unsupported.
+> `#include <exemplar.hpp>`) is unsupported.
 
 The process for incorporating `beman.exemplar` into your project depends on the
 build system being used. Instructions for CMake are provided in following sections.
@@ -184,7 +184,8 @@ This will generate the following directory structure at `/opt/beman`.
 ├── include
 │   └── beman
 │       └── exemplar
-│           └── identity.hpp
+│           ├── exemplar.hpp
+│           └── ...
 └── lib
     └── cmake
         └── beman.exemplar
