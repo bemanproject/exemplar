@@ -9,7 +9,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '30 15 * * *'
+    - cron: '30 15 * * 6'
 
 jobs:
   beman-submodule-check:
