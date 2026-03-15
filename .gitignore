@@ -8,5 +8,6 @@
 *~
 \#*\#
 
-# ignore vscode settings
+# ignore IDE settings
 .vscode
+.idea
