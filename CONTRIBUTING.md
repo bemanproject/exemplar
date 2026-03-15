@@ -106,7 +106,6 @@ cmake \
   -B build \
   -S . \
   -DCMAKE_CXX_STANDARD=17 \
-  -DCMAKE_PREFIX_PATH=$PWD/infra/cmake \
   # Your extra arguments here.
 cmake --build build
 ctest --test-dir build

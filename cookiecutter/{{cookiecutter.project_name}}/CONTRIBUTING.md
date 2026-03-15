@@ -106,7 +106,6 @@ cmake \
   -B build \
   -S . \
   -DCMAKE_CXX_STANDARD={{cookiecutter.minimum_cpp_build_version}} \
-  -DCMAKE_PREFIX_PATH=$PWD/infra/cmake \
   # Your extra arguments here.
 cmake --build build
 ctest --test-dir build
