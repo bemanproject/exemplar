@@ -119,19 +119,15 @@ unless the provided compiler supports **C++20** ranges.
 
 ### Supported Platforms
 
-This project officially supports:
-
-* GCC versions 11–15
-* LLVM Clang++ (with libstdc++ or libc++) versions 17–21
-* AppleClang version 17.0.0 (i.e., the [latest version on GitHub-hosted macOS runners](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md))
-* MSVC version 19.44.35215.0 (i.e., the [latest version on GitHub-hosted Windows runners](https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md))
-
-> [!NOTE]
->
-> Versions outside of this range would likely work as well,
-> especially if you're using a version above the given range
-> (e.g. HEAD/ nightly).
-> These development environments are verified using our CI configuration.
+| Compiler   | Version | C++ Standards | Standard Library  |
+|------------|---------|---------------|-------------------|
+| GCC        | 15-13   | C++26-C++17   | libstdc++         |
+| GCC        | 12-11   | C++23-C++17   | libstdc++         |
+| Clang      | 22-19   | C++26-C++17   | libstdc++, libc++ |
+| Clang      | 18-17   | C++26-C++17   | libc++            |
+| Clang      | 18-17   | C++20, C++17  | libstdc++         |
+| AppleClang | latest  | C++26-C++17   | libc++            |
+| MSVC       | latest  | C++23         | MSVC STL          |
 
 ## Development
 
