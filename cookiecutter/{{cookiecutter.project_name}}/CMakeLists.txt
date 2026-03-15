@@ -25,7 +25,7 @@ option(
 )
 
 # for find of beman-install-library
-include(infra/cmake/beman-install-library-config.cmake)
+include(infra/cmake/beman-install-library.cmake)
 
 {% if cookiecutter.library_type == "interface" %}
 add_library(beman.{{cookiecutter.project_name}} INTERFACE)
@@ -49,7 +49,7 @@ add_subdirectory(include/beman/{{cookiecutter.project_name}})
 add_subdirectory(src/beman/{{cookiecutter.project_name}})
 {% endif %}
 
-beman_install_library(beman.{{cookiecutter.project_name}})
+beman_install_library(beman.{{cookiecutter.project_name}} TARGETS beman.{{cookiecutter.project_name}})
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS)
     enable_testing()
