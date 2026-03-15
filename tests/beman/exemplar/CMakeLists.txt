@@ -11,3 +11,6 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(beman.exemplar.tests.identity)
+
+include("${PROJECT_SOURCE_DIR}/infra/cmake/beman-install-test.cmake")
+beman_add_install_test(beman.exemplar HEADER "beman/exemplar/identity.hpp")
