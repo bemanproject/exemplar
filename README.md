@@ -98,25 +98,6 @@ You can disable building tests by setting CMake option
 [`BEMAN_EXEMPLAR_BUILD_TESTS`](#beman_exemplar_build_tests) to `OFF`
 when configuring the project.
 
-Even when tests are being built and run, some of them will not be compiled
-unless the provided compiler supports **C++20** ranges.
-
-> [!TIP]
->
-> The logs indicate examples disabled due to lack of compiler support.
->
-> For example:
->
-> ```txt
-> -- Looking for __cpp_lib_ranges
-> -- Looking for __cpp_lib_ranges - not found
-> CMake Warning at examples/CMakeLists.txt:12 (message):
->   Missing range support! Skip: identity_as_default_projection
->
->
-> Examples to be built: identity_direct_usage
-> ```
-
 ### Supported Platforms
 
 | Compiler   | Version | C++ Standards | Standard Library  |
