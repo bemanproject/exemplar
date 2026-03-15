@@ -13,14 +13,14 @@ repos:
     # This brings in a portable version of clang-format.
     # See also: https://github.com/ssciwr/clang-format-wheel
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.0
+    rev: v22.1.1
     hooks:
     - id: clang-format
       types_or: [c++, c]
 
     # CMake linting and formatting
   - repo: https://github.com/BlankSpruce/gersemi
-    rev: 0.26.0
+    rev: 0.26.1
     hooks:
     - id: gersemi
       name: CMake linting
