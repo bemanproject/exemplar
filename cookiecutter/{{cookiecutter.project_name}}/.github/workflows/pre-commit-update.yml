@@ -5,7 +5,7 @@ name: Weekly pre-commit autoupdate
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 16 * * 0"
+    - cron: "{% if cookiecutter._pre_commit_update_cron %}{{ cookiecutter._pre_commit_update_cron }}{% else %}{{ range(0, 60) | random }} {{ range(13, 18) | random }} * * {{ range(0, 7) | random }}{% endif %}"
 
 {% raw -%}
 jobs:

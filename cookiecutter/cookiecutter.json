@@ -6,6 +6,8 @@
   "description": "Short project description.",
   "godbolt_link": "https://www.example.com",
   "library_type": ["interface", "static"],
+  "_ci_tests_cron": "",
+  "_pre_commit_update_cron": "",
   "_copy_without_render": [
     "infra"
   ],

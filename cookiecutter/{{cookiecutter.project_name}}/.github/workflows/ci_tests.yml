@@ -9,7 +9,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: '30 15 * * 6'
+    - cron: '{% if cookiecutter._ci_tests_cron %}{{ cookiecutter._ci_tests_cron }}{% else %}{{ range(0, 60) | random }} {{ range(13, 18) | random }} * * {{ range(0, 7) | random }}{% endif %}'
 
 jobs:
   beman-submodule-check:

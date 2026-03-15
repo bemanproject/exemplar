@@ -19,7 +19,9 @@ function stamp() {
         owner="bemanproject" \
         description="A Beman Library Exemplar" \
         godbolt_link="https://godbolt.org/z/4qEPK87va" \
-        library_type="$library_type"
+        library_type="$library_type" \
+        _ci_tests_cron="30 15 * * 6" \
+        _pre_commit_update_cron="0 16 * * 0"
 }
 
 function check_consistency() {
@@ -57,7 +59,9 @@ function check_templating() {
         paper="P0898R3" \
         owner="bemanproject" \
         description="A Beman Library RLZrmX9NfS" \
-        godbolt_link="https://godbolt.org/z/4qEPK87va"
+        godbolt_link="https://godbolt.org/z/4qEPK87va" \
+        _ci_tests_cron="30 15 * * 6" \
+        _pre_commit_update_cron="0 16 * * 0"
     rm -rf "$out_dir_path/RLZrmX9NfS/infra"
     local grep_path
     grep_path=$(mktemp)
