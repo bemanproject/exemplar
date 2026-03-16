@@ -1,53 +1,5 @@
 ## Development
 
-### Requirements
-
-<details>
-<summary> For Linux </summary>
-
-Beman libraries require [recent versions of CMake](#build-environment),
-we recommend downloading CMake directly from [CMake's website](https://cmake.org/download/)
-or installing it with the [Kitware apt library](https://apt.kitware.com/).
-
-A [supported compiler](#supported-platforms) should be available from your package manager.
-
-</details>
-
-<details>
-<summary> For MacOS </summary>
-
-Beman libraries require [recent versions of CMake](#build-environment).
-Use [`Homebrew`](https://brew.sh/) to install the latest version of CMake.
-
-```bash
-brew install cmake
-```
-
-A [supported compiler](#supported-platforms) is also available from brew.
-
-For example, you can install the latest major release of Clang as:
-
-```bash
-brew install llvm
-```
-
-</details>
-
-<details>
-<summary> For Windows </summary>
-
-To build Beman libraries, you will need the MSVC compiler. MSVC can be obtained
-by installing Visual Studio; the free Visual Studio 2022 Community Edition can
-be downloaded from
-[Microsoft](https://visualstudio.microsoft.com/vs/community/).
-
-After Visual Studio has been installed, you can launch "Developer PowerShell for
-VS 2022" by typing it into Windows search bar. This shell environment will
-provide CMake, Ninja, and MSVC, allowing you to build the library and run the
-tests.
-
-</details>
-
 ### Configure and Build the Project Using CMake Presets
 
 This project recommends using [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
