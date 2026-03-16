@@ -94,9 +94,8 @@ This project requires at least the following to build:
 * CMake 3.30 or later
 * (Test Only) GoogleTest
 
-You can disable building tests by setting CMake option
-[`BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS`](#beman_{{cookiecutter.project_name}}_build_tests) to `OFF`
-when configuring the project.
+You can disable building tests by setting CMake option `BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS` to
+`OFF` when configuring the project.
 
 ### Supported Platforms
 
