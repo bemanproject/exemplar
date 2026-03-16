@@ -116,49 +116,39 @@ See the [Contributing Guidelines](CONTRIBUTING.md).
 
 ## Integrate beman.exemplar into your project
 
-To use `beman.exemplar` in your C++ project,
-include an appropriate `beman.exemplar` header from your source code.
+### Build
 
-```c++
-#include <beman/exemplar/exemplar.hpp>
-```
-
-> [!NOTE]
->
-> `beman.exemplar` headers are to be included with the `beman/exemplar/` prefix.
-> Altering include search paths to spell the include target another way (e.g.
-> `#include <exemplar.hpp>`) is unsupported.
-
-The process for incorporating `beman.exemplar` into your project depends on the
-build system being used. Instructions for CMake are provided in following sections.
-
-### Incorporating `beman.exemplar` into your project with CMake
-
-For CMake based projects,
-you will need to use the `beman.exemplar` CMake module
-to define the `beman::exemplar` CMake target:
-
-```cmake
-find_package(beman.exemplar REQUIRED)
-```
-
-You will also need to add `beman::exemplar` to the link libraries of
-any libraries or executables that include `beman.exemplar` headers.
-
-```cmake
-target_link_libraries(yourlib PUBLIC beman::exemplar)
-```
-
-### Produce beman.exemplar interface library
-
-You can produce exemplar's interface library locally by:
+You can build exemplar using a CMake workflow preset:
 
 ```bash
 cmake --workflow --preset gcc-release
-cmake --install build/gcc-release --prefix /opt/beman
 ```
 
-This will generate the following directory structure at `/opt/beman`.
+To list available workflow presets, you can invoke:
+
+```bash
+cmake --list-presets=workflow
+```
+
+For details on building beman.exemplar without using a CMake preset, refer to the
+[Contributing Guidelines](CONTRIBUTING.md).
+
+### Installation
+
+To install beman.exemplar globally after building with the `gcc-release` preset, you can
+run:
+
+```bash
+sudo cmake --install build/gcc-release
+```
+
+Alternatively, to install to a prefix, for example `/opt/beman`, you can run:
+
+```bash
+sudo cmake --install build/gcc-release --prefix /opt/beman
+```
+
+This will generate the following directory structure:
 
 ```txt
 /opt/beman
@@ -174,3 +164,37 @@ This will generate the following directory structure at `/opt/beman`.
             ├── beman.exemplar-config.cmake
             └── beman.exemplar-targets.cmake
 ```
+
+### CMake Configuration
+
+If you installed beman.exemplar to a prefix, you can specify that prefix to your CMake
+project using `CMAKE_PREFIX_PATH`; for example, `-DCMAKE_PREFIX_PATH=/opt/beman`.
+
+You need to bring in the `beman.exemplar` package to define the `beman::exemplar` CMake
+target:
+
+```cmake
+find_package(beman.exemplar REQUIRED)
+```
+
+You will then need to add `beman::exemplar` to the link libraries of any libraries or
+executables that include `beman.exemplar` headers.
+
+```cmake
+target_link_libraries(yourlib PUBLIC beman::exemplar)
+```
+
+### Using beman.exemplar
+
+To use `beman.exemplar` in your C++ project,
+include an appropriate `beman.exemplar` header from your source code.
+
+```c++
+#include <beman/exemplar/exemplar.hpp>
+```
+
+> [!NOTE]
+>
+> `beman.exemplar` headers are to be included with the `beman/exemplar/` prefix.
+> Altering include search paths to spell the include target another way (e.g.
+> `#include <exemplar.hpp>`) is unsupported.

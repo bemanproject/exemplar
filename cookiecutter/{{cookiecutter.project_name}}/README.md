@@ -116,6 +116,87 @@ See the [Contributing Guidelines](CONTRIBUTING.md).
 
 ## Integrate beman.{{cookiecutter.project_name}} into your project
 
+### Build
+
+You can build {{cookiecutter.project_name}} using a CMake workflow preset:
+
+```bash
+cmake --workflow --preset gcc-release
+```
+
+To list available workflow presets, you can invoke:
+
+```bash
+cmake --list-presets=workflow
+```
+
+For details on building beman.{{cookiecutter.project_name}} without using a CMake preset, refer to the
+[Contributing Guidelines](CONTRIBUTING.md).
+
+### Installation
+
+To install beman.{{cookiecutter.project_name}} globally after building with the `gcc-release` preset, you can
+run:
+
+```bash
+sudo cmake --install build/gcc-release
+```
+
+Alternatively, to install to a prefix, for example `/opt/beman`, you can run:
+
+```bash
+sudo cmake --install build/gcc-release --prefix /opt/beman
+```
+
+This will generate the following directory structure:
+
+```txt
+/opt/beman
+├── include
+│   └── beman
+│       └── {{cookiecutter.project_name}}
+│           ├── {{cookiecutter.project_name}}.hpp
+│           └── ...
+{% if cookiecutter.library_type == "interface" %}
+└── lib
+    └── cmake
+        └── beman.{{cookiecutter.project_name}}
+            ├── beman.{{cookiecutter.project_name}}-config-version.cmake
+            ├── beman.{{cookiecutter.project_name}}-config.cmake
+            └── beman.{{cookiecutter.project_name}}-targets.cmake
+{% else %}
+└── lib
+    ├── cmake
+    │   └── beman.{{cookiecutter.project_name}}
+    │       ├── beman.{{cookiecutter.project_name}}-config-version.cmake
+    │       ├── beman.{{cookiecutter.project_name}}-config.cmake
+    │       ├── beman.{{cookiecutter.project_name}}-targets-debug.cmake
+    │       └── beman.{{cookiecutter.project_name}}-targets.cmake
+    └── libbeman.{{cookiecutter.project_name}}.a
+{% endif %}
+```
+
+### CMake Configuration
+
+If you installed beman.{{cookiecutter.project_name}} to a prefix, you can specify that prefix to your CMake
+project using `CMAKE_PREFIX_PATH`; for example, `-DCMAKE_PREFIX_PATH=/opt/beman`.
+
+You need to bring in the `beman.{{cookiecutter.project_name}}` package to define the `beman::{{cookiecutter.project_name}}` CMake
+target:
+
+```cmake
+find_package(beman.{{cookiecutter.project_name}} REQUIRED)
+```
+
+You will then need to add `beman::{{cookiecutter.project_name}}` to the link libraries of any libraries or
+executables that include `beman.{{cookiecutter.project_name}}` headers.
+
+```cmake
+target_link_libraries(yourlib PUBLIC beman::{{cookiecutter.project_name}})
+```
+
+### Using beman.{{cookiecutter.project_name}}
+
 To use `beman.{{cookiecutter.project_name}}` in your C++ project,
 include an appropriate `beman.{{cookiecutter.project_name}}` header from your source code.
 
@@ -128,72 +209,3 @@ include an appropriate `beman.{{cookiecutter.project_name}}` header from your so
 > `beman.{{cookiecutter.project_name}}` headers are to be included with the `beman/{{cookiecutter.project_name}}/` prefix.
 > Altering include search paths to spell the include target another way (e.g.
 > `#include <{{cookiecutter.project_name}}.hpp>`) is unsupported.
-
-The process for incorporating `beman.{{cookiecutter.project_name}}` into your project depends on the
-build system being used. Instructions for CMake are provided in following sections.
-
-### Incorporating `beman.{{cookiecutter.project_name}}` into your project with CMake
-
-For CMake based projects,
-you will need to use the `beman.{{cookiecutter.project_name}}` CMake module
-to define the `beman::{{cookiecutter.project_name}}` CMake target:
-
-```cmake
-find_package(beman.{{cookiecutter.project_name}} REQUIRED)
-```
-
-You will also need to add `beman::{{cookiecutter.project_name}}` to the link libraries of
-any libraries or executables that include `beman.{{cookiecutter.project_name}}` headers.
-
-```cmake
-target_link_libraries(yourlib PUBLIC beman::{{cookiecutter.project_name}})
-```
-
-### Produce beman.{{cookiecutter.project_name}} {{ cookiecutter.library_type }} library
-
-{% if cookiecutter.library_type == "interface" %}
-You can produce {{cookiecutter.project_name}}'s interface library locally by:
-{% else %}
-You can produce {{cookiecutter.project_name}}'s static library `libbeman.{{cookiecutter.project_name}}.a` by:
-{% endif %}
-
-```bash
-cmake --workflow --preset gcc-release
-cmake --install build/gcc-release --prefix /opt/beman
-```
-
-This will generate the following directory structure at `/opt/beman`.
-
-{% if cookiecutter.library_type == "interface" %}
-```txt
-/opt/beman
-├── include
-│   └── beman
-│       └── {{cookiecutter.project_name}}
-│           ├── {{cookiecutter.project_name}}.hpp
-│           └── ...
-└── lib
-    └── cmake
-        └── beman.{{cookiecutter.project_name}}
-            ├── beman.{{cookiecutter.project_name}}-config-version.cmake
-            ├── beman.{{cookiecutter.project_name}}-config.cmake
-            └── beman.{{cookiecutter.project_name}}-targets.cmake
-```
-{% else %}
-```txt
-/opt/beman
-├── include
-│   └── beman
-│       └── {{cookiecutter.project_name}}
-│           ├── {{cookiecutter.project_name}}.hpp
-│           └── ...
-└── lib
-    ├── cmake
-    │   └── beman.{{cookiecutter.project_name}}
-    │       ├── beman.{{cookiecutter.project_name}}-config-version.cmake
-    │       ├── beman.{{cookiecutter.project_name}}-config.cmake
-    │       ├── beman.{{cookiecutter.project_name}}-targets-debug.cmake
-    │       └── beman.{{cookiecutter.project_name}}-targets.cmake
-    └── libbeman.{{cookiecutter.project_name}}.a
-```
-{% endif %}
