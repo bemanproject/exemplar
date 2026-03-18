@@ -1,3 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+# line endings
+* text=auto eol=lf
+
+# linguist settings
 infra/** linguist-vendored
 cookiecutter/** linguist-vendored
 *.bib -linguist-detectable
