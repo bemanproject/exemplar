@@ -8,6 +8,7 @@ function stamp() {
     local cookiecutter_dir="$1" ; shift
     local output_dir="$1" ; shift
     local library_type="$1" ; shift
+    local unit_test_library="$1" ; shift
     python3 \
         -m cookiecutter \
         --no-input \
@@ -19,6 +20,7 @@ function stamp() {
         description="A Beman Library Exemplar" \
         godbolt_link="https://godbolt.org/z/4qEPK87va" \
         library_type="$library_type" \
+        unit_test_library="$unit_test_library" \
         _ci_tests_cron="30 15 * * 6" \
         _pre_commit_update_cron="0 16 * * 0"
 }
@@ -27,9 +29,10 @@ function check_consistency() {
     local out_dir_path
     out_dir_path=$(mktemp --directory --dry-run)
     cd /tmp
-    stamp "$script_dir" "$out_dir_path" "interface"
+    stamp "$script_dir" "$out_dir_path" "interface" "gtest"
     cp "$script_dir"/../.github/workflows/cookiecutter_test.yml "$out_dir_path"/exemplar/.github/workflows
     cp "$script_dir"/../.github/workflows/static_exemplar_test.yml "$out_dir_path"/exemplar/.github/workflows
+    cp "$script_dir"/../.github/workflows/catch2_exemplar_test.yml "$out_dir_path"/exemplar/.github/workflows
     local diff_path
     diff_path=$(mktemp)
     diff -r "$script_dir/.." "$out_dir_path/exemplar" \

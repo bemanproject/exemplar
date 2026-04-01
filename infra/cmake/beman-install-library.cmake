@@ -56,7 +56,7 @@ include(GNUInstallDirs)
 # HEADERS to the default CMAKE install destination.
 #
 # It also handles the installation of the CMake config package files if
-# needed.  If the given targets has FILE_SET CXX_MODULE, it will also
+# needed.  If the given targets has a PUBLIC FILE_SET CXX_MODULE, it will also
 # installed to the given DESTINATION
 #
 # Cache variables:
@@ -72,7 +72,7 @@ include(GNUInstallDirs)
 # Caveats
 # -------
 #
-# **Only one `FILE_SET CXX_MODULES` is yet supported to install with this
+# **Only one `PUBLIC FILE_SET CXX_MODULES` is yet supported to install with this
 # function!**
 #
 # **Only header files contained in a `PUBLIC FILE_SET TYPE HEADERS` will be
@@ -189,12 +189,12 @@ function(beman_install_library name)
             set(_install_header_set_args FILE_SET HEADERS) # Note: empty FILE_SET in this case! CK
         endif()
 
-        # Detect presence of C++ module file sets, exact one expected!
-        get_target_property(_module_sets "${_tgt}" CXX_MODULE_SETS)
+        # Detect presence of PUBLIC C++ module file sets. Note: exact one is expected!
+        get_target_property(_module_sets "${_tgt}" INTERFACE_CXX_MODULE_SETS)
         if(_module_sets)
             message(
                 VERBOSE
-                "beman-install-library(${name}): '${_tgt}' has CXX_MODULE_SETS=${_module_sets}"
+                "beman-install-library(${name}): '${_tgt}' has INTERFACE_CXX_MODULE_SETS=${_module_sets}"
             )
             install(
                 TARGETS "${_tgt}"

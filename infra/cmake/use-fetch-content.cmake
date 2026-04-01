@@ -170,6 +170,18 @@ function(BemanExemplar_provideDependency method package_name)
                 set(INSTALL_GTEST OFF) # Disable GoogleTest installation
                 FetchContent_MakeAvailable("${BemanExemplar_name}")
 
+                # Catch2's CTest integration module isn't on CMAKE_MODULE_PATH
+                # when brought in via FetchContent. Add it so that
+                # `include(Catch)` works.
+                if(BemanExemplar_pkgName STREQUAL "Catch2")
+                    list(
+                        APPEND
+                        CMAKE_MODULE_PATH
+                        "${${BemanExemplar_name}_SOURCE_DIR}/extras"
+                    )
+                    set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" PARENT_SCOPE)
+                endif()
+
                 # Important! <PackageName>_FOUND tells CMake that `find_package` is
                 # not needed for this package anymore
                 set("${BemanExemplar_pkgName}_FOUND" TRUE PARENT_SCOPE)
