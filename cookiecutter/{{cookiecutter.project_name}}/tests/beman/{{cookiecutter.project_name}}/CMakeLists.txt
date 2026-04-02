@@ -12,7 +12,7 @@ target_sources(beman.{{cookiecutter.project_name}}.tests.{{identity}} PRIVATE {{
 target_link_libraries(
     beman.{{cookiecutter.project_name}}.tests.{{identity}}
 {% if cookiecutter.unit_test_library == "gtest" %}
-    PRIVATE beman::{{cookiecutter.project_name}} GTest::gtest GTest::gtest_main
+    PRIVATE beman::{{cookiecutter.project_name}} GTest::gtest_main
 {% elif cookiecutter.unit_test_library == "catch2" %}
     PRIVATE beman::{{cookiecutter.project_name}} Catch2::Catch2WithMain
 {% endif %}
