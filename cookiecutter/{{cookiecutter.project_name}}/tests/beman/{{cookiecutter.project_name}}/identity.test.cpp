@@ -1,6 +1,7 @@
+{% set identity = "identity" if cookiecutter._generating_exemplar else "todo" %}
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-#include <beman/{{cookiecutter.project_name}}/identity.hpp>
+#include <beman/{{cookiecutter.project_name}}/{{identity}}.hpp>
 
 {% if cookiecutter.unit_test_library == "gtest" %}
 #include <gtest/gtest.h>
@@ -8,6 +9,7 @@
 #include <catch2/catch_all.hpp>
 {% endif %}
 
+{% if cookiecutter._generating_exemplar %}
 #include <algorithm>
 #include <functional>
 
@@ -95,3 +97,17 @@ TEST_CASE("check is transparent", "[{{cookiecutter.project_name}}::check_is_tran
 {% endif %}
 #endif
 }
+{% else %}
+{% if cookiecutter.unit_test_library == "gtest" %}
+TEST(TodoTest, todo) {
+{% elif cookiecutter.unit_test_library == "catch2" %}
+TEST_CASE("todo", "[{{cookiecutter.project_name}}::todo]") {
+{% endif %}
+    const bool todo = true;
+{% if cookiecutter.unit_test_library == "gtest" %}
+    EXPECT_TRUE(todo);
+{% elif cookiecutter.unit_test_library == "catch2" %}
+    CHECK(todo);
+{% endif %}
+}
+{% endif %}

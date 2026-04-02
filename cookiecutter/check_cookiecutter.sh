@@ -9,6 +9,7 @@ function stamp() {
     local output_dir="$1" ; shift
     local library_type="$1" ; shift
     local unit_test_library="$1" ; shift
+    local generating_exemplar="$1" ; shift
     python3 \
         -m cookiecutter \
         --no-input \
@@ -21,6 +22,7 @@ function stamp() {
         godbolt_link="https://godbolt.org/z/4qEPK87va" \
         library_type="$library_type" \
         unit_test_library="$unit_test_library" \
+        _generating_exemplar="$generating_exemplar" \
         _ci_tests_cron="30 15 * * 6" \
         _pre_commit_update_cron="0 16 * * 0"
 }
@@ -29,10 +31,11 @@ function check_consistency() {
     local out_dir_path
     out_dir_path=$(mktemp --directory --dry-run)
     cd /tmp
-    stamp "$script_dir" "$out_dir_path" "interface" "gtest"
+    stamp "$script_dir" "$out_dir_path" "interface" "gtest" "true"
     cp "$script_dir"/../.github/workflows/cookiecutter_test.yml "$out_dir_path"/exemplar/.github/workflows
     cp "$script_dir"/../.github/workflows/static_exemplar_test.yml "$out_dir_path"/exemplar/.github/workflows
     cp "$script_dir"/../.github/workflows/catch2_exemplar_test.yml "$out_dir_path"/exemplar/.github/workflows
+    cp "$script_dir"/../.github/workflows/todo_exemplar_test.yml "$out_dir_path"/exemplar/.github/workflows
     local diff_path
     diff_path=$(mktemp)
     diff -r "$script_dir/.." "$out_dir_path/exemplar" \
@@ -61,6 +64,7 @@ function check_templating() {
         paper="P0898R3" \
         description="A Beman Library RLZrmX9NfS" \
         godbolt_link="https://godbolt.org/z/4qEPK87va" \
+        _generating_exemplar="false" \
         _ci_tests_cron="30 15 * * 6" \
         _pre_commit_update_cron="0 16 * * 0"
     rm -rf "$out_dir_path/RLZrmX9NfS/infra"
@@ -68,10 +72,10 @@ function check_templating() {
     grep_path=$(mktemp)
     grep \
         --dereference-recursive --context=5 --color=always \
-        "exemplar" "$out_dir_path/RLZrmX9NfS" > "$grep_path" || true
+        -e "exemplar" -e "identity" "$out_dir_path/RLZrmX9NfS" > "$grep_path" || true
     rm -rf "$out_dir_path"
     if [[ $(wc -l "$grep_path" | cut -d' ' -f1) -gt 0 ]] ; then
-        echo "Untemplated \"exemplar\" in cookiecutter:" >&2
+        echo "Untemplated \"exemplar\" or \"identity\" in cookiecutter:" >&2
         cat "$grep_path"
         rm "$grep_path"
         exit 1

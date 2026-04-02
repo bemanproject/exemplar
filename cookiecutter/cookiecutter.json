@@ -6,6 +6,7 @@
   "godbolt_link": "https://www.example.com",
   "library_type": ["interface", "static"],
   "unit_test_library": ["gtest", "catch2"],
+  "_generating_exemplar": false,
   "_owner": "bemanproject",
   "_ci_tests_cron": "",
   "_pre_commit_update_cron": "",

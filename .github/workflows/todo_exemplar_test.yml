@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-name: Catch2 Exemplar Test
+name: TODO Exemplar Test
 on:
   push:
     branches:
@@ -8,21 +8,23 @@ on:
   pull_request:
 
 jobs:
-  catch2-exemplar-test:
+  static-exemplar-test:
     runs-on: ubuntu-latest
     container: ghcr.io/bemanproject/infra-containers-gcc:latest
-    name: "Catch2 exemplar smoke test"
+    name: "TODO exemplar smoke test"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Test catch2 exemplar
+      - name: Test static exemplar
         run: |
           cd cookiecutter
           source ./check_cookiecutter.sh
           cookiecutter_venv_path=$(mktemp --directory --dry-run)
           setup_venv "$cookiecutter_venv_path"
-          stamp "$PWD" "./catch2_exemplar" "interface" "catch2" "true"
-          cd catch2_exemplar/exemplar
+          stamp "$PWD" "./static_exemplar" "interface" "gtest" "false"
+          cd static_exemplar/exemplar
+          grep -r 'identity' . && exit 1
+          find . -name '*identity*' | grep . && exit 1
           cmake -B build -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./infra/cmake/use-fetch-content.cmake -DCMAKE_CXX_STANDARD=20 -DCMAKE_INSTALL_PREFIX=$PWD/dist
           cmake --build build
           ctest --test-dir build

@@ -11,7 +11,11 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 This can be used as a template for those intending to write Beman libraries.
 It may also find use as a minimal and modern  C++ project structure.
 
+{% if cookiecutter._generating_exemplar %}
 **Implements**: `std::identity` proposed in [Standard Library Concepts ({{cookiecutter.paper}})](https://wg21.link/{{cookiecutter.paper}}).
+{% else %}
+**Implements**: `std::todo` proposed in [TODO ({{cookiecutter.paper}})](https://wg21.link/{{cookiecutter.paper}}).
+{% endif %}
 
 **Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#under-development-and-not-yet-ready-for-production-use)
 
@@ -21,6 +25,7 @@ It may also find use as a minimal and modern  C++ project structure.
 
 ## Usage
 
+{% if cookiecutter._generating_exemplar %}
 `std::identity` is a function object type whose `operator()` returns its argument unchanged.
 `std::identity` serves as the default projection in constrained algorithms.
 Its direct usage is usually not needed.
@@ -82,6 +87,10 @@ int main()
 
 ```
 
+{% else %}
+TODO
+
+{% endif %}
 Full runnable examples can be found in [`examples/`](examples/).
 
 ## Dependencies
