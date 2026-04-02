@@ -197,3 +197,7 @@ include an appropriate `beman.exemplar` header from your source code.
 > `beman.exemplar` headers are to be included with the `beman/exemplar/` prefix.
 > Altering include search paths to spell the include target another way (e.g.
 > `#include <exemplar.hpp>`) is unsupported.
+
+
+
+
