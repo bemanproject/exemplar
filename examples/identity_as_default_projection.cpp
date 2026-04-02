@@ -2,8 +2,6 @@
 
 // This example demonstrates the usage of beman::exemplar::identity as a default projection in a range-printer.
 // Requires: range support (C++20) and std::identity support (C++20).
-// TODO Darius: Do we need to selectively compile this example?
-// Or should we assume that this project is compiled with C++20 support only?
 
 #include <beman/exemplar/identity.hpp>
 
