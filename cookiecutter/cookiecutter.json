@@ -1,5 +1,6 @@
 {
   "project_name": "my_project_name",
+  "maintainer": "your_github_username",
   "minimum_cpp_build_version": "20",
   "paper": "PnnnnRr",
   "description": "Short project description.",
