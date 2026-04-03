@@ -14,6 +14,6 @@ int main() {
 }
 {% else %}
 int main() {
-  // TODO
+    // TODO
 }
 {% endif %}
