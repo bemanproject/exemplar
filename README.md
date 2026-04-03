@@ -17,17 +17,16 @@ git commit and branch:
 
 ```
 $ ./stamp.sh
-  [1/8] project_name (my_project_name): example_library
-  [2/8] maintainer (your_github_username): your_username
-  [3/8] minimum_cpp_build_version (20):
-  [4/8] paper (PnnnnRr): P9999R9
-  [5/8] description (Short project description.):
-  [6/8] godbolt_link (https://www.example.com):
-  [7/8] Select library_type
+  [1/7] project_name (my_project_name): example_library
+  [2/7] maintainer (your_github_username): your_username
+  [3/7] minimum_cpp_build_version (20):
+  [4/7] paper (PnnnnRr): P9999R9
+  [5/7] description (Short project description.):
+  [6/7] Select library_type
     1 - interface
     2 - static
     Choose from [1/2] (1):
-  [8/8] Select unit_test_library
+  [7/7] Select unit_test_library
     1 - gtest
     2 - catch2
     Choose from [1/2] (1):
@@ -49,7 +48,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 -->
 
 <!-- markdownlint-disable-next-line line-length -->
-![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg) ![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg) ![Lint Check (pre-commit)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit-check.yml/badge.svg) [![Coverage](https://coveralls.io/repos/github/bemanproject/exemplar/badge.svg?branch=main)](https://coveralls.io/github/bemanproject/exemplar?branch=main) ![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp29.svg) [![Compiler Explorer Example](https://img.shields.io/badge/Try%20it%20on%20Compiler%20Explorer-grey?logo=compilerexplorer&logoColor=67c52a)](https://godbolt.org/z/4qEPK87va)
+![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg) ![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg) ![Lint Check (pre-commit)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit-check.yml/badge.svg) [![Coverage](https://coveralls.io/repos/github/bemanproject/exemplar/badge.svg?branch=main)](https://coveralls.io/github/bemanproject/exemplar?branch=main) ![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp29.svg)
 
 `beman.exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md).
 This can be used as a template for those intending to write Beman libraries.

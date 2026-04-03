@@ -4,7 +4,6 @@
   "minimum_cpp_build_version": "20",
   "paper": "PnnnnRr",
   "description": "Short project description.",
-  "godbolt_link": "https://www.example.com",
   "library_type": ["interface", "static"],
   "unit_test_library": ["gtest", "catch2"],
   "_generating_exemplar": false,

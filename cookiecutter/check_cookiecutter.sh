@@ -19,7 +19,6 @@ function stamp() {
         minimum_cpp_build_version="17" \
         paper="P0898R3" \
         description="A Beman Library Exemplar" \
-        godbolt_link="https://godbolt.org/z/4qEPK87va" \
         library_type="$library_type" \
         unit_test_library="$unit_test_library" \
         _generating_exemplar="$generating_exemplar" \
@@ -66,7 +65,6 @@ function check_templating() {
         minimum_cpp_build_version="17" \
         paper="P0898R3" \
         description="A Beman Library RLZrmX9NfS" \
-        godbolt_link="https://godbolt.org/z/4qEPK87va" \
         _generating_exemplar="false" \
         _ci_tests_cron="30 15 * * 6" \
         _pre_commit_update_cron="0 16 * * 0"
