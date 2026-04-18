@@ -13,7 +13,7 @@ jobs:
     name: "Check cookiecutter for consistency"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: beman cookiecutter consistency check
         run: |
           ./cookiecutter/check_cookiecutter.sh
