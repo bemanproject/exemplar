@@ -13,10 +13,10 @@ on:
 
 jobs:
   beman-submodule-check:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.5.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.5.1
 
   preset-test:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-preset-test.yml@1.5.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-preset-test.yml@1.5.1
     with:
       matrix_config: >
         [
@@ -31,7 +31,7 @@ jobs:
         ]
 
   build-and-test:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-build-and-test.yml@1.5.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-build-and-test.yml@1.5.1
     with:
       matrix_config: >
         {
@@ -137,4 +137,4 @@ jobs:
   create-issue-when-fault:
     needs: [preset-test, build-and-test]
     if: failure() && github.event_name == 'schedule'
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.5.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.5.1
