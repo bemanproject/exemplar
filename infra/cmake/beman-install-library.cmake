@@ -86,14 +86,14 @@ function(beman_install_library name)
     set(multiValueArgs TARGETS DEPENDENCIES)
 
     cmake_parse_arguments(
-        BEMAN
+        BEMAN_INSTALL
         "${options}"
         "${oneValueArgs}"
         "${multiValueArgs}"
         ${ARGN}
     )
 
-    if(NOT BEMAN_TARGETS)
+    if(NOT BEMAN_INSTALL_TARGETS)
         message(
             FATAL_ERROR
             "beman_install_library(${name}): TARGETS must be specified"
@@ -103,7 +103,7 @@ function(beman_install_library name)
     if(CMAKE_SKIP_INSTALL_RULES)
         message(
             WARNING
-            "beman_install_library(${name}): not installing targets '${BEMAN_TARGETS}' due to CMAKE_SKIP_INSTALL_RULES"
+            "beman_install_library(${name}): not installing targets '${BEMAN_INSTALL_TARGETS}' due to CMAKE_SKIP_INSTALL_RULES"
         )
         return()
     endif()
@@ -113,16 +113,16 @@ function(beman_install_library name)
     # ----------------------------
     # Defaults
     # ----------------------------
-    if(NOT BEMAN_NAMESPACE)
-        set(BEMAN_NAMESPACE "beman::")
+    if(NOT BEMAN_INSTALL_NAMESPACE)
+        set(BEMAN_INSTALL_NAMESPACE "beman::")
     endif()
 
-    if(NOT BEMAN_EXPORT_NAME)
-        set(BEMAN_EXPORT_NAME "${name}-targets")
+    if(NOT BEMAN_INSTALL_EXPORT_NAME)
+        set(BEMAN_INSTALL_EXPORT_NAME "${name}-targets")
     endif()
 
-    if(NOT BEMAN_DESTINATION)
-        set(BEMAN_DESTINATION "${_config_install_dir}/modules")
+    if(NOT BEMAN_INSTALL_DESTINATION)
+        set(BEMAN_INSTALL_DESTINATION "${_config_install_dir}/modules")
     endif()
 
     string(REPLACE "beman." "" install_component_name "${name}")
@@ -134,7 +134,7 @@ function(beman_install_library name)
     # --------------------------------------------------
     # Install each target with all of its file sets
     # --------------------------------------------------
-    foreach(_tgt IN LISTS BEMAN_TARGETS)
+    foreach(_tgt IN LISTS BEMAN_INSTALL_TARGETS)
         if(NOT TARGET "${_tgt}")
             message(
                 WARNING
@@ -177,8 +177,7 @@ function(beman_install_library name)
             )
             foreach(_install_header_set IN LISTS _available_header_sets)
                 list(
-                    APPEND
-                    _install_header_set_args
+                    APPEND _install_header_set_args
                     FILE_SET
                     "${_install_header_set}"
                     COMPONENT
@@ -198,7 +197,7 @@ function(beman_install_library name)
             )
             install(
                 TARGETS "${_tgt}"
-                EXPORT ${BEMAN_EXPORT_NAME}
+                EXPORT ${BEMAN_INSTALL_EXPORT_NAME}
                 ARCHIVE COMPONENT "${install_component_name}_Development"
                 LIBRARY
                     COMPONENT "${install_component_name}_Runtime"
@@ -206,7 +205,7 @@ function(beman_install_library name)
                 RUNTIME COMPONENT "${install_component_name}_Runtime"
                 ${_install_header_set_args}
                 FILE_SET ${_module_sets}
-                    DESTINATION "${BEMAN_DESTINATION}"
+                    DESTINATION "${BEMAN_INSTALL_DESTINATION}"
                     COMPONENT "${install_component_name}_Development"
                 # NOTE: There's currently no convention for this location! CK
                 CXX_MODULES_BMI
@@ -217,7 +216,7 @@ function(beman_install_library name)
         else()
             install(
                 TARGETS "${_tgt}"
-                EXPORT ${BEMAN_EXPORT_NAME}
+                EXPORT ${BEMAN_INSTALL_EXPORT_NAME}
                 ARCHIVE COMPONENT "${install_component_name}_Development"
                 LIBRARY
                     COMPONENT "${install_component_name}_Runtime"
@@ -233,8 +232,8 @@ function(beman_install_library name)
     # --------------------------------------------------
     # gersemi: off
     install(
-        EXPORT ${BEMAN_EXPORT_NAME}
-        NAMESPACE ${BEMAN_NAMESPACE}
+        EXPORT ${BEMAN_INSTALL_EXPORT_NAME}
+        NAMESPACE ${BEMAN_INSTALL_NAMESPACE}
         CXX_MODULES_DIRECTORY cxx-modules
         DESTINATION ${_config_install_dir}
         COMPONENT "${install_component_name}_Development"
@@ -279,19 +278,20 @@ function(beman_install_library name)
     # expand dependencies
     # ----------------------------------------
     set(_beman_find_deps "")
-    foreach(dep IN LISTS BEMAN_DEPENDENCIES)
+    foreach(dep IN LISTS BEMAN_INSTALL_DEPENDENCIES)
         message(
             VERBOSE
             "beman-install-library(${name}): Add find_dependency(${dep})"
         )
         string(APPEND _beman_find_deps "find_dependency(${dep})\n")
     endforeach()
-    set(BEMAN_FIND_DEPENDENCIES "${_beman_find_deps}")
+    set(BEMAN_INSTALL_FIND_DEPENDENCIES "${_beman_find_deps}")
 
     # ----------------------------------------
     # Generate + install config files
     # ----------------------------------------
     if(_install_config)
+        set(BEMAN_INSTALL_BASE_PKG_NAME ${name})
         configure_package_config_file(
             "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/Config.cmake.in"
             "${CMAKE_CURRENT_BINARY_DIR}/${name}-config.cmake"

@@ -24,8 +24,9 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
-# for find of beman-install-library
+# for find of beman_install_library and configure_build_telemetry
 include(infra/cmake/beman-install-library.cmake)
+include(infra/cmake/BuildTelemetryConfig.cmake)
 
 {% if cookiecutter.library_type == "interface" %}
 add_library(beman.{{cookiecutter.project_name}} INTERFACE)
@@ -50,6 +51,7 @@ add_subdirectory(src/beman/{{cookiecutter.project_name}})
 {% endif %}
 
 beman_install_library(beman.{{cookiecutter.project_name}} TARGETS beman.{{cookiecutter.project_name}})
+configure_build_telemetry()
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS)
     enable_testing()
