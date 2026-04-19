@@ -52,3 +52,37 @@ Some options for the project and target will also be supported:
 * `BEMAN_INSTALL_CONFIG_FILE_PACKAGES` - a list of package names (e.g., `beman.something`) for which to install the config file
   (default: all packages)
 * `<BEMAN_NAME>_INSTALL_CONFIG_FILE_PACKAGE` - a per-project option to enable/disable config file installation (default: `ON` if the project is top-level, `OFF` otherwise). For instance for `beman.something`, the option would be `BEMAN_SOMETHING_INSTALL_CONFIG_FILE_PACKAGE`.
+
+# BuildTelemetry
+
+The cmake modules in this library provide access to CMake instrumentation data in Google Trace format which is visualizable with chrome://tracing and https://ui.perfetto.dev.
+
+Telemetry may be enabled in several ways:
+
+## `include`
+
+```cmake
+include (infra/cmake/BuildTelemetry.cmake)
+configure_build_telemetry()
+```
+
+## `find_package`
+
+```cmake
+find_package(BuildTelemetry)
+configure_build_telemetry()
+```
+
+as long as [BuildTelemetryConfig.cmake](./cmake/BuildTelemetryConfig.cmake) is in your module path.
+
+## `CMAKE_PROJECT_TOP_LEVEL_INCLUDES`
+A non-invasive way to inject this telemetry into a CMake build you do not want to modify.
+Add:
+```sh
+-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=infra/cmake/BuildTelemetry.cmake
+```
+To the cmake invocation.
+
+In any form, CMake will call `telemetry.sh` which will copy the trace data in json format into a `.trace` subdirectory within the build directory.
+
+Multiple calls to `configure_build_telemetry` will only configure the callback hooks once, so it is safe to enable multiple times, including by TOP_LEVEL_INCLUDE.
