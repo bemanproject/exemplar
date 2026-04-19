@@ -15,13 +15,14 @@ function(configure_build_telemetry)
             message(STATUS "Configuring Build Telemetry")
         endif()
 
-        # Find bash for the telemetry callback script.
-        # On Windows, this will find Git for Windows' bash if available.
+        # Find bash and jq for the telemetry callback script.
+        # On Windows, Git for Windows provides bash if available.
         find_program(BEMAN_BASH bash)
-        if(NOT BEMAN_BASH)
+        find_program(BEMAN_JQ jq)
+        if(NOT BEMAN_BASH OR NOT BEMAN_JQ)
             message(
                 STATUS
-                "Bash not found, build telemetry disabled on this platform."
+                "bash or jq not found, build telemetry disabled on this platform."
             )
             return()
         endif()

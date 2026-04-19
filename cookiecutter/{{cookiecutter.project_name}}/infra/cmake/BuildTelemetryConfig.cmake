@@ -15,6 +15,18 @@ function(configure_build_telemetry)
             message(STATUS "Configuring Build Telemetry")
         endif()
 
+        # Find bash and jq for the telemetry callback script.
+        # On Windows, Git for Windows provides bash if available.
+        find_program(BEMAN_BASH bash)
+        find_program(BEMAN_JQ jq)
+        if(NOT BEMAN_BASH OR NOT BEMAN_JQ)
+            message(
+                STATUS
+                "bash or jq not found, build telemetry disabled on this platform."
+            )
+            return()
+        endif()
+
         # Telemetry query
         cmake_instrumentation(
           API_VERSION 1
@@ -22,11 +34,11 @@ function(configure_build_telemetry)
 
           OPTIONS staticSystemInformation dynamicSystemInformation trace
           HOOKS postGenerate preBuild postBuild preCMakeBuild postCMakeBuild postCMakeInstall postCTest
-          CALLBACK ${BUILD_TELEMETRY_DIR}/telemetry.sh
+          CALLBACK ${BEMAN_BASH} ${BUILD_TELEMETRY_DIR}/telemetry.sh
         )
         message(
             DEBUG
-            "using callback script ${BUILD_TELEMETRY_DIR}/telemetry.sh"
+            "using callback script ${BUILD_TELEMETRY_DIR}/telemetry.sh via ${BEMAN_BASH}"
         )
 
         # Mark configuration as done in cache
