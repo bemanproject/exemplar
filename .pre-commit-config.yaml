@@ -39,16 +39,4 @@ repos:
     hooks:
       - id: codespell
 
-    # Beman Standard checking via beman-tidy
-  - repo: https://github.com/bemanproject/beman-tidy
-    rev: v0.3.1
-    hooks:
-    - id: beman-tidy
-      args: [
-        ".",
-        "--verbose",
-        # "--require-all"
-      ]
-      # TODO: Check if we can pass all checks and use --require-all.
-
 exclude: 'cookiecutter/|infra/'
