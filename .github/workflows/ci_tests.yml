@@ -99,7 +99,17 @@ jobs:
                 }
               ]
             },
-            { "versions": ["18", "17"],
+            { "versions": ["18"],
+              "tests": [
+                { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
+                  "tests": [{"stdlibs": ["libc++"], "tests": ["Release.Default"]}]
+                },
+                { "cxxversions": ["c++23", "c++20", "c++17"],
+                  "tests": [{"stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            },
+            { "versions": ["17"],
               "tests": [
                 { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
                   "tests": [{"stdlibs": ["libc++"], "tests": ["Release.Default"]}]
