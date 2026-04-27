@@ -157,7 +157,50 @@ function(BemanExemplar_provideDependency method package_name)
                     GIT_TAG "${BemanExemplar_tag}"
                     EXCLUDE_FROM_ALL
                 )
-                set(INSTALL_GTEST OFF) # Disable GoogleTest installation
+
+                # Apply per-dependency cmake_args from the lockfile
+                string(
+                    JSON BemanExemplar_cmakeArgs
+                    ERROR_VARIABLE BemanExemplar_cmakeArgsError
+                    GET "${BemanExemplar_depObj}"
+                    "cmake_args"
+                )
+                if(NOT BemanExemplar_cmakeArgsError)
+                    string(
+                        JSON BemanExemplar_numCmakeArgs
+                        LENGTH "${BemanExemplar_cmakeArgs}"
+                    )
+                    if(BemanExemplar_numCmakeArgs GREATER 0)
+                        math(
+                            EXPR
+                            BemanExemplar_maxArgIndex
+                            "${BemanExemplar_numCmakeArgs} - 1"
+                        )
+                        foreach(
+                            BemanExemplar_argIndex
+                            RANGE "${BemanExemplar_maxArgIndex}"
+                        )
+                            string(
+                                JSON BemanExemplar_argKey
+                                MEMBER "${BemanExemplar_cmakeArgs}"
+                                "${BemanExemplar_argIndex}"
+                            )
+                            string(
+                                JSON BemanExemplar_argValue
+                                GET "${BemanExemplar_cmakeArgs}"
+                                "${BemanExemplar_argKey}"
+                            )
+                            message(
+                                DEBUG
+                                "Setting ${BemanExemplar_argKey}=${BemanExemplar_argValue} for ${BemanExemplar_name}"
+                            )
+                            set("${BemanExemplar_argKey}"
+                                "${BemanExemplar_argValue}"
+                            )
+                        endforeach()
+                    endif()
+                endif()
+
                 FetchContent_MakeAvailable("${BemanExemplar_name}")
 
                 # Catch2's CTest integration module isn't on CMAKE_MODULE_PATH
