@@ -20,7 +20,7 @@ target_link_libraries(
 
 {% if cookiecutter.unit_test_library == "gtest" %}
 include(GoogleTest)
-gtest_discover_tests(beman.{{cookiecutter.project_name}}.tests.{{identity}})
+gtest_discover_tests(beman.{{cookiecutter.project_name}}.tests.{{identity}} DISCOVERY_TIMEOUT 60)
 {% elif cookiecutter.unit_test_library == "catch2" %}
 include(Catch)
 catch_discover_tests(beman.{{cookiecutter.project_name}}.tests.{{identity}})
