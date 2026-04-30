@@ -7,7 +7,11 @@ project(
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "{{cookiecutter.description}}"
     LANGUAGES CXX
+{% if cookiecutter._generating_exemplar %}
+    VERSION 2.3.0
+{% else %}
     VERSION 0.1.0
+{% endif %}
 )
 
 # [CMAKE.SKIP_TESTS]

@@ -179,6 +179,17 @@ For details on building beman.exemplar without using a CMake preset, refer to th
 
 ### Installation
 
+#### Vcpkg
+
+The preferred way to install exemplar is via vcpkg. To do so, after installing vcpkg
+itself, you need to add support for the Beman project's [vcpkg
+registry](https://github.com/bemanproject/vcpkg-registry) by configuring a
+`vcpkg-configuration.json` file (which exemplar [provides](vcpkg-configuration.json)).
+
+Then, simply run `vcpkg install beman-exemplar`.
+
+#### Manual
+
 To install beman.exemplar globally after building with the `gcc-release` preset, you can
 run:
 

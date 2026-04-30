@@ -47,4 +47,4 @@ repos:
     - id: beman-tidy
 
 {% endif %}
-exclude: 'cookiecutter/|infra/'
+exclude: 'cookiecutter/|infra/|port/'

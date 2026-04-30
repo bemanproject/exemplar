@@ -7,7 +7,7 @@ project(
     # targets (e.g., library, executable, etc.).
     DESCRIPTION "A Beman Library Exemplar"
     LANGUAGES CXX
-    VERSION 0.1.0
+    VERSION 2.3.0
 )
 
 # [CMAKE.SKIP_TESTS]

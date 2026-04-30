@@ -16,4 +16,4 @@ permissions:
 
 jobs:
   pre-commit:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-pre-commit.yml@1.5.3
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-pre-commit.yml@1.6.0

@@ -54,6 +54,30 @@ ctest --test-dir build
 
 ## Dependency Management
 
+### vcpkg
+
+The best way to install the project's dependencies is to use the vcpkg workflow.
+
+To do so, make sure vcpkg is installed and `VCPKG_ROOT` is defined in your environment,
+then specify
+`-DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"`. Vcpkg will handle
+the project's dependencies, including GoogleTest.
+
+Example commands:
+
+```
+cmake \
+  -B build \
+  -S . \
+  -DCMAKE_CXX_STANDARD=17 \
+  -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
+cmake --build build
+ctest --test-dir build
+```
+
+The file `./vcpkg.json` configures the list of dependencies that will be configured by
+vcpkg.
+
 ### FetchContent
 
 Instead of installing the project's dependencies via a package manager, you can optionally

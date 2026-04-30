@@ -195,6 +195,17 @@ For details on building beman.{{cookiecutter.project_name}} without using a CMak
 
 ### Installation
 
+#### Vcpkg
+
+The preferred way to install {{cookiecutter.project_name}} is via vcpkg. To do so, after installing vcpkg
+itself, you need to add support for the Beman project's [vcpkg
+registry](https://github.com/bemanproject/vcpkg-registry) by configuring a
+`vcpkg-configuration.json` file (which {{cookiecutter.project_name}} [provides](vcpkg-configuration.json)).
+
+Then, simply run `vcpkg install beman-{{cookiecutter.project_name.replace("_", "-")}}`.
+
+#### Manual
+
 To install beman.{{cookiecutter.project_name}} globally after building with the `gcc-release` preset, you can
 run:
 
