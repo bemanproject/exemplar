@@ -39,4 +39,4 @@ repos:
     hooks:
       - id: codespell
 
-exclude: 'cookiecutter/|infra/'
+exclude: 'cookiecutter/|infra/|port/'

@@ -1,0 +1,10 @@
+{
+  "name": "beman-exemplar",
+  "version-semver": "2.3.0",
+  "dependencies": [
+    {
+      "name": "gtest",
+      "host": true
+    }
+  ]
+}

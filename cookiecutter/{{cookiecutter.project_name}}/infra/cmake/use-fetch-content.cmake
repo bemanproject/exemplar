@@ -222,6 +222,8 @@ function(BemanExemplar_provideDependency method package_name)
     endforeach()
 endfunction()
 
+set(BEMAN_USE_FETCH_CONTENT_ENABLED ON)
+
 cmake_language(
     SET_DEPENDENCY_PROVIDER BemanExemplar_provideDependency
     SUPPORTED_METHODS FIND_PACKAGE
