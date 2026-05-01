@@ -160,7 +160,7 @@ You can disable building tests by setting CMake option `BEMAN_{{cookiecutter.pro
 
 | Compiler   | Version | C++ Standards | Standard Library  |
 |------------|---------|---------------|-------------------|
-| GCC        | 15-13   | C++26-C++17   | libstdc++         |
+| GCC        | 16-13   | C++26-C++17   | libstdc++         |
 | GCC        | 12-11   | C++23-C++17   | libstdc++         |
 | Clang      | 22-19   | C++26-C++17   | libstdc++, libc++ |
 | Clang      | 18      | C++26-C++17   | libc++            |
