@@ -6,7 +6,7 @@ on:
     types: [published]
 jobs:
   vcpkg-release:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-release.yml@1.6.0
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-release.yml@1.6.1
     with:
       port_name: beman-exemplar
     secrets:
