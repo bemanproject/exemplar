@@ -3,8 +3,7 @@
 cmake_minimum_required(VERSION 3.30...4.3)
 
 project(
-    beman.{{cookiecutter.project_name}} # CMake Project Name, which is also the name of the top-level
-    # targets (e.g., library, executable, etc.).
+    beman.{{cookiecutter.project_name}}
     DESCRIPTION "{{cookiecutter.description}}"
     LANGUAGES CXX
 {% if cookiecutter._generating_exemplar %}
