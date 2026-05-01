@@ -10,3 +10,9 @@
 
 # ignore vscode settings
 .vscode
+
+# ignore vim swap files
+.swp
+
+# ignore merge/patch backup files
+.orig
