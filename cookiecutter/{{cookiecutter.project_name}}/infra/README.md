@@ -22,7 +22,7 @@ This repository is intended to be used as a beman-submodule in other Beman repos
 #### `beman_install_library`
 
 The CMake modules in this repository are intended to be used by Beman libraries. Use the
-`beman_add_install_library_config()` function to install your library, along with header
+`beman_install_library()` function to install your library, along with header
 files, any metadata files, and a CMake config file for `find_package()` support.
 
 ```cmake
@@ -31,7 +31,7 @@ add_library(beman::something ALIAS beman.something)
 
 # ... configure your target as needed ...
 
-find_package(beman-install-library REQUIRED)
+include(infra/cmake/beman-install-library.cmake)
 beman_install_library(beman.something)
 ```
 
