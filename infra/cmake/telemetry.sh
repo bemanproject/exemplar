@@ -29,7 +29,7 @@ _ME="$(basename "${0}")"
 _print_help() {
     cat <<HEREDOC
 
-Callback script to process CMake Insrumentation data
+Callback script to process CMake Instrumentation data
 https://cmake.org/cmake/help/latest/command/cmake_instrumentation.html
 
 Usage:
