@@ -1,5 +1,5 @@
-{% set identity = "identity" if cookiecutter._generating_exemplar else "todo" %}
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+{% set identity = "identity" if cookiecutter._generating_exemplar else "todo" %}
 
 {% if cookiecutter.unit_test_library == "gtest" %}
 find_package(GTest REQUIRED)
