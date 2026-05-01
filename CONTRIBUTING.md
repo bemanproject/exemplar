@@ -65,7 +65,7 @@ the project's dependencies, including GoogleTest.
 
 Example commands:
 
-```
+```shell
 cmake \
   -B build \
   -S . \
