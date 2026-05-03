@@ -2,6 +2,8 @@
 
 cmake_minimum_required(VERSION 3.30...4.3)
 
+include(infra/cmake/enable-experimental-import-std.cmake)
+
 project(
     beman.exemplar
     DESCRIPTION "A Beman Library Exemplar"
@@ -23,22 +25,55 @@ option(
     ${PROJECT_IS_TOP_LEVEL}
 )
 
+option(BEMAN_EXEMPLAR_USE_MODULES "Provide beman.exemplar as a C++ module" OFF)
+
+if(BEMAN_EXEMPLAR_USE_MODULES)
+    set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+endif()
+
+configure_file(
+    "${PROJECT_SOURCE_DIR}/include/beman/exemplar/config_generated.hpp.in"
+    "${PROJECT_BINARY_DIR}/include/beman/exemplar/config_generated.hpp"
+    @ONLY
+)
+
 # for find of beman_install_library and configure_build_telemetry
 include(infra/cmake/beman-install-library.cmake)
 include(infra/cmake/BuildTelemetryConfig.cmake)
 
-add_library(beman.exemplar INTERFACE)
+if(BEMAN_EXEMPLAR_USE_MODULES)
+    add_library(beman.exemplar STATIC)
+else()
+    add_library(beman.exemplar INTERFACE)
+endif()
 add_library(beman::exemplar ALIAS beman.exemplar)
 
-target_sources(
-    beman.exemplar
-    PUBLIC FILE_SET HEADERS BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include"
-)
-
-set_target_properties(
-    beman.exemplar
-    PROPERTIES VERIFY_INTERFACE_HEADER_SETS ${PROJECT_IS_TOP_LEVEL}
-)
+if(BEMAN_EXEMPLAR_USE_MODULES)
+    target_sources(
+        beman.exemplar
+        PUBLIC
+            FILE_SET CXX_MODULES
+            FILE_SET HEADERS
+                BASE_DIRS
+                    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+                    "${CMAKE_CURRENT_BINARY_DIR}/include"
+    )
+    set_target_properties(beman.exemplar PROPERTIES CXX_MODULE_STD ON)
+    target_compile_features(beman.exemplar PUBLIC cxx_std_23)
+else()
+    target_sources(
+        beman.exemplar
+        PUBLIC
+            FILE_SET HEADERS
+                BASE_DIRS
+                    "${CMAKE_CURRENT_SOURCE_DIR}/include"
+                    "${CMAKE_CURRENT_BINARY_DIR}/include"
+    )
+    set_target_properties(
+        beman.exemplar
+        PROPERTIES VERIFY_INTERFACE_HEADER_SETS ${PROJECT_IS_TOP_LEVEL}
+    )
+endif()
 
 add_subdirectory(include/beman/exemplar)
 

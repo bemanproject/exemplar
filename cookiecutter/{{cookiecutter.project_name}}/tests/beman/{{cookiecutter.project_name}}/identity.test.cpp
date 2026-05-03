@@ -1,17 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 {% set identity = "identity" if cookiecutter._generating_exemplar else "todo" %}
 
-#include <beman/{{cookiecutter.project_name}}/{{identity}}.hpp>
-
+#include <beman/{{cookiecutter.project_name}}/config.hpp>
 {% if cookiecutter.unit_test_library == "gtest" %}
 #include <gtest/gtest.h>
 {% elif cookiecutter.unit_test_library == "catch2" %}
 #include <catch2/catch_all.hpp>
 {% endif %}
+#include <beman/{{cookiecutter.project_name}}/{{identity}}.hpp>
 
 {% if cookiecutter._generating_exemplar %}
-#include <algorithm>
-#include <functional>
+#if BEMAN_EXEMPLAR_USE_MODULES()
+import std;
+#else
+    #include <algorithm>
+    #include <functional>
+#endif
 
 namespace exe = beman::{{cookiecutter.project_name}};
 

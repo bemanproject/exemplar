@@ -24,4 +24,10 @@ foreach(example ${ALL_EXAMPLES})
         beman.exemplar.examples.${example}
         PRIVATE beman::exemplar
     )
+    if(BEMAN_EXEMPLAR_USE_MODULES)
+        set_target_properties(
+            beman.exemplar.examples.${example}
+            PROPERTIES CXX_MODULE_STD ON
+        )
+    endif()
 endforeach()

@@ -3,14 +3,19 @@
 // This example demonstrates the usage of beman::{{cookiecutter.project_name}}::identity as a default projection in a range-printer.
 // Requires: range support (C++20) and std::identity support (C++20).
 
+#include <beman/{{cookiecutter.project_name}}/config.hpp>
 #include <beman/{{cookiecutter.project_name}}/identity.hpp>
 
-#include <algorithm>
-#include <functional> // std::identity
-#include <iostream>
-#include <ranges>
-#include <string>
-#include <vector>
+#if BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES()
+import std;
+#else
+    #include <algorithm>
+    #include <functional> // std::identity
+    #include <iostream>
+    #include <ranges>
+    #include <string>
+    #include <vector>
+#endif
 
 namespace exe = beman::{{cookiecutter.project_name}};
 

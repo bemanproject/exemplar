@@ -28,4 +28,10 @@ foreach(example ${ALL_EXAMPLES})
         beman.{{cookiecutter.project_name}}.examples.${example}
         PRIVATE beman::{{cookiecutter.project_name}}
     )
+    if(BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES)
+        set_target_properties(
+            beman.{{cookiecutter.project_name}}.examples.${example}
+            PROPERTIES CXX_MODULE_STD ON
+        )
+    endif()
 endforeach()

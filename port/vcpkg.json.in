@@ -13,5 +13,10 @@
       "name": "vcpkg-cmake-config",
       "host": true
     }
-  ]
+  ],
+  "features": {
+    "modules": {
+      "description": "Provide beman.exemplar as a C++ module"
+    }
+  }
 }
