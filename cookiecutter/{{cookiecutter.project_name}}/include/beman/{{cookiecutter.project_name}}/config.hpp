@@ -1,0 +1,10 @@
+#ifndef BEMAN_{{cookiecutter.project_name.upper()}}_CONFIG_HPP
+#define BEMAN_{{cookiecutter.project_name.upper()}}_CONFIG_HPP
+
+#if !defined(__has_include) || __has_include(<beman/{{cookiecutter.project_name}}/config_generated.hpp>)
+    #include <beman/{{cookiecutter.project_name}}/config_generated.hpp>
+#else
+    #define BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES() 0
+#endif
+
+#endif

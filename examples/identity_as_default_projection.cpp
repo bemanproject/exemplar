@@ -3,14 +3,19 @@
 // This example demonstrates the usage of beman::exemplar::identity as a default projection in a range-printer.
 // Requires: range support (C++20) and std::identity support (C++20).
 
+#include <beman/exemplar/config.hpp>
 #include <beman/exemplar/identity.hpp>
 
-#include <algorithm>
-#include <functional> // std::identity
-#include <iostream>
-#include <ranges>
-#include <string>
-#include <vector>
+#if BEMAN_EXEMPLAR_USE_MODULES()
+import std;
+#else
+    #include <algorithm>
+    #include <functional> // std::identity
+    #include <iostream>
+    #include <ranges>
+    #include <string>
+    #include <vector>
+#endif
 
 namespace exe = beman::exemplar;
 

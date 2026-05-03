@@ -44,17 +44,42 @@ jobs:
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
                         "Release.MaxSan", "Debug.Werror",
-                        "Debug.Coverage"
+                        "Debug.Coverage", "Debug.-DBEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES=On"
                       ]
                     }
                   ]
                 },
-                { "cxxversions": ["c++23", "c++20", "c++17"],
+                { "cxxversions": ["c++23"],
+                  "tests": [
+                    { "stdlibs": ["libstdc++"],
+                      "tests": [
+                        "Release.Default", "Debug.-DBEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES=On"
+                      ]
+                    }
+                  ]
+                },
+                { "cxxversions": ["c++20", "c++17"],
                   "tests": [{ "stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
                 }
               ]
             },
-            { "versions": ["15", "14", "13"],
+            { "versions": ["15"],
+              "tests": [
+                { "cxxversions": ["c++26", "c++23"],
+                  "tests": [
+                    { "stdlibs": ["libstdc++"],
+                      "tests": [
+                        "Release.Default", "Debug.-DBEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES=On"
+                      ]
+                    }
+                  ]
+                },
+                { "cxxversions": ["c++20", "c++17"],
+                  "tests": [{ "stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
+                }
+              ]
+            },
+            { "versions": ["14", "13"],
               "tests": [
                 { "cxxversions": ["c++26", "c++23", "c++20", "c++17"],
                   "tests": [{ "stdlibs": ["libstdc++"], "tests": ["Release.Default"]}]
@@ -78,12 +103,22 @@ jobs:
                     { "stdlibs": ["libstdc++", "libc++"],
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
-                        "Release.MaxSan", "Debug.Werror"
+                        "Release.MaxSan", "Debug.Werror",
+                        "Debug.-DBEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES=On"
                       ]
                     }
                   ]
                 },
-                { "cxxversions": ["c++23", "c++20", "c++17"],
+                { "cxxversions": ["c++23"],
+                  "tests": [
+                    { "stdlibs": ["libstdc++", "libc++"],
+                      "tests": [
+                        "Release.Default", "Debug.-DBEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES=On"
+                      ]
+                    }
+                  ]
+                },
+                { "cxxversions": ["c++20", "c++17"],
                   "tests": [
                     {"stdlibs": ["libstdc++", "libc++"], "tests": ["Release.Default"]}
                   ]
@@ -135,7 +170,10 @@ jobs:
                 { "cxxversions": ["c++23"],
                   "tests": [
                     { "stdlibs": ["stl"],
-                      "tests": ["Debug.Default", "Release.Default", "Release.MaxSan"]
+                      "tests": [
+                        "Debug.Default", "Release.Default", "Release.MaxSan",
+                        "Debug.-DBEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES=On"
+                      ]
                     }
                   ]
                 }
@@ -148,6 +186,11 @@ jobs:
     uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-ci.yml@1.7.1
     with:
       port_name: beman-{{cookiecutter.project_name.replace('_', '-')}}
+      feature_combinations: |
+        [
+          {"features": {}},
+          {"features": {"modules": true}}
+        ]
 
   create-issue-when-fault:
     needs: [preset-test, build-and-test]

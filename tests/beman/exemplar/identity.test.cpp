@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
+#include <beman/exemplar/config.hpp>
+#include <gtest/gtest.h>
 #include <beman/exemplar/identity.hpp>
 
-#include <gtest/gtest.h>
-
-#include <algorithm>
-#include <functional>
+#if BEMAN_EXEMPLAR_USE_MODULES()
+import std;
+#else
+    #include <algorithm>
+    #include <functional>
+#endif
 
 namespace exe = beman::exemplar;
 
