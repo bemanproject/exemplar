@@ -21,7 +21,7 @@ jobs:
           source ./check_cookiecutter.sh
           cookiecutter_venv_path=$(mktemp --directory --dry-run)
           setup_venv "$cookiecutter_venv_path"
-          stamp "$PWD" "./static_exemplar" "interface" "gtest" "false"
+          stamp "$PWD" "./static_exemplar" "gtest" "false"
           cd static_exemplar/exemplar
           grep -r 'identity' . && exit 1
           find . -name '*identity*' | grep . && exit 1

@@ -17,16 +17,12 @@ git commit and branch:
 
 ```
 $ ./stamp.sh
-  [1/7] project_name (my_project_name): example_library
-  [2/7] maintainer (your_github_username): your_username
-  [3/7] minimum_cpp_build_version (20):
-  [4/7] paper (PnnnnRr): P9999R9
-  [5/7] description (Short project description.):
-  [6/7] Select library_type
-    1 - interface
-    2 - static
-    Choose from [1/2] (1):
-  [7/7] Select unit_test_library
+  [1/6] project_name (my_project_name): example_library
+  [2/6] maintainer (your_github_username): your_username
+  [3/6] minimum_cpp_build_version (20):
+  [4/6] paper (PnnnnRr): P9999R9
+  [5/6] description (Short project description.):
+  [6/6] Select unit_test_library
     1 - gtest
     2 - catch2
     Choose from [1/2] (1):
