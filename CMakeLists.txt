@@ -8,7 +8,7 @@ project(
     beman.exemplar
     DESCRIPTION "A Beman Library Exemplar"
     LANGUAGES CXX
-    VERSION 2.3.0
+    VERSION 2.4.0
 )
 
 # [CMAKE.SKIP_TESTS]

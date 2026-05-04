@@ -1,6 +1,6 @@
 {
   "name": "beman-exemplar",
-  "version-semver": "2.3.0",
+  "version-semver": "2.4.0",
   "dependencies": [
     {
       "name": "gtest",
