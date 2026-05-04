@@ -1,7 +1,7 @@
 {
   "name": "beman-{{cookiecutter.project_name.replace('_', '-')}}",
 {% if cookiecutter._generating_exemplar %}
-  "version-semver": "2.3.0",
+  "version-semver": "2.4.0",
 {% else %}
   "version-semver": "0.1.0",
 {% endif %}
