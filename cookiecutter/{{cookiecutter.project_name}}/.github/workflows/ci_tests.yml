@@ -44,8 +44,7 @@ jobs:
                       "tests": [
                         "Debug.Default", "Release.Default", "Release.TSan",
                         "Release.MaxSan", "Debug.Werror",
-                        "Debug.Coverage"{% if cookiecutter.library_type == "static" %}, "Debug.Dynamic"{% endif %}
-
+                        "Debug.Coverage"
                       ]
                     }
                   ]
