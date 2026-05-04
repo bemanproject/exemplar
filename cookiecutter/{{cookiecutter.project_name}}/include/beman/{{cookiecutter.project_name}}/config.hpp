@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
 #ifndef BEMAN_{{cookiecutter.project_name.upper()}}_CONFIG_HPP
 #define BEMAN_{{cookiecutter.project_name.upper()}}_CONFIG_HPP
 
