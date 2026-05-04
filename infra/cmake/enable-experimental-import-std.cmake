@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 if(CMAKE_VERSION VERSION_EQUAL "3.30.0")
     set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD
         "0e5b6991-d74f-4b3d-a41c-cf096e0b2508"
