@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-
+{% raw %}
 name: Lint Check (pre-commit)
 
 on:
@@ -78,3 +78,4 @@ jobs:
           tool_name: pre-commit
           level: warning
           reviewdog_flags: "-fail-level=error"
+{% endraw %}
