@@ -106,6 +106,44 @@ ctest --test-dir build
 The file `./lockfile.json` configures the list of dependencies and versions that will be
 acquired by FetchContent.
 
+## Developing The Copier Template
+
+This repository doubles as both the exemplar library and the Copier template used to stamp
+new Beman libraries.
+
+The template workflow is organized as follows:
+
+* `copier.yml` defines the Copier questions, defaults, validation rules, and post-copy
+  tasks.
+* `template/` contains the files rendered into generated projects.
+* `stamp.sh` is the user-facing wrapper for stamping a forked exemplar repository into a
+  new project.
+* `./copier/check_copier.sh` validates that exemplar regenerates cleanly and that a
+  non-exemplar project does not leak exemplar-specific names like `identity`.
+
+When testing local template changes, do not render directly from the Git checkout. The
+Copier helper scripts intentionally render from a temporary snapshot with `.git`, `build`,
+and `.venv` excluded so that validation uses the current worktree contents.
+
+Run the template checks with:
+
+```shell
+./copier/check_copier.sh
+```
+
+If you need to smoke-test generated projects manually, start from the same validated flow:
+
+```shell
+tmpdir=$(mktemp -d)
+python3 -m venv "$tmpdir/venv"
+"$tmpdir/venv/bin/python3" -m pip install copier
+src=$(mktemp -d)
+rsync -a --exclude .git --exclude build --exclude .venv ./ "$src/"
+"$tmpdir/venv/bin/copier" copy --trust --defaults "$src" "$tmpdir/project"
+```
+
+Then configure and build the generated project as usual.
+
 ## Project-specific configure arguments
 
 Project-specific options are prefixed with `BEMAN_EXEMPLAR`.

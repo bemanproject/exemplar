@@ -4,18 +4,23 @@ To create a new Beman library, first click the "Use this template" dropdown in t
 top-right and select "Create a new repository":
 
 <table><tr><td>
-  <img src="images/use-this-template.png" width="400px">
+    <img src="images/use-this-template.png" width="400px" alt="GitHub Use this template button">
 </td></tr></table>
 
 This will create a new repository that's an exact copy of exemplar. The next step is to
 customize it for your use case.
+
+This repository now uses Copier as its templating engine. The template inputs are defined
+in `copier.yml`, the rendered project files live under `template/`, and
+`./copier/check_copier.sh` verifies that the repository still round-trips through Copier
+correctly.
 
 To do so, execute the bash script `stamp.sh`. This script will prompt for parameters like
 the new library's name, paper number, and description. Then it will replace your exemplar
 copy with a stamped-out template containing these parameters and create a corresponding
 git commit and branch:
 
-```
+```shell
 $ ./stamp.sh
   [1/6] project_name (my_project_name): example_library
   [2/6] maintainer (your_github_username): your_username
@@ -33,11 +38,16 @@ Try 'git push origin stamp' to push the branch upstream,
 then create a pull request.
 ```
 
+`stamp.sh` is a convenience wrapper around `copier copy`. It creates an isolated virtual
+environment, renders from a temporary snapshot of the repository, runs `pre-commit`, and
+commits the stamped result onto a `stamp` branch.
+
 From there, you can simply fill in all the remaining parts of the repository that are
 labeled 'todo'.
 
 What follow is an example of a Beman library README.
 
+<!-- markdownlint-disable-next-line MD025 -->
 # beman.exemplar: A Beman Library Exemplar
 
 <!--
@@ -154,6 +164,22 @@ You can disable building tests by setting CMake option `BEMAN_EXEMPLAR_BUILD_TES
 ## Development
 
 See the [Contributing Guidelines](CONTRIBUTING.md).
+
+### Template Maintenance
+
+If you are changing the template itself rather than developing the exemplar library, use
+the Copier workflow directly:
+
+* Edit `copier.yml` for template questions, defaults, validators, and post-copy tasks.
+* Edit `template/` for files that should be rendered into stamped projects.
+* Run `./copier/check_copier.sh` to verify exemplar self-regeneration and non-exemplar
+    templating.
+* Use `./stamp.sh` on a fork when you want to replace an exemplar clone with a stamped
+    project for real work.
+
+The consistency check and `stamp.sh` both render from a `.git`-free temporary snapshot of
+the repository. That keeps local validation aligned with the current worktree contents,
+rather than only the last committed Git state.
 
 ## Integrate beman.exemplar into your project
 

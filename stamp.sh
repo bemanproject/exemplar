@@ -8,11 +8,13 @@
 
         This script is intended to be run on a fork of exemplar.
 
-        It sets up Copier, runs it on the exemplar template, replaces the
-        repository's current contents with the result, runs pre-commit,
-        switches to a new branch 'stamp', and creates a git commit.
+        It sets up Copier, renders the template from a temporary snapshot of
+        the current repository, replaces the repository's current contents
+        with the stamped result, runs pre-commit, switches to a new branch
+        'stamp', and creates a git commit.
 
-        All parameters are passed through to the Copier invocation.
+        All parameters are passed through to the underlying `copier copy`
+        invocation.
 EOF
     fi
     set -eu
