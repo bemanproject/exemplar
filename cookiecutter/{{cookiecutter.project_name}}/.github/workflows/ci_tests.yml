@@ -11,6 +11,11 @@ on:
   schedule:
     - cron: '{% if cookiecutter._ci_tests_cron %}{{ cookiecutter._ci_tests_cron }}{% else %}{{ range(0, 60) | random }} {{ range(13, 18) | random }} * * {{ range(0, 7) | random }}{% endif %}'
 
+concurrency:
+  group: {% raw %}${{format('{0}:{1}', github.repository, github.ref)}}{% endraw %}
+
+  cancel-in-progress: true
+
 jobs:
   beman-submodule-check:
     uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.7.2
