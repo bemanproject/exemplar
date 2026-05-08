@@ -32,12 +32,22 @@ EOF
     copier_source_path=$(mktemp --directory)
     declare copier_out_path
     copier_out_path=$(mktemp --directory)
+    declare template_src_path=https://github.com/bemanproject/exemplar.git
+    declare template_commit
+    template_commit=$(git rev-parse HEAD)
     rsync -a \
         --exclude .git \
         --exclude build \
         --exclude .venv \
         "$repo_dir/" "$copier_source_path/"
-    "$copier_venv_path/bin/copier" copy --trust "$@" "$copier_source_path" "$copier_out_path" >& /dev/null
+    "$copier_venv_path/bin/copier" copy \
+        --trust \
+        -d template_src_path="$template_src_path" \
+        -d template_commit="$template_commit" \
+        "$@" \
+        "$copier_source_path" \
+        "$copier_out_path" \
+        >& /dev/null
     git rm -rf . &>/dev/null
     cp -r "$copier_out_path"/. .
     git add . &>/dev/null

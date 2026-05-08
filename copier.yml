@@ -4,6 +4,16 @@ _templates_suffix: .jinja
 _envops:
   trim_blocks: true
 
+template_src_path:
+  type: str
+  when: false
+  default: "{{ _copier_conf.src_path }}"
+
+template_commit:
+  type: str
+  when: false
+  default: "{{ _copier_conf.vcs_ref_hash }}"
+
 project_name:
   type: str
   help: Name of the generated repository and library.

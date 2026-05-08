@@ -40,7 +40,58 @@ then create a pull request.
 
 `stamp.sh` is a convenience wrapper around `copier copy`. It creates an isolated virtual
 environment, renders from a temporary snapshot of the repository, runs `pre-commit`, and
-commits the stamped result onto a `stamp` branch.
+commits the stamped result onto a `stamp` branch. The stamped tree now includes
+`.copier-answers.yml`, so future `copier update` runs know which exemplar revision they
+started from.
+
+## Rebasing An Older Exemplar Clone Onto Copier
+
+If your repository predates the Copier migration and was created as a plain GitHub
+template copy, bootstrap a fresh stamped baseline at the original exemplar split point,
+then rebase your project commits onto that baseline.
+
+Start from a clean worktree and make sure you can identify the branch you want to
+migrate; the examples below assume `main`.
+
+```shell
+git remote add exemplar https://github.com/bemanproject/exemplar.git
+git fetch exemplar
+base=$(git merge-base main exemplar/main)
+git branch pre-copier-backup main
+git switch --detach "$base"
+
+tmpdir=$(mktemp -d)
+python3 -m venv "$tmpdir/venv"
+"$tmpdir/venv/bin/python3" -m pip install copier pre-commit
+"$tmpdir/venv/bin/copier" copy --trust --overwrite \
+    -d project_name=your_project_name \
+    -d maintainer=your_github_username \
+    -d minimum_cpp_build_version=20 \
+    -d paper=PnnnnRr \
+    -d description="Short project description." \
+    -d unit_test_library=gtest \
+    -d generating_exemplar=false \
+    -d owner=bemanproject \
+    https://github.com/bemanproject/exemplar.git \
+    .
+"$tmpdir/venv/bin/pre-commit" run --all-files || true
+git add .
+git switch -c stamp
+git commit -m "Bootstrap Copier template"
+
+git switch main
+git rebase --rebase-merges --onto stamp "$base" main
+```
+
+After the rebase, commit the generated `.copier-answers.yml`. That file is what enables
+future template updates with:
+
+```shell
+copier update --trust
+```
+
+If you want to track a fork of exemplar rather than `bemanproject/exemplar`, edit
+`_src_path` in `.copier-answers.yml` before your first `copier update`.
 
 From there, you can simply fill in all the remaining parts of the repository that are
 labeled 'todo'.

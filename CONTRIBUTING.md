@@ -139,7 +139,10 @@ python3 -m venv "$tmpdir/venv"
 "$tmpdir/venv/bin/python3" -m pip install copier
 src=$(mktemp -d)
 rsync -a --exclude .git --exclude build --exclude .venv ./ "$src/"
-"$tmpdir/venv/bin/copier" copy --trust --defaults "$src" "$tmpdir/project"
+"$tmpdir/venv/bin/copier" copy --trust --defaults \
+  -d template_src_path=https://github.com/bemanproject/exemplar.git \
+  -d template_commit="$(git rev-parse HEAD)" \
+  "$src" "$tmpdir/project"
 ```
 
 Then configure and build the generated project as usual.

@@ -22,6 +22,10 @@ setup_venv() {
     COPIER_BIN="$path/bin/copier"
 }
 
+template_commit() {
+    git -C "$repo_root" rev-parse HEAD
+}
+
 prepare_template_source() {
     local source_dir="$1" ; shift
     local prepared_source
@@ -44,6 +48,8 @@ stamp() {
     "$COPIER_BIN" copy \
         --trust \
         --defaults \
+        -d template_src_path=https://github.com/bemanproject/exemplar.git \
+        -d template_commit="$(template_commit)" \
         -d project_name=exemplar \
         -d maintainer=steve-downey \
         -d minimum_cpp_build_version=17 \
@@ -96,6 +102,8 @@ check_templating() {
     "$COPIER_BIN" copy \
         --trust \
         --defaults \
+        -d template_src_path=https://github.com/bemanproject/exemplar.git \
+        -d template_commit="$(template_commit)" \
         -d project_name=rlzrmx9nfs \
         -d maintainer=octocat \
         -d minimum_cpp_build_version=17 \
@@ -116,6 +124,7 @@ check_templating() {
     local grep_path="$work_dir/randomized.grep"
     grep \
         --dereference-recursive --context=5 --color=always \
+        --exclude .copier-answers.yml \
         -e "exemplar" -e "identity" "$output_dir" > "$grep_path" || true
 
     if [[ -s "$grep_path" ]] ; then

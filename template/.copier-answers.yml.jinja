@@ -1,0 +1,12 @@
+_commit: {{ template_commit | to_json }}
+_src_path: {{ template_src_path | to_json }}
+project_name: {{ project_name | to_json }}
+maintainer: {{ maintainer | to_json }}
+minimum_cpp_build_version: {{ minimum_cpp_build_version | to_json }}
+paper: {{ paper | to_json }}
+description: {{ description | to_json }}
+unit_test_library: {{ unit_test_library | to_json }}
+generating_exemplar: {{ generating_exemplar | to_json }}
+owner: {{ owner | to_json }}
+ci_tests_cron: {{ ci_tests_cron | to_json }}
+pre_commit_update_cron: {{ pre_commit_update_cron | to_json }}
