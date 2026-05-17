@@ -11,12 +11,17 @@ on:
   schedule:
     - cron: '{% if ci_tests_cron %}{{ ci_tests_cron }}{% else %}{{ range(0, 60) | random }} {{ range(13, 18) | random }} * * {{ range(0, 7) | random }}{% endif %}'
 
+concurrency:
+  group: {% raw %}${{format('{0}:{1}', github.repository, github.ref)}}{% endraw %}
+
+  cancel-in-progress: true
+
 jobs:
   beman-submodule-check:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.7.1
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-submodule-check.yml@1.7.2
 
   preset-test:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-preset-test.yml@1.7.1
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-preset-test.yml@1.7.2
     with:
       matrix_config: >
         [
@@ -31,7 +36,7 @@ jobs:
         ]
 
   build-and-test:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-build-and-test.yml@1.7.1
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-build-and-test.yml@1.7.2
     with:
       matrix_config: >
         {
@@ -183,7 +188,7 @@ jobs:
         }
 
   vcpkg-ci:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-ci.yml@1.7.1
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-ci.yml@1.7.2
     with:
       port_name: beman-{{project_name.replace('_', '-')}}
       feature_combinations: |
@@ -195,4 +200,4 @@ jobs:
   create-issue-when-fault:
     needs: [preset-test, build-and-test]
     if: failure() && github.event_name == 'schedule'
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.7.1
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.7.2
