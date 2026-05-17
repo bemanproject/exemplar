@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-
+{% raw %}
 
 name: 'Beman issue creation workflow'
 on:
@@ -27,3 +27,4 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ github.token }}
+{% endraw %}

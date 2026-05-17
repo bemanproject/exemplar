@@ -1,0 +1,86 @@
+_min_copier_version: "9.14.3"
+_subdirectory: template
+_templates_suffix: .jinja
+_envops:
+  trim_blocks: true
+
+template_src_path:
+  type: str
+  when: false
+  default: "{{ _copier_conf.src_path }}"
+
+template_commit:
+  type: str
+  when: false
+  default: "{{ _copier_conf.vcs_ref_hash }}"
+
+project_name:
+  type: str
+  help: Name of the generated repository and library.
+  default: my_project_name
+  validator: >-
+    {% if not (project_name | regex_search('^[a-z][a-z0-9_]*$')) %}
+    Use lowercase letters, digits, or underscores, and start with a letter.
+    {% endif %}
+
+maintainer:
+  type: str
+  help: GitHub username of the project maintainer.
+  default: your_github_username
+
+minimum_cpp_build_version:
+  type: str
+  help: Minimum C++ language version to require when building.
+  default: "20"
+  validator: >-
+    {% if minimum_cpp_build_version not in ['17', '20', '23', '26'] %}
+    Choose one of: 17, 20, 23, 26.
+    {% endif %}
+
+paper:
+  type: str
+  help: WG21 paper number associated with the library.
+  default: PnnnnRr
+
+description:
+  type: str
+  help: Short project description.
+  default: Short project description.
+
+unit_test_library:
+  type: str
+  help: Unit test library to configure.
+  choices:
+    - gtest
+    - catch2
+  default: gtest
+
+generating_exemplar:
+  type: bool
+  when: false
+  default: false
+
+owner:
+  type: str
+  when: false
+  default: bemanproject
+
+ci_tests_cron:
+  type: str
+  when: false
+  default: ""
+
+pre_commit_update_cron:
+  type: str
+  when: false
+  default: ""
+
+_tasks:
+  - >-
+    if [ "{{ generating_exemplar }}" != "True" ] && [ "{{ generating_exemplar }}" != "true" ]; then
+      mv "include/beman/{{ project_name }}/identity.hpp" "include/beman/{{ project_name }}/todo.hpp";
+      mv "examples/identity_direct_usage.cpp" "examples/todo.cpp";
+      rm "examples/identity_as_default_projection.cpp";
+      mv "tests/beman/{{ project_name }}/identity.test.cpp" "tests/beman/{{ project_name }}/todo.test.cpp";
+      git ls-remote https://github.com/bemanproject/exemplar.git HEAD | awk '{print $1}' > .exemplar_version;
+    fi
