@@ -1,3 +1,4 @@
+{% if generating_exemplar %}
 # How to Use This Template
 
 This repository uses [Copier](https://copier.readthedocs.io/) as its templating engine to generate, manage, and update Beman library boilerplate. The template inputs are defined in `copier.yml`, and the rendered project files live under `template/`.
@@ -230,6 +231,10 @@ int main()
 
 ```
 
+{% else %}
+TODO
+
+{% endif %}
 Full runnable examples can be found in [`examples/`](examples/).
 
 ## Dependencies
@@ -238,11 +243,11 @@ Full runnable examples can be found in [`examples/`](examples/).
 
 This project requires at least the following to build:
 
-* A C++ compiler that conforms to the C++17 standard or greater
+* A C++ compiler that conforms to the C++{{minimum_cpp_build_version}} standard or greater
 * CMake 3.30 or later
 * (Test Only) GoogleTest
 
-You can disable building tests by setting CMake option `BEMAN_EXEMPLAR_BUILD_TESTS` to
+You can disable building tests by setting CMake option `BEMAN_{{project_name.upper()}}_BUILD_TESTS` to
 `OFF` when configuring the project.
 
 ### Supported Platforms
@@ -263,11 +268,11 @@ You can disable building tests by setting CMake option `BEMAN_EXEMPLAR_BUILD_TES
 
 See the [Contributing Guidelines](CONTRIBUTING.md).
 
-## Integrate beman.exemplar into your project
+## Integrate beman.{{project_name}} into your project
 
 ### Build
 
-You can build exemplar using a CMake workflow preset:
+You can build {{project_name}} using a CMake workflow preset:
 
 ```bash
 cmake --workflow --preset gcc-release
@@ -279,23 +284,23 @@ To list available workflow presets, you can invoke:
 cmake --list-presets=workflow
 ```
 
-For details on building beman.exemplar without using a CMake preset, refer to the
+For details on building beman.{{project_name}} without using a CMake preset, refer to the
 [Contributing Guidelines](CONTRIBUTING.md).
 
 ### Installation
 
 #### Vcpkg
 
-The preferred way to install exemplar is via vcpkg. To do so, after installing vcpkg
+The preferred way to install {{project_name}} is via vcpkg. To do so, after installing vcpkg
 itself, you need to add support for the Beman project's [vcpkg
 registry](https://github.com/bemanproject/vcpkg-registry) by configuring a
-`vcpkg-configuration.json` file (which exemplar [provides](vcpkg-configuration.json)).
+`vcpkg-configuration.json` file (which {{project_name}} [provides](vcpkg-configuration.json)).
 
-Then, simply run `vcpkg install beman-exemplar`.
+Then, simply run `vcpkg install beman-{{project_name.replace("_", "-")}}`.
 
 #### Manual
 
-To install beman.exemplar globally after building with the `gcc-release` preset, you can
+To install beman.{{project_name}} globally after building with the `gcc-release` preset, you can
 run:
 
 ```bash
@@ -314,47 +319,47 @@ This will generate the following directory structure:
 /opt/beman
 ├── include
 │   └── beman
-│       └── exemplar
-│           ├── exemplar.hpp
+│       └── {{project_name}}
+│           ├── {{project_name}}.hpp
 │           └── ...
 └── lib
     └── cmake
-        └── beman.exemplar
-            ├── beman.exemplar-config-version.cmake
-            ├── beman.exemplar-config.cmake
-            └── beman.exemplar-targets.cmake
+        └── beman.{{project_name}}
+            ├── beman.{{project_name}}-config-version.cmake
+            ├── beman.{{project_name}}-config.cmake
+            └── beman.{{project_name}}-targets.cmake
 ```
 
 ### CMake Configuration
 
-If you installed beman.exemplar to a prefix, you can specify that prefix to your CMake
+If you installed beman.{{project_name}} to a prefix, you can specify that prefix to your CMake
 project using `CMAKE_PREFIX_PATH`; for example, `-DCMAKE_PREFIX_PATH=/opt/beman`.
 
-You need to bring in the `beman.exemplar` package to define the `beman::exemplar` CMake
+You need to bring in the `beman.{{project_name}}` package to define the `beman::{{project_name}}` CMake
 target:
 
 ```cmake
-find_package(beman.exemplar REQUIRED)
+find_package(beman.{{project_name}} REQUIRED)
 ```
 
-You will then need to add `beman::exemplar` to the link libraries of any libraries or
-executables that include `beman.exemplar` headers.
+You will then need to add `beman::{{project_name}}` to the link libraries of any libraries or
+executables that include `beman.{{project_name}}` headers.
 
 ```cmake
-target_link_libraries(yourlib PUBLIC beman::exemplar)
+target_link_libraries(yourlib PUBLIC beman::{{project_name}})
 ```
 
-### Using beman.exemplar
+### Using beman.{{project_name}}
 
-To use `beman.exemplar` in your C++ project,
-include an appropriate `beman.exemplar` header from your source code.
+To use `beman.{{project_name}}` in your C++ project,
+include an appropriate `beman.{{project_name}}` header from your source code.
 
 ```c++
-#include <beman/exemplar/exemplar.hpp>
+#include <beman/{{project_name}}/{{project_name}}.hpp>
 ```
 
 > [!NOTE]
 >
-> `beman.exemplar` headers are to be included with the `beman/exemplar/` prefix.
+> `beman.{{project_name}}` headers are to be included with the `beman/{{project_name}}/` prefix.
 > Altering include search paths to spell the include target another way (e.g.
-> `#include <exemplar.hpp>`) is unsupported.
+> `#include <{{project_name}}.hpp>`) is unsupported.
