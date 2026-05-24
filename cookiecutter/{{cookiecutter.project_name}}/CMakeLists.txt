@@ -9,7 +9,7 @@ project(
     DESCRIPTION "{{cookiecutter.description}}"
     LANGUAGES CXX
 {% if cookiecutter._generating_exemplar %}
-    VERSION 2.4.0
+    VERSION 2.4.1
 {% else %}
     VERSION 0.1.0
 {% endif %}
