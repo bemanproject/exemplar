@@ -265,9 +265,3 @@ include an appropriate `beman.{{cookiecutter.project_name}}` header from your so
 ```c++
 #include <beman/{{cookiecutter.project_name}}/{{cookiecutter.project_name}}.hpp>
 ```
-
-> [!NOTE]
->
-> `beman.{{cookiecutter.project_name}}` headers are to be included with the `beman/{{cookiecutter.project_name}}/` prefix.
-> Altering include search paths to spell the include target another way (e.g.
-> `#include <{{cookiecutter.project_name}}.hpp>`) is unsupported.
