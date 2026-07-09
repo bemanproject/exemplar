@@ -19,6 +19,12 @@ repos:
     - id: clang-format
       types_or: [c++, c]
 
+    # Beman-tidy linting (default mode)
+  - repo: https://github.com/bemanproject/beman-tidy
+    rev: main
+    hooks:
+    - id: beman-tidy
+
     # CMake linting and formatting
   - repo: https://github.com/BlankSpruce/gersemi-pre-commit
     rev: 0.27.6
@@ -40,12 +46,4 @@ repos:
     hooks:
       - id: codespell
 
-{% if not cookiecutter._generating_exemplar %}
-    # Beman Standard checking via beman-tidy
-  - repo: https://github.com/bemanproject/beman-tidy
-    rev: v0.5.1
-    hooks:
-    - id: beman-tidy
-
-{% endif %}
 exclude: 'cookiecutter/|infra/|port/'
