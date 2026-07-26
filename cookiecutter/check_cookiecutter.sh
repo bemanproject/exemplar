@@ -16,7 +16,7 @@ function stamp() {
         --output-dir "$output_dir" \
         "$cookiecutter_dir" \
         project_name="exemplar" \
-        minimum_cpp_build_version="17" \
+        minimum_cpp_build_version="20" \
         paper="P0898R3" \
         description="A Beman Library Exemplar" \
         unit_test_library="$unit_test_library" \
@@ -60,7 +60,7 @@ function check_templating() {
         --output-dir "$out_dir_path" \
         "$script_dir" \
         project_name="RLZrmX9NfS" \
-        minimum_cpp_build_version="17" \
+        minimum_cpp_build_version="20" \
         paper="P0898R3" \
         description="A Beman Library RLZrmX9NfS" \
         _generating_exemplar="false" \
@@ -70,7 +70,7 @@ function check_templating() {
     local grep_path
     grep_path=$(mktemp)
     grep \
-        --dereference-recursive --context=5 --color=always \
+        -R --context=5 --color=always \
         -e "exemplar" -e "identity" "$out_dir_path/RLZrmX9NfS" > "$grep_path" || true
     rm -rf "$out_dir_path"
     if [[ $(wc -l "$grep_path" | cut -d' ' -f1) -gt 0 ]] ; then
