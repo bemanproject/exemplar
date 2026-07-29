@@ -187,7 +187,7 @@ jobs:
         }
 
   vcpkg-ci:
-    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-ci.yml@1.7.3
+    uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-ci.yml@enolan_fixvcpkgpinning1
     with:
       port_name: beman-exemplar
       feature_combinations: |
