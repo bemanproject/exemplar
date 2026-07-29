@@ -73,7 +73,7 @@ Example commands:
 cmake \
   -B build \
   -S . \
-  -DCMAKE_CXX_STANDARD=17 \
+  -DCMAKE_CXX_STANDARD={{cookiecutter.minimum_cpp_build_version}} \
   -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
 cmake --build build
 ctest --test-dir build

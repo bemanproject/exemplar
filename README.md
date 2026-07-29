@@ -135,7 +135,7 @@ Full runnable examples can be found in [`examples/`](examples/).
 
 This project requires at least the following to build:
 
-* A C++ compiler that conforms to the C++17 standard or greater
+* A C++ compiler that conforms to the C++20 standard or greater
 * CMake 3.30 or later
 * (Test Only) GoogleTest
 
