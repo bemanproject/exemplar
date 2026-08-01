@@ -1,3 +1,4 @@
+{% if generating_exemplar %}
 # How to Use This Template
 
 This repository uses [Copier](https://copier.readthedocs.io/) as its templating engine to generate, manage, and update Beman library boilerplate. The template inputs are defined in `copier.yml`, and the rendered project files live under `template/`.
@@ -17,51 +18,6 @@ git add .
 git commit -m "Initial commit from Beman Exemplar template"
 uvx pre-commit install
 ```
-
----
-
-## Choosing a Template Version
-
-Copier treats the template as a versioned dependency. When you copy from a Git
-URL, Copier does **not** use the tip of the default branch by default — it checks
-out the **latest release tag** (the highest version among the repository's Git
-tags, sorted as [PEP 440](https://peps.python.org/pep-0440/)). So the Quick Start
-command above gives you the most recent *tagged* release of the template, not
-whatever currently happens to be on `main`.
-
-This is deliberate. Tagged releases are the states the maintainers consider
-stable and self-consistent, so a new project starts from a known-good baseline
-instead of from in-progress work that may still be churning.
-
-The exact revision you resolved is recorded in your project's
-`.copier-answers.yml` as `_commit`, next to `_src_path` (the template URL).
-Copier reads both on every `copier update`, so your project always knows which
-template revision it was generated from and can compute a correct diff when you
-update.
-
-### Overriding the version
-
-Pass `--vcs-ref` (short form `-r`) to select any Git ref — a tag, a branch, or a
-commit hash:
-
-| You want…                                        | Add to the command   |
-|--------------------------------------------------|----------------------|
-| The latest **released** template (default)       | *(nothing)*          |
-| The **bleeding-edge** tip of the default branch  | `--vcs-ref HEAD`     |
-| A specific in-progress **branch**                | `--vcs-ref copier`   |
-| A specific **tag** or commit                      | `--vcs-ref v2.4.0`   |
-
-For example, to generate from the unreleased tip of `main`:
-
-```bash
-uvx --from copier copier copy --vcs-ref HEAD \
-    "git+https://github.com/bemanproject/exemplar.git" my-new-library
-```
-
-The same `--vcs-ref` flag works with `copier update`. A bare `copier update`
-moves your project forward to the newest tag; add `--vcs-ref HEAD` (or a branch
-name) to pull in changes that have merged upstream but have not been tagged as a
-release yet.
 
 ---
 
@@ -137,32 +93,9 @@ Copier will calculate the difference and automatically update the template-provi
 
 ?? **Important Caveat:** Copier only manages the files it originally generated. If you have added custom files (like `detail/internal.hpp`), or manually typed the old project name into new C++ namespaces or include guards, you will need to update those manually. Always review the changes with `git diff`, and use your IDE or `grep` to hunt down any lingering references to the old name before committing!
 
-## Migrating an Existing Project onto Copier
+## Rebasing An Older Exemplar Clone Onto Copier
 
-If your project predates the Copier migration, how you move it onto the Copier
-workflow depends on **how far it has drifted** from the current exemplar. There
-are two broad cases, and picking the wrong one wastes a lot of effort untangling
-conflicts.
-
-### First, gauge the drift
-
-Work down this list and stop at the first match:
-
-* **Does the repo already contain `.copier-answers.yml`?** It is already on
-  Copier — you do not need to migrate at all, just run `copier update`.
-* **Was it made from a GitHub "Use this template" copy or `stamp.sh`, and does it
-  still share history with `bemanproject/exemplar`?** Check with
-  `git merge-base main exemplar/main` (after adding the `exemplar` remote below).
-  If that command succeeds, use **Case 1**.
-* **Is it from the old cookiecutter template, or does `git merge-base` fail and
-  the layout look nothing like the current exemplar** (different directory
-  structure, pre-Beman-Standard naming, no `include/beman/<name>/` tree)? Use
-  **Case 2**.
-
-### Case 1: Recent exemplar clone or `stamp.sh` output — rebase onto a Copier baseline
-
-Bootstrap a fresh stamped baseline at the original exemplar split point, then
-rebase your project commits onto that baseline.
+If your repository predates the Copier migration and was created as a plain GitHub template copy, bootstrap a fresh stamped baseline at the original exemplar split point, then rebase your project commits onto that baseline.
 
 Start from a clean worktree and make sure you can identify the branch you want to migrate; the examples below assume `main`.
 
@@ -204,42 +137,6 @@ uvx --from copier copier update --trust
 
 If you want to track a fork of exemplar rather than `bemanproject/exemplar`, edit `_src_path` in `.copier-answers.yml` before your first `copier update`.
 
-### Case 2: Old cookiecutter or heavily drifted project — start fresh and port
-
-For genuinely old projects — ones generated from the pre-Copier cookiecutter
-template, or exemplar copies so old that the layout, naming conventions, or Beman
-Standard compliance no longer resemble the current exemplar — a rebase produces
-more conflicts than it resolves. The Case 1 recipe works by finding a shared
-merge-base with `bemanproject/exemplar`; cookiecutter-era projects often share no
-usable ancestor (different template engine, unrelated initial commit), so there
-is nothing to rebase onto and the file-level drift means near-total conflicts.
-
-The cleaner path is to regenerate and port your real content into the new tree:
-
-1. **Generate a brand-new project** with `copier copy` (see Quick Start), using
-   your real project name and answers. This gives you a current,
-   `.copier-answers.yml`-tracked baseline that `copier update` can maintain going
-   forward.
-2. **Copy your actual library content in by hand:** the public headers under
-   `include/beman/<name>/`, your sources, `tests/`, `examples/`, and any real
-   documentation. Leave the generated infrastructure (CMake wiring, CI workflows,
-   `.pre-commit-config.yaml`, presets) exactly as the template produced it — that
-   scaffolding is precisely the part you were struggling to keep in sync, so
-   inheriting the current version is the whole point.
-3. **Reconcile the details:** update namespaces, include guards, and CMake target
-   names to match the generated conventions. Use `grep` to hunt down any lingering
-   references to the old project name or the old layout.
-4. **Decide what to do with history.** For most old projects a clean cut is least
-   painful: keep the old repository around as an archived reference and link back
-   to it from the new one. If you must preserve history in-tree, bring it across
-   with `git subtree` / `git read-tree`, or stitch the old history behind the new
-   baseline with `git replace --graft` — but treat that as optional polish, not a
-   prerequisite for getting onto the supported update path.
-
-The goal is to end up on the same footing as a freshly generated project: the
-handful of files that are genuinely yours, sitting on top of template
-infrastructure that `copier update` understands.
-
 ## Template Maintenance
 
 If you are changing the template itself rather than developing a library, use the Copier workflow directly:
@@ -255,7 +152,8 @@ The consistency check renders from a `.git`-free temporary snapshot of the repos
 
 What follows is an example of a Beman library README.
 
-# beman.exemplar: A Beman Library Exemplar
+{% endif %}
+# beman.{{project_name}}: {{description}}
 
 <!--
 SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
@@ -263,27 +161,37 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 <!-- markdownlint-disable line-length -->
 [![Library Status](https://raw.githubusercontent.com/bemanproject/beman/refs/heads/main/images/badges/beman_badge-beman_library_under_development.svg)](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#the-beman-library-maturity-model)
-[![Continuous Integration Tests](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml/badge.svg)](https://github.com/bemanproject/exemplar/actions/workflows/ci_tests.yml)
-[![Lint Check (pre-commit)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit-check.yml/badge.svg)](https://github.com/bemanproject/exemplar/actions/workflows/pre-commit-check.yml)
-[![Coverage](https://coveralls.io/repos/github/bemanproject/exemplar/badge.svg?branch=main)](https://coveralls.io/github/bemanproject/exemplar?branch=main)
+[![Continuous Integration Tests](https://github.com/{{owner}}/{{project_name}}/actions/workflows/ci_tests.yml/badge.svg)](https://github.com/{{owner}}/{{project_name}}/actions/workflows/ci_tests.yml)
+[![Lint Check (pre-commit)](https://github.com/{{owner}}/{{project_name}}/actions/workflows/pre-commit-check.yml/badge.svg)](https://github.com/{{owner}}/{{project_name}}/actions/workflows/pre-commit-check.yml)
+[![Coverage](https://coveralls.io/repos/github/{{owner}}/{{project_name}}/badge.svg?branch=main)](https://coveralls.io/github/{{owner}}/{{project_name}}?branch=main)
 ![Standard Target](https://github.com/bemanproject/beman/blob/main/images/badges/cpp29.svg)
-[![Compiler Explorer Example](https://img.shields.io/badge/Try%20it%20on%20Compiler%20Explorer-grey?logo=compilerexplorer&logoColor=67c52a)](https://godbolt.org/z/4qEPK87va)
+{% if generating_exemplar %}[![Compiler Explorer Example](https://img.shields.io/badge/Try%20it%20on%20Compiler%20Explorer-grey?logo=compilerexplorer&logoColor=67c52a)](https://godbolt.org/z/4qEPK87va)
+{% endif %}
 <!-- markdownlint-restore -->
 
+{% if generating_exemplar %}
 `beman.exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md).
 This can be used as a template for those intending to write Beman libraries.
 It may also find use as a minimal and modern C++ project structure.
+{% else %}
+`beman.{{project_name}}` is (... TODO: description).
+{% endif %}
 
-**Implements**: `std::identity` proposed in [Standard Library Concepts (P0898R3)](https://wg21.link/P0898R3).
+{% if generating_exemplar %}
+**Implements**: `std::identity` proposed in [Standard Library Concepts ({{paper}})](https://wg21.link/{{paper}}).
+{% else %}
+**Implements**: `std::todo` proposed in [TODO ({{paper}})](https://wg21.link/{{paper}}).
+{% endif %}
 
 **Status**: [Under development and not yet ready for production use.](https://github.com/bemanproject/beman/blob/main/docs/beman_library_maturity_model.md#under-development-and-not-yet-ready-for-production-use)
 
 ## License
 
-`beman.exemplar` is licensed under the Apache License v2.0 with LLVM Exceptions.
+`beman.{{project_name}}` is licensed under the Apache License v2.0 with LLVM Exceptions.
 
 ## Usage
 
+{% if generating_exemplar %}
 `std::identity` is a function object type whose `operator()` returns its argument unchanged.
 `std::identity` serves as the default projection in constrained algorithms.
 Its direct usage is usually not needed.
@@ -345,6 +253,10 @@ int main()
 
 ```
 
+{% else %}
+TODO
+
+{% endif %}
 Full runnable examples can be found in [`examples/`](examples/).
 
 ## Dependencies
@@ -353,11 +265,11 @@ Full runnable examples can be found in [`examples/`](examples/).
 
 This project requires at least the following to build:
 
-* A C++ compiler that conforms to the C++17 standard or greater
+* A C++ compiler that conforms to the C++{{minimum_cpp_build_version}} standard or greater
 * CMake 3.30 or later
 * (Test Only) GoogleTest
 
-You can disable building tests by setting CMake option `BEMAN_EXEMPLAR_BUILD_TESTS` to
+You can disable building tests by setting CMake option `BEMAN_{{project_name.upper()}}_BUILD_TESTS` to
 `OFF` when configuring the project.
 
 You can disable building examples by setting CMake option `BEMAN_EXEMPLAR_BUILD_EXAMPLES` to
@@ -381,11 +293,11 @@ You can disable building examples by setting CMake option `BEMAN_EXEMPLAR_BUILD_
 
 See the [Contributing Guidelines](CONTRIBUTING.md).
 
-## Integrate beman.exemplar into your project
+## Integrate beman.{{project_name}} into your project
 
 ### Build
 
-You can build exemplar using a CMake workflow preset:
+You can build {{project_name}} using a CMake workflow preset:
 
 ```bash
 cmake --workflow --preset gcc-release
@@ -397,23 +309,23 @@ To list available workflow presets, you can invoke:
 cmake --list-presets=workflow
 ```
 
-For details on building beman.exemplar without using a CMake preset, refer to the
+For details on building beman.{{project_name}} without using a CMake preset, refer to the
 [Contributing Guidelines](CONTRIBUTING.md).
 
 ### Installation
 
 #### Vcpkg
 
-The preferred way to install exemplar is via vcpkg. To do so, after installing vcpkg
+The preferred way to install {{project_name}} is via vcpkg. To do so, after installing vcpkg
 itself, you need to add support for the Beman project's [vcpkg
 registry](https://github.com/bemanproject/vcpkg-registry) by configuring a
-`vcpkg-configuration.json` file (which exemplar [provides](vcpkg-configuration.json)).
+`vcpkg-configuration.json` file (which {{project_name}} [provides](vcpkg-configuration.json)).
 
-Then, simply run `vcpkg install beman-exemplar`.
+Then, simply run `vcpkg install beman-{{project_name.replace("_", "-")}}`.
 
 #### Manual
 
-To install beman.exemplar globally after building with the `gcc-release` preset, you can
+To install beman.{{project_name}} globally after building with the `gcc-release` preset, you can
 run:
 
 ```bash
@@ -432,41 +344,41 @@ This will generate the following directory structure:
 /opt/beman
 ├── include
 │   └── beman
-│       └── exemplar
-│           ├── exemplar.hpp
+│       └── {{project_name}}
+│           ├── {{project_name}}.hpp
 │           └── ...
 └── lib
     └── cmake
-        └── beman.exemplar
-            ├── beman.exemplar-config-version.cmake
-            ├── beman.exemplar-config.cmake
-            └── beman.exemplar-targets.cmake
+        └── beman.{{project_name}}
+            ├── beman.{{project_name}}-config-version.cmake
+            ├── beman.{{project_name}}-config.cmake
+            └── beman.{{project_name}}-targets.cmake
 ```
 
 ### CMake Configuration
 
-If you installed beman.exemplar to a prefix, you can specify that prefix to your CMake
+If you installed beman.{{project_name}} to a prefix, you can specify that prefix to your CMake
 project using `CMAKE_PREFIX_PATH`; for example, `-DCMAKE_PREFIX_PATH=/opt/beman`.
 
-You need to bring in the `beman.exemplar` package to define the `beman::exemplar` CMake
+You need to bring in the `beman.{{project_name}}` package to define the `beman::{{project_name}}` CMake
 target:
 
 ```cmake
-find_package(beman.exemplar REQUIRED)
+find_package(beman.{{project_name}} REQUIRED)
 ```
 
-You will then need to add `beman::exemplar` to the link libraries of any libraries or
-executables that include `beman.exemplar` headers.
+You will then need to add `beman::{{project_name}}` to the link libraries of any libraries or
+executables that include `beman.{{project_name}}` headers.
 
 ```cmake
-target_link_libraries(yourlib PUBLIC beman::exemplar)
+target_link_libraries(yourlib PUBLIC beman::{{project_name}})
 ```
 
-### Using beman.exemplar
+### Using beman.{{project_name}}
 
-To use `beman.exemplar` in your C++ project,
-include an appropriate `beman.exemplar` header from your source code.
+To use `beman.{{project_name}}` in your C++ project,
+include an appropriate `beman.{{project_name}}` header from your source code.
 
 ```c++
-#include <beman/exemplar/exemplar.hpp>
+#include <beman/{{project_name}}/{{project_name}}.hpp>
 ```
