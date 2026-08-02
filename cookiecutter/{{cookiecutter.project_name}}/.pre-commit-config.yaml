@@ -40,12 +40,4 @@ repos:
     hooks:
       - id: codespell
 
-{% if not cookiecutter._generating_exemplar %}
-    # Beman Standard checking via beman-tidy
-  - repo: https://github.com/bemanproject/beman-tidy
-    rev: v0.5.4
-    hooks:
-    - id: beman-tidy
-
-{% endif %}
 exclude: 'cookiecutter/|infra/|port/'
