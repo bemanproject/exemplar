@@ -8,8 +8,10 @@
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_CXX_STANDARD": "{{cookiecutter.minimum_cpp_build_version}}",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "./infra/cmake/use-fetch-content.cmake"
+        "CMAKE_CXX_EXTENSIONS": false,
+        "CMAKE_CXX_STANDARD_REQUIRED": true,
+        "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+        "CMAKE_PROJECT_TOP_LEVEL_INCLUDES": "${sourceDir}/infra/cmake/use-fetch-content.cmake"
       }
     },
     {
@@ -35,7 +37,7 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/gnu-toolchain.cmake"
       }
     },
     {
@@ -46,7 +48,7 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/gnu-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/gnu-toolchain.cmake"
       }
     },
     {
@@ -57,7 +59,12 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/llvm-toolchain.cmake"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
@@ -68,7 +75,12 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/llvm-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/llvm-toolchain.cmake"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     },
     {
@@ -79,7 +91,12 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/appleclang-toolchain.cmake"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -90,7 +107,12 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/appleclang-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/appleclang-toolchain.cmake"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
       }
     },
     {
@@ -101,7 +123,12 @@
         "_debug-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/msvc-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/msvc-toolchain.cmake"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     },
     {
@@ -112,7 +139,12 @@
         "_release-base"
       ],
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "infra/cmake/msvc-toolchain.cmake"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/infra/cmake/msvc-toolchain.cmake"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
       }
     }
   ],
@@ -120,7 +152,11 @@
     {
       "name": "_root-build",
       "hidden": true,
-      "jobs": 0
+      "jobs": 0,
+      "targets": [
+        "all_verify_interface_header_sets",
+        "all"
+      ]
     },
     {
       "name": "gcc-debug",

@@ -158,6 +158,9 @@ This project requires at least the following to build:
 You can disable building tests by setting CMake option `BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_TESTS` to
 `OFF` when configuring the project.
 
+You can disable building examples by setting CMake option `BEMAN_{{cookiecutter.project_name.upper()}}_BUILD_EXAMPLES` to
+`OFF` when configuring the project.
+
 ### Supported Platforms
 
 | Compiler   | Version | C++ Standards | Standard Library  |

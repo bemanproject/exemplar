@@ -5,6 +5,7 @@
 # https://github.com/bemanproject/beman-tidy/blob/main/README.md
 
 disabled_rules:
+  # TODO: exemplar is the template repository, not a real Beman library — its README title is not meant to match a library name.
   - readme.title
 ignored_paths:
-    # None
+  - infra/
