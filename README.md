@@ -10,13 +10,13 @@ top-right and select "Create a new repository":
 This will create a new repository that's an exact copy of exemplar. The next step is to
 customize it for your use case.
 
-To do so, execute the bash script `stamp.sh`. This script will prompt for parameters like
+To do so, execute the python script `stamp.py`. This script will prompt for parameters like
 the new library's name, paper number, and description. Then it will replace your exemplar
 copy with a stamped-out template containing these parameters and create a corresponding
 git commit and branch:
 
 ```
-$ ./stamp.sh
+$ python stamp.py
   [1/6] project_name (my_project_name): example_library
   [2/6] maintainer (your_github_username): your_username
   [3/6] minimum_cpp_build_version (20):
