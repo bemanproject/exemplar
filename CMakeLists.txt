@@ -81,6 +81,7 @@ beman_install_library(beman.exemplar TARGETS beman.exemplar)
 configure_build_telemetry()
 
 if(BEMAN_EXEMPLAR_BUILD_TESTS)
+    list(APPEND VCPKG_MANIFEST_FEATURES "test-dependencies")
     enable_testing()
     add_subdirectory(tests/beman/exemplar)
 endif()
