@@ -70,7 +70,7 @@ function check_templating() {
     local grep_path
     grep_path=$(mktemp)
     grep \
-        --dereference-recursive --context=5 --color=always \
+        --dereference-recursive --context=5 --color=always --ignore-case \
         -e "exemplar" -e "identity" "$out_dir_path/RLZrmX9NfS" > "$grep_path" || true
     rm -rf "$out_dir_path"
     if [[ $(wc -l "$grep_path" | cut -d' ' -f1) -gt 0 ]] ; then
