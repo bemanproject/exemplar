@@ -35,7 +35,7 @@ then create a pull request.
 From there, you can simply fill in all the remaining parts of the repository that are
 labeled 'todo'.
 
-What follow is an example of a Beman library README.
+What follows is an example of a Beman library README.
 
 # beman.exemplar: A Beman Library Exemplar
 
