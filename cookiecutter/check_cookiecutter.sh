@@ -51,6 +51,7 @@ function check_consistency() {
 }
 
 function check_templating() {
+    local unit_test_library="$1" ; shift
     local out_dir_path
     out_dir_path=$(mktemp --directory --dry-run)
     cd /tmp
@@ -63,6 +64,7 @@ function check_templating() {
         minimum_cpp_build_version="17" \
         paper="P0898R3" \
         description="A Beman Library RLZrmX9NfS" \
+        unit_test_library="$unit_test_library" \
         _generating_exemplar="false" \
         _ci_tests_cron="30 15 * * 6" \
         _pre_commit_update_cron="0 16 * * 0"
@@ -94,7 +96,8 @@ function main() {
     cookiecutter_venv_path=$(mktemp --directory --dry-run)
     setup_venv "$cookiecutter_venv_path"
     check_consistency
-    check_templating
+    check_templating gtest
+    check_templating catch2
     rm -rf "$cookiecutter_venv_path"
 }
 
