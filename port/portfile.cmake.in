@@ -29,8 +29,7 @@ vcpkg_cmake_config_fixup(
 )
 
 if(NOT "modules" IN_LIST FEATURES)
-    file(
-        REMOVE_RECURSE
+    file(REMOVE_RECURSE
         "${CURRENT_PACKAGES_DIR}/debug"
         "${CURRENT_PACKAGES_DIR}/lib"
     )

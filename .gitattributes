@@ -1,5 +1,4 @@
 infra/** linguist-vendored
-template/** linguist-vendored
 copier/** linguist-vendored
 *.bib -linguist-detectable
 *.tex -linguist-detectable

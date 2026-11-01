@@ -1,255 +1,55 @@
 # How to Use This Template
 
-This repository uses [Copier](https://copier.readthedocs.io/) as its templating engine to generate, manage, and update Beman library boilerplate. The template inputs are defined in `copier.yml`, and the rendered project files live under `template/`.
+To create a new Beman library, first click the "Use this template" dropdown in the
+top-right and select "Create a new repository":
 
-> [!NOTE]
-> ?? **`stamp.sh` is deprecated.** If you are used to the legacy workflow of forking this repository and running `./stamp.sh`, please transition to the natively supported `copier` workflow below. The script remains for legacy CI compatibility but will not receive future updates.
+<table><tr><td>
+  <img src="images/use-this-template.png" width="400px">
+</td></tr></table>
 
-## ? Quick Start: Create a New Library
+This will create a new repository that's an exact copy of exemplar. The next step is to
+customize it for your use case.
 
-If you are already familiar with the Beman project lifecycle, you can generate a new library immediately using `uvx` (via the [uv package manager](https://docs.astral.sh/uv/)):
+To do so, execute the bash script `stamp.sh`. This script will prompt for parameters like
+the new library's name, paper number, and description. Then it will replace your exemplar
+copy with a stamped-out template containing these parameters and create a corresponding
+git commit and branch:
 
-```bash
-uvx --from copier copier copy "git+[https://github.com/bemanproject/exemplar.git](https://github.com/bemanproject/exemplar.git)" my-new-library
-cd my-new-library
-git init
-git add .
-git commit -m "Initial commit from Beman Exemplar template"
-uvx pre-commit install
+```
+$ ./stamp.sh
+🎤 Name of the generated repository and library.
+   example_library
+🎤 GitHub username of the project maintainer.
+   your_username
+🎤 Minimum C++ language version to require when building.
+   20
+🎤 WG21 paper number associated with the library.
+   P9999R9
+🎤 Short project description.
+   Short project description.
+🎤 Unit test library to configure.
+   gtest
+Switched to a new branch 'stamp'
+Successfully stamped out exemplar template to the new branch 'stamp'.
+Try 'git push origin stamp' to push the branch upstream,
+then create a pull request.
 ```
 
----
+From there, you can simply fill in all the remaining parts of the repository that are
+labeled 'todo'.
 
-## Choosing a Template Version
+## Updating a Beman library to incorporate the latest changes to `exemplar`
 
-Copier treats the template as a versioned dependency. When you copy from a Git
-URL, Copier does **not** use the tip of the default branch by default — it checks
-out the **latest release tag** (the highest version among the repository's Git
-tags, sorted as [PEP 440](https://peps.python.org/pep-0440/)). So the Quick Start
-command above gives you the most recent *tagged* release of the template, not
-whatever currently happens to be on `main`.
+To pull in updates made to `exemplar` since your project was initially created, enter the
+project and run [`copier`](https://copier.readthedocs.io/en/stable/updating/) like so:
 
-This is deliberate. Tagged releases are the states the maintainers consider
-stable and self-consistent, so a new project starts from a known-good baseline
-instead of from in-progress work that may still be churning.
-
-The exact revision you resolved is recorded in your project's
-`.copier-answers.yml` as `_commit`, next to `_src_path` (the template URL).
-Copier reads both on every `copier update`, so your project always knows which
-template revision it was generated from and can compute a correct diff when you
-update.
-
-### Overriding the version
-
-Pass `--vcs-ref` (short form `-r`) to select any Git ref — a tag, a branch, or a
-commit hash:
-
-| You want…                                        | Add to the command   |
-|--------------------------------------------------|----------------------|
-| The latest **released** template (default)       | *(nothing)*          |
-| The **bleeding-edge** tip of the default branch  | `--vcs-ref HEAD`     |
-| A specific in-progress **branch**                | `--vcs-ref copier`   |
-| A specific **tag** or commit                      | `--vcs-ref v2.4.0`   |
-
-For example, to generate from the unreleased tip of `main`:
-
-```bash
-uvx --from copier copier copy --vcs-ref HEAD \
-    "git+https://github.com/bemanproject/exemplar.git" my-new-library
+```sh
+copier update --vcs-ref=HEAD
 ```
 
-The same `--vcs-ref` flag works with `copier update`. A bare `copier update`
-moves your project forward to the newest tag; add `--vcs-ref HEAD` (or a branch
-name) to pull in changes that have merged upstream but have not been tagged as a
-release yet.
+(The `--vcs-ref=HEAD` parameter ensures that changes are pulled in from the latest `main` rather than the most recent tag.)
 
----
-
-## ?? The Beman Project Lifecycle
-
-To create a new library and get it officially adopted into the Beman project, you will generate the project locally, push it to your personal GitHub for active development, and eventually transfer it to the `bemanproject` organization.
-
-> **Why this specific workflow?**
-> Developing on your personal account first gives you a sandbox to experiment and clean up your Git history. Transferring the repository (rather than creating it directly in the org) ensures the `bemanproject` organization ultimately holds the canonical, unbroken Git history, which prevents downstream forks from breaking later.
-
-### Step 1: Push to Your Personal GitHub
-After running the Quick Start commands above, push the fresh template to your personal account to begin development.
-
-**Option A: Using the GitHub CLI (`gh`)**
-```bash
-gh repo create my-new-library --public --source=. --remote=origin --push
-```
-
-**Option B: Using the GitHub Browser Interface**
-1. [Create a new repository](https://github.com/new). Name it exactly what you named your local folder. Leave it completely empty.
-2. Link and push your local code:
-   ```bash
-   git remote add origin [https://github.com/](https://github.com/)<your-username>/my-new-library.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-### Step 2: Incubation & Implementation
-Before transferring the project to the Beman organization, take the time to build out the actual proposal.
-* Expand beyond the default placeholder headers (e.g., `my-new-library.hpp`).
-* Stub out the necessary files for your library's domain.
-* Write out the skeleton of the library's design and documentation.
-* *Optional:* Once you have a working sandbox, feel free to squash or clean up your Git history using an interactive rebase (`git rebase -i`) before handing it over.
-
-### Step 3: Transfer to the Beman Project
-Once the repository has enough substance to be reviewed or collaborated on, hand it over to the organization to establish it as the canonical source.
-
-1. On your GitHub repository page, go to **Settings** > **General**.
-2. Scroll to the bottom to the **Danger Zone** and click **Transfer ownership**.
-3. Type `bemanproject` as the new owner and confirm.
-
-### Step 4: Fork It Back for Ongoing Development
-Now that `bemanproject/my-new-library` is the official upstream repository, standard open-source contribution rules apply.
-
-1. Navigate to the new URL: `https://github.com/bemanproject/my-new-library`.
-2. Click **Fork** in the top right corner to create a fork in your personal namespace.
-3. Update your local repository's remotes so you can pull from upstream and push to your new fork:
-   ```bash
-   # Rename your current remote (the org repo) to 'upstream'
-   git remote rename origin upstream
-
-   # Add your new personal fork as 'origin'
-   git remote add origin [https://github.com/](https://github.com/)<your-username>/my-new-library.git
-   ```
-
----
-
-## ?? Reconfiguring or Renaming Your Project
-
-One of the biggest advantages of using `copier` is that it actively maintains your project's boilerplate. If you start out with a placeholder name and later decide to rename your library (or change your minimum C++ version), you can instruct Copier to update the structural boilerplate using the `--data` flag.
-
-For example, to rename your project to `range_discombobulator`:
-
-```bash
-uvx --from copier copier update --trust --skip-answered --data project_name=range_discombobulator
-```
-
-**What this does:**
-* `--data project_name=...`: Overrides your previous answer for the project name.
-* `--skip-answered`: Skips the interactive prompt for all the questions you aren't changing.
-
-Copier will calculate the difference and automatically update the template-provided filesrenaming CMake configurations, GitHub Actions matrices, standard folder paths, and core macros.
-
-?? **Important Caveat:** Copier only manages the files it originally generated. If you have added custom files (like `detail/internal.hpp`), or manually typed the old project name into new C++ namespaces or include guards, you will need to update those manually. Always review the changes with `git diff`, and use your IDE or `grep` to hunt down any lingering references to the old name before committing!
-
-## Migrating an Existing Project onto Copier
-
-If your project predates the Copier migration, how you move it onto the Copier
-workflow depends on **how far it has drifted** from the current exemplar. There
-are two broad cases, and picking the wrong one wastes a lot of effort untangling
-conflicts.
-
-### First, gauge the drift
-
-Work down this list and stop at the first match:
-
-* **Does the repo already contain `.copier-answers.yml`?** It is already on
-  Copier — you do not need to migrate at all, just run `copier update`.
-* **Was it made from a GitHub "Use this template" copy or `stamp.sh`, and does it
-  still share history with `bemanproject/exemplar`?** Check with
-  `git merge-base main exemplar/main` (after adding the `exemplar` remote below).
-  If that command succeeds, use **Case 1**.
-* **Is it from the old cookiecutter template, or does `git merge-base` fail and
-  the layout look nothing like the current exemplar** (different directory
-  structure, pre-Beman-Standard naming, no `include/beman/<name>/` tree)? Use
-  **Case 2**.
-
-### Case 1: Recent exemplar clone or `stamp.sh` output — rebase onto a Copier baseline
-
-Bootstrap a fresh stamped baseline at the original exemplar split point, then
-rebase your project commits onto that baseline.
-
-Start from a clean worktree and make sure you can identify the branch you want to migrate; the examples below assume `main`.
-
-```shell
-git remote add exemplar [https://github.com/bemanproject/exemplar.git](https://github.com/bemanproject/exemplar.git)
-git fetch exemplar
-base=$(git merge-base main exemplar/main)
-git branch pre-copier-backup main
-git switch --detach "$base"
-
-tmpdir=$(mktemp -d)
-python3 -m venv "$tmpdir/venv"
-"$tmpdir/venv/bin/python3" -m pip install copier pre-commit
-"$tmpdir/venv/bin/copier" copy --trust --overwrite \
-    -d project_name=your_project_name \
-    -d maintainer=your_github_username \
-    -d minimum_cpp_build_version=20 \
-    -d paper=PnnnnRr \
-    -d description="Short project description." \
-    -d unit_test_library=gtest \
-    -d generating_exemplar=false \
-    -d owner=bemanproject \
-    [https://github.com/bemanproject/exemplar.git](https://github.com/bemanproject/exemplar.git) \
-    .
-"$tmpdir/venv/bin/pre-commit" run --all-files || true
-git add .
-git switch -c stamp
-git commit -m "Bootstrap Copier template"
-
-git switch main
-git rebase --rebase-merges --onto stamp "$base" main
-```
-
-After the rebase, commit the generated `.copier-answers.yml`. That file is what enables future template updates with:
-
-```shell
-uvx --from copier copier update --trust
-```
-
-If you want to track a fork of exemplar rather than `bemanproject/exemplar`, edit `_src_path` in `.copier-answers.yml` before your first `copier update`.
-
-### Case 2: Old cookiecutter or heavily drifted project — start fresh and port
-
-For genuinely old projects — ones generated from the pre-Copier cookiecutter
-template, or exemplar copies so old that the layout, naming conventions, or Beman
-Standard compliance no longer resemble the current exemplar — a rebase produces
-more conflicts than it resolves. The Case 1 recipe works by finding a shared
-merge-base with `bemanproject/exemplar`; cookiecutter-era projects often share no
-usable ancestor (different template engine, unrelated initial commit), so there
-is nothing to rebase onto and the file-level drift means near-total conflicts.
-
-The cleaner path is to regenerate and port your real content into the new tree:
-
-1. **Generate a brand-new project** with `copier copy` (see Quick Start), using
-   your real project name and answers. This gives you a current,
-   `.copier-answers.yml`-tracked baseline that `copier update` can maintain going
-   forward.
-2. **Copy your actual library content in by hand:** the public headers under
-   `include/beman/<name>/`, your sources, `tests/`, `examples/`, and any real
-   documentation. Leave the generated infrastructure (CMake wiring, CI workflows,
-   `.pre-commit-config.yaml`, presets) exactly as the template produced it — that
-   scaffolding is precisely the part you were struggling to keep in sync, so
-   inheriting the current version is the whole point.
-3. **Reconcile the details:** update namespaces, include guards, and CMake target
-   names to match the generated conventions. Use `grep` to hunt down any lingering
-   references to the old project name or the old layout.
-4. **Decide what to do with history.** For most old projects a clean cut is least
-   painful: keep the old repository around as an archived reference and link back
-   to it from the new one. If you must preserve history in-tree, bring it across
-   with `git subtree` / `git read-tree`, or stitch the old history behind the new
-   baseline with `git replace --graft` — but treat that as optional polish, not a
-   prerequisite for getting onto the supported update path.
-
-The goal is to end up on the same footing as a freshly generated project: the
-handful of files that are genuinely yours, sitting on top of template
-infrastructure that `copier update` understands.
-
-## Template Maintenance
-
-If you are changing the template itself rather than developing a library, use the Copier workflow directly:
-
-* Edit `copier.yml` for template questions, defaults, validators, and post-copy tasks.
-* Edit `template/` for files that should be rendered into stamped projects.
-* Run `./copier/check_copier.sh` to verify exemplar self-regeneration and non-exemplar templating.
-* Create a new project locally using the Quick Start commands when you want to use the template for real work.
-
-The consistency check renders from a `.git`-free temporary snapshot of the repository. That keeps local validation aligned with the current worktree contents, rather than only the last committed Git state.
+<!-- TODO: Provide a document on bemanproject.org/docs explaining our use of copier in more detail -->
 
 ---
 
@@ -272,7 +72,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 `beman.exemplar` is a minimal C++ library conforming to [The Beman Standard](https://github.com/bemanproject/beman/blob/main/docs/beman_standard.md).
 This can be used as a template for those intending to write Beman libraries.
-It may also find use as a minimal and modern C++ project structure.
+It may also find use as a minimal and modern  C++ project structure.
 
 **Implements**: `std::identity` proposed in [Standard Library Concepts (P0898R3)](https://wg21.link/P0898R3).
 
@@ -370,10 +170,7 @@ You can disable building examples by setting CMake option `BEMAN_EXEMPLAR_BUILD_
 | GCC        | 16-13   | C++26-C++17   | libstdc++         |
 | GCC        | 12-11   | C++23-C++17   | libstdc++         |
 | Clang      | 22-19   | C++26-C++17   | libstdc++, libc++ |
-| Clang      | 18      | C++26-C++17   | libc++            |
-| Clang      | 18      | C++23-C++17   | libstdc++         |
-| Clang      | 17      | C++26-C++17   | libc++            |
-| Clang      | 17      | C++20, C++17  | libstdc++         |
+| Clang      | 18-17   | C++26-C++17   | libc++            |
 | AppleClang | latest  | C++26-C++17   | libc++            |
 | MSVC       | latest  | C++23         | MSVC STL          |
 

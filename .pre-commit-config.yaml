@@ -40,4 +40,4 @@ repos:
     hooks:
       - id: codespell
 
-exclude: 'template/|copier/|infra/|port/'
+exclude: 'copier/|infra/|port/'

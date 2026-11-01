@@ -53,6 +53,66 @@ Some options for the project and target will also be supported:
   (default: all packages)
 * `<BEMAN_NAME>_INSTALL_CONFIG_FILE_PACKAGE` - a per-project option to enable/disable config file installation (default: `ON` if the project is top-level, `OFF` otherwise). For instance for `beman.something`, the option would be `BEMAN_SOMETHING_INSTALL_CONFIG_FILE_PACKAGE`.
 
+#### `beman_add_xfail_compile_test`
+
+A negative compile test is a translation unit that must *fail* to compile,
+and must fail with a specific diagnostic: the `static_assert` message of a
+Mandates clause, the message of a `= delete("...")` overload, or the
+compiler's "no matching function" when a constraint removes every
+candidate. Use `beman_add_xfail_compile_test()` to register one.
+
+```cmake
+include(infra/cmake/beman-xfail-compile.cmake)
+
+beman_add_xfail_compile_test(unexpected_array_fail
+    SOURCE unexpected_array_fail.test.cpp
+    LINK_LIBRARIES beman::something
+)
+```
+
+with, near the top of `unexpected_array_fail.test.cpp`:
+
+```cpp
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+// NEGATIVE: unexpected<int[]> is ill-formed [expected.un.general]
+// EXPECT: "E must not be an array type"
+#include <beman/something/unexpected.hpp>
+
+beman::something::unexpected<int[]> u(std::in_place); // must not compile
+```
+
+The `EXPECT` line is a CMake regular expression that the compiler output
+must match. It lives in the source, next to the ill-formed code it
+describes, and is read at configure time. A file may carry several `EXPECT`
+lines; they are joined with `|`, so a long alternation covering several
+compilers' wordings can be split one per line. Pass `EXPECT <regex>`
+to the function instead for a source that cannot carry the comment.
+
+The source becomes an OBJECT library, `<TARGET_PREFIX><name>` (default
+prefix `${PROJECT_NAME}.tests.`), excluded from the default build and never
+linked. The CTest test `<name>` runs `beman-xfail-compile-driver.cmake`,
+which does a nested build of just that target, so the source is compiled
+with exactly the toolchain, flags, launcher, and usage requirements the
+rest of the project gets. The test passes only when the build fails **and**
+its output matches the regex, and reports the two ways of failing
+separately:
+
+* *compiled, but was expected to fail* — the constraint or mandate is not
+  firing;
+* *failed to compile, but not for the expected reason* — a typo in the
+  test, or a compiler whose wording the regex does not yet cover. The build
+  output is echoed.
+
+Every test carries the label `xfail-compile`, so `ctest -L xfail-compile`
+runs just the negative suite and `ctest -LE xfail-compile` skips it, and a
+`RESOURCE_LOCK` so `ctest -j` never runs two nested builds in one build
+tree at once.
+
+Options: `LINK_LIBRARIES <target>...`, `COMPILE_DEFINITIONS <def>...`,
+`TARGET_PREFIX <prefix>`, `LABELS <label>...`. The header comment of
+[beman-xfail-compile.cmake](./cmake/beman-xfail-compile.cmake) has the
+full interface. `EXPECT` must not contain `;`.
+
 # BuildTelemetry
 
 The cmake modules in this library provide access to CMake instrumentation data in Google Trace format which is visualizable with chrome://tracing and https://ui.perfetto.dev.

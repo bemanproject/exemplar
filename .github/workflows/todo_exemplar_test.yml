@@ -21,8 +21,8 @@ jobs:
           source ./check_copier.sh
           copier_venv_path=$(mktemp --directory --dry-run)
           setup_venv "$copier_venv_path"
-          stamp "$repo_root" "./static_exemplar" "gtest" "false"
-          cd static_exemplar
+          stamp "$script_dir/.." "./static_exemplar" "gtest" "false"
+          cd static_exemplar/exemplar
           grep -r 'identity' . && exit 1
           find . -name '*identity*' | grep . && exit 1
           cmake -B build -DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=./infra/cmake/use-fetch-content.cmake -DCMAKE_CXX_STANDARD=20 -DCMAKE_INSTALL_PREFIX=$PWD/dist
