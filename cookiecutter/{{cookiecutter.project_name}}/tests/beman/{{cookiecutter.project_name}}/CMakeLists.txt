@@ -17,7 +17,7 @@ target_link_libraries(
     PRIVATE beman::{{cookiecutter.project_name}} Catch2::Catch2WithMain
 {% endif %}
 )
-if(BEMAN_EXEMPLAR_USE_MODULES)
+if(BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES)
     set_target_properties(
         beman.{{cookiecutter.project_name}}.tests.{{identity}}
         PROPERTIES CXX_MODULE_STD ON
