@@ -40,4 +40,4 @@ repos:
     hooks:
       - id: codespell
 
-exclude: 'cookiecutter/|infra/|port/'
+exclude: 'copier/|infra/|port/'

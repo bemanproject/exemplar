@@ -17,11 +17,11 @@ jobs:
         uses: actions/checkout@v6
       - name: Test static exemplar
         run: |
-          cd cookiecutter
-          source ./check_cookiecutter.sh
-          cookiecutter_venv_path=$(mktemp --directory --dry-run)
-          setup_venv "$cookiecutter_venv_path"
-          stamp "$PWD" "./static_exemplar" "gtest" "false"
+          cd copier
+          source ./check_copier.sh
+          copier_venv_path=$(mktemp --directory --dry-run)
+          setup_venv "$copier_venv_path"
+          stamp "$script_dir/.." "./static_exemplar" "gtest" "false"
           cd static_exemplar/exemplar
           grep -r 'identity' . && exit 1
           find . -name '*identity*' | grep . && exit 1
