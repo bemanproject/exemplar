@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 {
     if [[ "$1" == "-h" || "$1" == "--help" ]] ; then
