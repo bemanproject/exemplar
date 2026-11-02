@@ -17,15 +17,18 @@ git commit and branch:
 
 ```
 $ ./stamp.sh
-  [1/6] project_name (my_project_name): example_library
-  [2/6] maintainer (your_github_username): your_username
-  [3/6] minimum_cpp_build_version (20):
-  [4/6] paper (PnnnnRr): P9999R9
-  [5/6] description (Short project description.):
-  [6/6] Select unit_test_library
-    1 - gtest
-    2 - catch2
-    Choose from [1/2] (1):
+🎤 Name of the generated repository and library.
+   example_library
+🎤 GitHub username of the project maintainer.
+   your_username
+🎤 Minimum C++ language version to require when building.
+   20
+🎤 WG21 paper number associated with the library.
+   P9999R9
+🎤 Short project description.
+   Short project description.
+🎤 Unit test library to configure.
+   gtest
 Switched to a new branch 'stamp'
 Successfully stamped out exemplar template to the new branch 'stamp'.
 Try 'git push origin stamp' to push the branch upstream,
@@ -34,6 +37,21 @@ then create a pull request.
 
 From there, you can simply fill in all the remaining parts of the repository that are
 labeled 'todo'.
+
+## Updating a Beman library to incorporate the latest changes to `exemplar`
+
+To pull in updates made to `exemplar` since your project was initially created, enter the
+project and run [`copier`](https://copier.readthedocs.io/en/stable/updating/) like so:
+
+```sh
+copier update --vcs-ref=HEAD
+```
+
+(The `--vcs-ref=HEAD` parameter ensures that changes are pulled in from the latest `main` rather than the most recent tag.)
+
+<!-- TODO: Provide a document on bemanproject.org/docs explaining our use of copier in more detail -->
+
+---
 
 What follows is an example of a Beman library README.
 

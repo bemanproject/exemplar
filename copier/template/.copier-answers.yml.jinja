@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+# Standard answers and internal state managed by Copier
+# _src_path is pinned to upstream so 'copier update' works even when the
+# project was copied from a local checkout.
+{{ dict(_copier_answers, _src_path="gh:bemanproject/exemplar") | to_nice_yaml -}}
+
+# Hidden variables manually tracked because 'when: false' omits them from _copier_answers
+owner: {{ owner | to_json }}
+ci_tests_cron: {{ ci_tests_cron | to_json }}
+pre_commit_update_cron: {{ pre_commit_update_cron | to_json }}
