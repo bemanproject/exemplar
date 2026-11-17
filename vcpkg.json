@@ -1,10 +1,16 @@
 {
   "name": "beman-exemplar",
   "version-semver": "2.4.1",
-  "dependencies": [
-    {
-      "name": "gtest",
-      "host": true
+  "dependencies": [],
+  "features": {
+    "test-dependencies": {
+      "description": "Dependencies only needed when tests are enabled.",
+      "dependencies": [
+        {
+          "name": "gtest",
+          "host": true
+        }
+      ]
     }
-  ]
+  }
 }
