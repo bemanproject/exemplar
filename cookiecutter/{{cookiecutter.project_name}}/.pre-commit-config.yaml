@@ -3,7 +3,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
@@ -14,14 +14,14 @@ repos:
     # This brings in a portable version of clang-format.
     # See also: https://github.com/ssciwr/clang-format-wheel
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v22.1.8
+    rev: ce4bd7270237e95464b37d808b942f02785192c4  # frozen: v23.1.5
     hooks:
     - id: clang-format
       types_or: [c++, c]
 
     # CMake linting and formatting
   - repo: https://github.com/BlankSpruce/gersemi-pre-commit
-    rev: 0.28.0
+    rev: 28010ddd6016e1a0f7bd232acb6536ef996ae897  # frozen: 0.29.2
     hooks:
     - id: gersemi
       name: CMake linting
@@ -36,22 +36,14 @@ repos:
   #   - id: markdownlint
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.3
+    rev: 57b21406f092110c18776e39b0bda50d37c945c8  # frozen: v2.4.3
     hooks:
       - id: codespell
 
     # Embd check
   - repo: https://github.com/ptsouchlos/embd-pre-commit
-    rev: v0.5.0
+    rev: c1f9475572d46df2ebc237c60c41819449058591  # frozen: v0.5.0
     hooks:
       - id: embd-status
 
-{% if not cookiecutter._generating_exemplar %}
-    # Beman Standard checking via beman-tidy
-  - repo: https://github.com/bemanproject/beman-tidy
-    rev: v0.5.4
-    hooks:
-    - id: beman-tidy
-
-{% endif %}
 exclude: 'cookiecutter/|infra/|port/'
