@@ -1,0 +1,30 @@
+[metadata]
+remote = "https://github.com/bemanproject/infra.git"
+commit_hash = "a943c4ae58466260f9b98bfd749aa75f5ad7833b"
+allow_untracked = false
+
+[metadata.tracking]
+branch = "main"
+
+[files]
+".github/CODEOWNERS" = "sha256:e3bb3deabf91a1d38c1e4fc0e32468028ed219f43b2a1cbb2c78bbbab9975893"
+".github/workflows/pre-commit.yml" = "sha256:a7aa1332b0e6093b35315de9e17f5b463a479d28c1a92e28919775817eb9bfa0"
+".github/workflows/reusable-beman-create-issue-when-fault.yml" = "sha256:e4bfd227bd4e7561e81450ad379c43410202f6fb03c0466fe57984bfcea1f6ff"
+".gitignore" = "sha256:379a7287c4bdd698e3b77ef07c827da8d43554d202b4ba86e3f315a7601dc353"
+".pre-commit-config.yaml" = "sha256:edc997dbb305333235292d7241d1c21eb0b1b4dc2264619f92f4437fbff6e4bb"
+LICENSE = "sha256:9a4d9c05afb65254a9b715686454548519d44a7a2637c43d27f5c802b42966ee"
+"README.md" = "sha256:0a499b519c83dedd6552ea5193a041f2f01a72f5f7c05e41b91e9245b5eb4011"
+"cmake/BuildTelemetry.cmake" = "sha256:d207741b404692dc172ac6fb259b7a8427613a3dcb5233364f82699f9b04a7fa"
+"cmake/BuildTelemetryConfig.cmake" = "sha256:c228f2b539ad6643eaab6526f6cba0c8d7034fb426a6e1424dad3a5dee3cb429"
+"cmake/Config.cmake.in" = "sha256:a6b7cae59710e6e77fcf5d52e3e3b2f8a6c6c88829b447ec058d8ff2aae9a7c8"
+"cmake/appleclang-toolchain.cmake" = "sha256:6dee14927061266892901d2bdd62a807d0e5d1703da3aaabf3ebb13b6a8d1a34"
+"cmake/beman-install-library.cmake" = "sha256:2ef9ba94e862c7400c5322da89ad51e4574c0a271634b88691aa7d52227bc6e8"
+"cmake/beman-xfail-compile-driver.cmake" = "sha256:2d0485c6c49995deb570ca437bbb19ae120afc829142b8aed83d604769eef1c3"
+"cmake/beman-xfail-compile.cmake" = "sha256:fe37fc41a436eddd1c2f71006495d846763a82a6e09f5bb16f4cbcdd03942240"
+"cmake/enable-experimental-import-std.cmake" = "sha256:9f410f5a5af4e92d9c7c986073d8a433f3583a41b9d2d243ae110426318dd3ba"
+"cmake/gnu-toolchain.cmake" = "sha256:8cf322a2ceaf9f0ef41473ef8e5956a304542bcbabb6816028dd174888f2a5dd"
+"cmake/llvm-libc++-toolchain.cmake" = "sha256:b338964eed9912fdeb13eb63d8824a633aa01ef03b65d6637caedd250f869497"
+"cmake/llvm-toolchain.cmake" = "sha256:84037ff1e56985bc026b57b871f68d8b4a60d0f0bf2398bce2fe0a53bc55ba21"
+"cmake/msvc-toolchain.cmake" = "sha256:87b608035d80ba2dd25e0549985d2e1f58d1539f93d100023d18351e2ec4fabf"
+"cmake/telemetry.sh" = "sha256:81f39ce32ad7822223d3c9822ec6d1f415357ccc54770e67869320b0d208f927"
+"cmake/use-fetch-content.cmake" = "sha256:945a1ee5ee80621042aa93f0a166db642d0e8a625910e8d11cdb0c509db23b0b"
