@@ -40,4 +40,10 @@ repos:
     hooks:
       - id: codespell
 
+    # Embd check
+  - repo: https://github.com/ptsouchlos/embd-pre-commit
+    rev: v0.5.0
+    hooks:
+      - id: embd-status
+
 exclude: 'copier/|infra/|port/'
