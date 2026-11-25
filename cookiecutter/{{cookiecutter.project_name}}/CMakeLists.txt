@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
-cmake_minimum_required(VERSION 3.30...4.4)
+cmake_minimum_required(VERSION 3.30...4.5)
 
 include(infra/cmake/enable-experimental-import-std.cmake)
 
@@ -32,6 +32,15 @@ option(
 option(BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES "Provide beman.{{cookiecutter.project_name}} as a C++ module" OFF)
 
 if(BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES)
+    if(
+        NOT CMAKE_CXX_STDLIB_MODULES_JSON
+        AND CMAKE_VERSION VERSION_GREATER_EQUAL "4.5.0"
+    )
+        message(
+            FATAL_ERROR
+            "BEMAN_{{cookiecutter.project_name.upper()}}_USE_MODULES requires CMAKE_CXX_STDLIB_MODULES_JSON"
+        )
+    endif()
     set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 endif()
 
