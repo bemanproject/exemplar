@@ -4,6 +4,10 @@ name: vcpkg registry release
 on:
   release:
     types: [published]
+
+permissions:
+  contents: read
+
 jobs:
   vcpkg-release:
     uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-vcpkg-release.yml@1.7.5

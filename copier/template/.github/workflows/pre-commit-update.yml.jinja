@@ -8,6 +8,9 @@ on:
     - cron: "{{pre_commit_update_cron}}"
 
 {% raw -%}
+permissions:
+  contents: read
+
 jobs:
   auto-update-pre-commit:
     uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-update-pre-commit.yml@1.7.5
