@@ -15,6 +15,9 @@ concurrency:
   group: ${{format('{0}:{1}', github.repository, github.ref)}}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
 
   preset-test:
@@ -184,4 +187,7 @@ jobs:
   create-issue-when-fault:
     needs: [preset-test, build-and-test]
     if: failure() && github.event_name == 'schedule'
+    permissions:
+      contents: read
+      issues: write
     uses: bemanproject/infra-workflows/.github/workflows/reusable-beman-create-issue-when-fault.yml@1.7.5
